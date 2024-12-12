@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Dixie Cummerata",
+    "to_chi": 1,
+    "nganh": 0,
+    "nhanh": 0,
+    "ho_ten": "Dixie Cummerata",
+    "id": 1,
+    "vo": [
+      {
+        "ho_ten": "Whitney Schimmel PhD",
+        "id": 2,
+        "thu_tu": 1,
+        "gioi_tinh": "(Nữ)",
+        "doi": 1,
+        "img": "https://picsum.photos/seed/5ZncgG/207/124?grayscale&blur=8",
+        "chuc_vu": "Vợ",
+        "parent_id": 0,
+        "sinh": "17/1/2024",
+        "mat": "18/11/2024"
+      }
+    ],
+    "thu_tu": 1,
+    "gioi_tinh": "Nam",
+    "doi": 1,
+    "img": "https://picsum.photos/seed/7wo6p8/2622/233?grayscale&blur=4",
+    "chuc_vu": "",
+    "parent_id": null,
+    "sinh": "23/6/2024",
+    "mat": "4/2/2025",
+    "position_x": 100,
+    "position_y": 100
+  }
+]

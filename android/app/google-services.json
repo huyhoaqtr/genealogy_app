@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "451416319686",
+    "project_id": "gtvapp-2c13c",
+    "storage_bucket": "gtvapp-2c13c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451416319686:android:a0cdc1d5884d55231759c7",
+        "android_client_info": {
+          "package_name": "com.htma.giatocviet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4NpwA89tpgi6SOidjOpwGYXFeOdTThQw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
