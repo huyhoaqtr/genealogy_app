@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_app/constants/app_size.dart';
 
+import '../../constants/app_size.dart';
 import 'notification.controller.dart';
 import 'view/notification.item.dart';
 
@@ -10,16 +10,45 @@ class NotificationScreen extends GetView<NotificationController> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      physics: const BouncingScrollPhysics(),
-      child: SizedBox(
+    return RefreshIndicator(
+      onRefresh: () {
+        controller.page.value = 1;
+        return controller.getAllNotification();
+      },
+      child: Container(
         width: Get.width,
-        child: Wrap(
-          spacing: AppSize.kPadding / 2,
-          direction: Axis.vertical,
-          children: List.generate(100, (index) => const NotificationItem()),
+        padding: EdgeInsets.only(
+          top: AppSize.kPadding,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
+        child: Obx(() {
+          if (controller.notifications.isEmpty) {
+            return ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: [
+                SizedBox(
+                  height: Get.height * 0.5,
+                  child: Center(
+                    child: Text(
+                      'Không có thông báo',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          } else {
+            // Hiển thị danh sách thông báo khi có item
+            return ListView.builder(
+              itemCount: controller.notifications.length,
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                final item = controller.notifications[index];
+                return NotificationItem(notification: item);
+              },
+            );
+          }
+        }),
       ),
     );
   }

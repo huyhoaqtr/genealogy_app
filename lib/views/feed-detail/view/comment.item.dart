@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/utils/string/string.dart';
+import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 import 'package:getx_app/views/feed-detail/feed.detail.controller.dart';
 
 import '../../../constants/app_colors.dart';
@@ -9,31 +10,27 @@ import '../../../constants/app_size.dart';
 import '../../../resources/api/feed.api.dart';
 import '../../../resources/models/comment.model.dart';
 import '../../../utils/widgets/icon_button.common.dart';
-import '../../feed/feed.controller.dart';
 
 class CommentItemController extends GetxController {
   RxList<String> likes;
 
   CommentItemController({required List<String> likesData})
       : likes = RxList<String>(likesData);
-  final FeedController feedController = Get.find();
   final FeedDetailController feedDetailController = Get.find();
+  final DashboardController dashboardController = Get.find();
 
   Future<void> toggleLike(String commentId) async {
-    if (likes.value.contains(feedController.myInfo.value!.sId)) {
-      likes.value.remove(feedController.myInfo.value!.sId);
+    if (likes.value.contains(dashboardController.myInfo.value.sId)) {
+      likes.value.remove(dashboardController.myInfo.value.sId);
     } else {
-      likes.value.add(feedController.myInfo.value!.sId!);
+      likes.value.add(dashboardController.myInfo.value.sId!);
     }
     likes.refresh();
     await FeedApi().toggleLikeComment(commentId: commentId);
   }
 
   bool isLikedComment() {
-    if (feedController.myInfo.value == null) {
-      return false;
-    }
-    return likes.value.contains(feedController.myInfo.value?.sId);
+    return likes.value.contains(dashboardController.myInfo.value.sId);
   }
 }
 

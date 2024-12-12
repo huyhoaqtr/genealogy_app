@@ -6,8 +6,10 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_size.dart';
 
 class PasswordFieldController extends GetxController {
+  // Dùng RxBool để theo dõi trạng thái của obscureText
   RxBool obscureText = true.obs;
 
+  // Hàm để toggle trạng thái obscureText
   void toggleObscureText() {
     obscureText.value = !obscureText.value;
   }
@@ -30,10 +32,13 @@ class PasswordFieldComponent extends StatelessWidget {
   final bool enabled;
   final String? errorText;
   final TextInputAction textInputAction;
-  final PasswordFieldController controller = Get.put(PasswordFieldController());
+
+  // Khởi tạo controller cho PasswordFieldComponent mỗi lần gọi widget
 
   @override
   Widget build(BuildContext context) {
+    Get.create(() => PasswordFieldController());
+    PasswordFieldController controller = Get.find<PasswordFieldController>();
     return Obx(() {
       return TextField(
         controller: textEditingController,
@@ -86,10 +91,11 @@ class PasswordFieldComponent extends StatelessWidget {
             ),
           ),
           suffixIcon: IconButtonComponent(
-              iconPath: controller.obscureText.value
-                  ? "assets/icons/eye.svg"
-                  : "assets/icons/eye-slash.svg",
-              onPressed: controller.toggleObscureText),
+            iconPath: controller.obscureText.value
+                ? "assets/icons/eye.svg"
+                : "assets/icons/eye-slash.svg",
+            onPressed: controller.toggleObscureText,
+          ),
           contentPadding: const EdgeInsets.symmetric(
             horizontal: AppSize.kPadding,
             vertical: AppSize.kPadding / 2,

@@ -24,6 +24,6 @@ class ProfileController extends GetxController {
 
   void logout() {
     StorageManager.clearData();
-    Get.offAllNamed(AppRoutes.splash);
+    Get.offAllNamed(AppRoutes.splash, arguments: {'isLogout': true});
   }
 }

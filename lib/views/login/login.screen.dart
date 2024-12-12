@@ -78,6 +78,7 @@ class LoginScreen extends GetView<LoginController> {
                   text: 'login'.tr,
                   onPressed: controller.handleLogin,
                 ),
+                const SizedBox(height: AppSize.kPadding * 2)
               ],
             ),
           ),

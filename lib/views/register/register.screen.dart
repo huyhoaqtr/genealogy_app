@@ -30,7 +30,10 @@ class RegisterScreen extends GetView<RegisterController> {
           FocusScope.of(context).unfocus();
         },
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSize.kPadding),
+          padding: const EdgeInsets.only(
+            left: AppSize.kPadding,
+            right: AppSize.kPadding,
+          ),
           child: SingleChildScrollView(
             physics: const ClampingScrollPhysics(),
             child: Column(
@@ -92,6 +95,7 @@ class RegisterScreen extends GetView<RegisterController> {
                         ))),
                     SizedBox(height: 16.h),
                     Obx(() => (PasswordFieldComponent(
+                          key: const Key('password'),
                           textEditingController: controller.passwordController,
                           hintText: 'enterPassword'.tr,
                           labelText: 'password'.tr,
@@ -102,6 +106,7 @@ class RegisterScreen extends GetView<RegisterController> {
                         ))),
                     SizedBox(height: 16.h),
                     Obx(() => (PasswordFieldComponent(
+                          key: const Key('confirmPassword'),
                           textEditingController:
                               controller.confirmPasswordController,
                           hintText: 'enterRePassword'.tr,
@@ -125,7 +130,8 @@ class RegisterScreen extends GetView<RegisterController> {
                         onPressed: () => Get.to(() => const QRCodeScanner()),
                       ),
                   ],
-                )
+                ),
+                const SizedBox(height: AppSize.kPadding * 2)
               ],
             ),
           ),

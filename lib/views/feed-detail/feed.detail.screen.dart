@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 import 'package:getx_app/views/feed-detail/feed.detail.controller.dart';
 import 'package:getx_app/views/feed/view/feed.item.dart';
 
@@ -10,7 +11,9 @@ import '../../utils/widgets/icon_button.common.dart';
 import 'view/comment.item.dart';
 
 class FeedDetailScreen extends GetView<FeedDetailController> {
-  const FeedDetailScreen({super.key});
+  FeedDetailScreen({super.key});
+
+  final DashboardController dashboardController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -26,20 +29,25 @@ class FeedDetailScreen extends GetView<FeedDetailController> {
                   physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: [
-                      FeedItem(
-                        isDetail: true,
-                        controller: FeedItemController(
-                          initialFeed: controller.feed.value,
-                        ),
-                      ),
-                      _buildCommentContentView(context),
+                      Obx(() => controller.feed.value.sId != null
+                          ? FeedItem(
+                              isDetail: true,
+                              controller: FeedItemController(
+                                initialFeed: controller.feed.value,
+                              ),
+                            )
+                          : const SizedBox()),
                       Obx(() {
+                        if (controller.feed.value.sId == null) {
+                          return const SizedBox();
+                        }
                         return Column(
-                          children: controller.comments
-                              .map((item) => CommentItem(
-                                    commentFeed: item,
-                                  ))
-                              .toList(),
+                          children: [
+                            _buildCommentContentView(context),
+                            ...controller.comments.map((item) => CommentItem(
+                                  commentFeed: item,
+                                ))
+                          ],
                         );
                       }),
                       SizedBox(
@@ -157,8 +165,8 @@ class FeedDetailScreen extends GetView<FeedDetailController> {
                   CircleAvatar(
                     backgroundColor: AppColors.primaryColor,
                     radius: 14.w,
-                    backgroundImage: const NetworkImage(
-                      "https://images.unsplash.com/photo-1499714608240-22fc6ad53fb2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
+                    backgroundImage: NetworkImage(
+                      "${dashboardController.myInfo.value.info?.avatar}",
                     ),
                   ),
                   const SizedBox(width: AppSize.kPadding / 2),

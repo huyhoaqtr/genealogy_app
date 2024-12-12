@@ -314,13 +314,8 @@ class CalendarScreen extends GetView<CalendarController> {
                           .bodyMedium!
                           .copyWith(color: Colors.grey, fontSize: 10.sp),
                     ),
-                    Text(
-                      "${weather.main!.humidity}%",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .copyWith(fontSize: 13.sp),
-                    ),
+                    Text("${weather.main!.humidity}%",
+                        style: Theme.of(context).textTheme.bodyMedium!),
                   ],
                 ),
                 const Spacer(),
@@ -334,12 +329,8 @@ class CalendarScreen extends GetView<CalendarController> {
                           .copyWith(color: Colors.grey, fontSize: 10.sp),
                     ),
                     Text(
-                      "${(weather.wind!.speed! * 3.6).toStringAsFixed(2)} km/h",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .copyWith(fontSize: 13.sp),
-                    ),
+                        "${(weather.wind!.speed! * 3.6).toStringAsFixed(2)} km/h",
+                        style: Theme.of(context).textTheme.bodyMedium!),
                   ],
                 ),
                 const Spacer(),
@@ -352,13 +343,8 @@ class CalendarScreen extends GetView<CalendarController> {
                           .bodyMedium!
                           .copyWith(color: Colors.grey, fontSize: 10.sp),
                     ),
-                    Text(
-                      "${weather.main!.seaLevel} hPa",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .copyWith(fontSize: 13.sp),
-                    ),
+                    Text("${weather.main!.seaLevel} hPa",
+                        style: Theme.of(context).textTheme.bodyMedium!),
                   ],
                 ),
                 const Spacer(),
@@ -371,13 +357,8 @@ class CalendarScreen extends GetView<CalendarController> {
                           .bodyMedium!
                           .copyWith(color: Colors.grey, fontSize: 10.sp),
                     ),
-                    Text(
-                      getWindDirection(weather.wind!.deg),
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .copyWith(fontSize: 13.sp),
-                    ),
+                    Text(getWindDirection(weather.wind!.deg),
+                        style: Theme.of(context).textTheme.bodyMedium!),
                   ],
                 ),
                 const Spacer(),

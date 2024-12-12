@@ -11,8 +11,17 @@ class SplashController extends GetxController {
   RxBool splashLoadingAnimated = false.obs;
 
   @override
-  Future<void> onInit() async {
+  void onInit() {
     super.onInit();
+
+    if (Get.arguments != null && Get.arguments['isLogout'] != null) {
+      final isLogout = Get.arguments['isLogout'];
+      if (isLogout == true) {
+        logoOpacityAnimated.value = false;
+        splashLoadingAnimated.value = false;
+      }
+    }
+
     handleInitFunc();
   }
 

@@ -5,7 +5,6 @@ import 'package:getx_app/utils/widgets/loading/loading.controller.dart';
 import '../../resources/api/feed.api.dart';
 import '../../resources/models/comment.model.dart';
 import '../../resources/models/feed.model.dart';
-import '../feed/feed.controller.dart';
 
 class FeedDetailController extends GetxController {
   Rx<Feed> feed = Rx<Feed>(Feed());
@@ -17,16 +16,15 @@ class FeedDetailController extends GetxController {
   Rx<CommentFeed?> parentComment = Rx<CommentFeed?>(null);
   Rx<TextEditingController> commentInputController =
       TextEditingController().obs;
-  final FeedController feedController = Get.find();
   final ScrollController scrollController = ScrollController();
   final LoadingController loadingController = Get.find();
+
   @override
   void onInit() {
     super.onInit();
 
-    final payload = Get.arguments['feed'];
-    if (payload != null) {
-      feed.value = Feed.fromJson(payload);
+    if (Get.arguments != null && Get.arguments['feed'] != null) {
+      feed.value = Feed.fromJson(Get.arguments['feed']);
     }
     scrollController.addListener(() async {
       if (scrollController.position.pixels >=
@@ -39,6 +37,10 @@ class FeedDetailController extends GetxController {
   @override
   Future<void> onReady() async {
     super.onReady();
+    if (Get.arguments != null && Get.arguments['feedId'] != null) {
+      final response = await FeedApi().getFeedById(id: Get.arguments['feedId']);
+      feed.value = response.data!;
+    }
     await getComments();
   }
 

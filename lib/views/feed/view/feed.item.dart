@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 import 'package:getx_app/views/feed/feed.controller.dart';
 import 'package:readmore/readmore.dart';
 
@@ -17,39 +18,34 @@ class FeedItemController extends GetxController {
   final Rx<Feed> feed;
   FeedItemController({required Feed initialFeed})
       : feed = Rx<Feed>(initialFeed);
-
-  final FeedController feedController = Get.find();
+  final DashboardController dashboardController = Get.find();
 
   Future<void> toggleLike(String feedId) async {
-    if (feed.value.sId == null ||
-        feed.value.likes == null ||
-        feedController.myInfo.value == null) {
+    if (feed.value.sId == null || feed.value.likes == null) {
       return;
     }
 
-    if (feed.value.likes!.contains(feedController.myInfo.value!.sId)) {
-      feed.value.likes!.remove(feedController.myInfo.value!.sId);
+    if (feed.value.likes!.contains(dashboardController.myInfo.value.sId)) {
+      feed.value.likes!.remove(dashboardController.myInfo.value.sId);
     } else {
-      feed.value.likes!.add(feedController.myInfo.value!.sId!);
+      feed.value.likes!.add(dashboardController.myInfo.value.sId!);
     }
-
     feed.refresh();
-    feedController.feeds.refresh();
+
+    if (Get.isRegistered<FeedController>()) {
+      final feedController = Get.find<FeedController>();
+      feedController.feeds.refresh();
+    }
 
     // Gọi API (nếu cần)
     await FeedApi().toggleLikeFeed(feedId: feedId);
   }
 
   bool isLikedFeed() {
-    // User has not liked the feed, add to the list of likes
-    if (feed.value.sId == null ||
-        feed.value.likes == null ||
-        feedController.myInfo.value == null) {
-      // Update the UI
+    if (feed.value.sId == null || feed.value.likes == null) {
       return false;
     }
-    return feed.value.likes!.contains(feedController.myInfo.value?.sId);
-    // Make API call to update the server
+    return feed.value.likes!.contains(dashboardController.myInfo.value.sId);
   }
 }
 
@@ -145,68 +141,69 @@ class FeedItem extends StatelessWidget {
                     Row(
                       children: [
                         if (isDetail)
-                          CircleAvatar(
-                            backgroundColor: AppColors.primaryColor,
-                            radius: 16.w,
-                            backgroundImage: NetworkImage(
-                                "${controller.feed.value.user?.info?.avatar}"),
-                          ),
+                          Obx(() => CircleAvatar(
+                                backgroundColor: AppColors.primaryColor,
+                                radius: 16.w,
+                                backgroundImage: NetworkImage(
+                                    "${controller.feed.value.user?.info?.avatar}"),
+                              )),
                         if (isDetail)
                           const SizedBox(
                             width: AppSize.kPadding / 2,
                           ),
-                        Text(
-                          "${controller.feed.value.user?.info?.fullName}",
-                          style:
-                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                        Obx(() => Text(
+                              "${controller.feed.value.user?.info?.fullName}",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
-                        ),
+                            )),
                         const SizedBox(width: AppSize.kPadding / 2),
-                        Text(
-                          formatRelativeOrAbsolute(
-                              "${controller.feed.value.createdAt}"),
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall!
-                              .copyWith(
-                                  color: AppColors.textColor.withOpacity(0.5)),
-                        ),
+                        Obx(() => Text(
+                              "${controller.feed.value.createdAt}",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall!
+                                  .copyWith(
+                                      color:
+                                          AppColors.textColor.withOpacity(0.5)),
+                            )),
                       ],
                     ),
-                    IconButtonComponent(
-                      iconPath: 'assets/icons/more.svg',
-                      iconPadding: 3,
-                      onPressed: () {},
-                      iconSize: 20,
-                    ),
+                    // IconButtonComponent(
+                    //   iconPath: 'assets/icons/more.svg',
+                    //   iconPadding: 3,
+                    //   onPressed: () {},
+                    //   iconSize: 20,
+                    // ),
                   ],
                 ),
-                const SizedBox(height: AppSize.kPadding / 4),
-                GestureDetector(
-                  onTap: () => Get.toNamed('/feed-detail', arguments: {
-                    'feed': controller.feed.toJson(),
-                  }),
-                  child: ReadMoreText(
-                    "${controller.feed.value.content}",
-                    trimLines: 5,
-                    trimMode: TrimMode.Line,
-                    trimCollapsedText: 'Xem thêm',
-                    trimExpandedText: 'Ẩn bớt',
-                    style: TextStyle(
-                      color: AppColors.textColor,
-                      fontSize: 14,
-                    ),
-                    lessStyle: Theme.of(context)
-                        .textTheme
-                        .bodySmall!
-                        .copyWith(color: AppColors.textColor.withOpacity(0.5)),
-                    moreStyle: Theme.of(context)
-                        .textTheme
-                        .bodySmall!
-                        .copyWith(color: AppColors.textColor.withOpacity(0.5)),
-                  ),
-                ),
+                if (controller.feed.value.content != null)
+                  const SizedBox(height: AppSize.kPadding / 4),
+                if (controller.feed.value.content != null)
+                  Obx(() => ReadMoreText(
+                        "${controller.feed.value.content}",
+                        trimLines: 5,
+                        trimMode: TrimMode.Line,
+                        trimCollapsedText: 'Xem thêm',
+                        trimExpandedText: 'Ẩn bớt',
+                        style: TextStyle(
+                          color: AppColors.textColor,
+                          fontSize: 14,
+                        ),
+                        lessStyle: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(
+                                color: AppColors.textColor.withOpacity(0.5)),
+                        moreStyle: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(
+                                color: AppColors.textColor.withOpacity(0.5)),
+                      )),
                 const SizedBox(height: AppSize.kPadding / 4),
                 if (controller.feed.value.images!.isNotEmpty)
                   SizedBox(
@@ -277,7 +274,8 @@ class FeedItem extends StatelessWidget {
                         ),
                         Text(
                           formatNumberWithSuffix(
-                              controller.feed.value.commentCount),
+                            controller.feed.value.commentCount,
+                          ),
                           style: Theme.of(context).textTheme.labelSmall,
                         ),
                       ],

@@ -64,6 +64,30 @@ class FeedApi {
     }
   }
 
+  Future<ApiResponse<Feed>> getFeedById({
+    required String id,
+  }) async {
+    try {
+      // Gửi request đến API
+      final response = await DioClient().get('/feed/get-feed/$id');
+
+      return ApiResponse(
+        statusCode: response.statusCode,
+        message: response.data['message'] ?? 'Success',
+        data: Feed.fromJson(response.data['data']),
+      );
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      if (e is DioException && e.response != null) {
+        return ApiResponse(
+          statusCode: e.response?.statusCode,
+          message: e.response?.data['message'] ?? 'An error occurred',
+        );
+      }
+      rethrow; // Quăng lỗi nếu không phải lỗi từ API
+    }
+  }
+
   Future<ApiResponse> toggleLikeComment({
     required String commentId,
   }) async {
@@ -96,7 +120,7 @@ class FeedApi {
   }) async {
     try {
       final fields = {
-        if (content != null) 'content': content,
+        if (content != null && content.isNotEmpty) 'content': content,
       };
 
       // Chuyển Map thành FormData

@@ -108,7 +108,7 @@ class AppPages {
     GetPage(
       binding: FeedDetailBinding(),
       name: AppRoutes.feedDetail,
-      page: () => const FeedDetailScreen(),
+      page: () => FeedDetailScreen(),
     ),
     GetPage(
       binding: FundBinding(),

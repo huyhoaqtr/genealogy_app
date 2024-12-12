@@ -33,6 +33,7 @@ class CreateFormController extends GetxController {
   }
 
   Future<void> createNewFeed() async {
+    FocusManager.instance.primaryFocus?.unfocus();
     loadingController.show();
     final response = await FeedApi().createNewFeed(
       content: contentController.value.text,
@@ -41,7 +42,6 @@ class CreateFormController extends GetxController {
     if (response.statusCode == 201) {
       Get.back();
       feedController.feeds.insert(0, response.data!);
-      feedController.feeds.refresh();
     }
     loadingController.hide();
   }
