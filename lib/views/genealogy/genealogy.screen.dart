@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_colors.dart';
 import 'package:getx_app/constants/app_size.dart';
+import '../../utils/widgets/dialog/dialog.helper.dart';
 import '../../utils/widgets/icon_button.common.dart';
 import '../../utils/widgets/loading/loading.common.dart';
 import 'genealogy.controller.dart';
@@ -29,13 +30,21 @@ class GenealogyScreen extends GetView<GenealogyController> {
                   iconPath: 'assets/icons/eth.svg',
                   iconSize: 32,
                   iconPadding: 5,
-                  onPressed: () => controller.uploadToWeb3(),
+                  onPressed: () => DialogHelper.showConfirmDialog(
+                    "Xác nhận",
+                    "Bạn có muốn lưu nó lên blockchain?",
+                    onConfirm: () => controller.uploadToWeb3(),
+                  ),
                 )),
           IconButtonComponent(
             iconPath: 'assets/icons/printer.svg',
             iconSize: 32,
             iconPadding: 6,
-            onPressed: () => controller.savePdfToDevice(),
+            onPressed: () => DialogHelper.showConfirmDialog(
+              "Xác nhận",
+              "Bạn có muốn tải file này xuống không?",
+              onConfirm: () => controller.savePdfToDevice(),
+            ),
           ),
           IconButtonComponent(
             iconPath: 'assets/icons/settings.svg',

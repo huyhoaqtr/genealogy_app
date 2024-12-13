@@ -7,12 +7,15 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_size.dart';
 import '../../utils/widgets/icon_button.common.dart';
 import '../../utils/widgets/text_button.common.dart';
+import '../dashboard/dashboard.controller.dart';
 import 'create_event.sheet.dart';
 import 'event.controller.dart';
 import 'event.item.dart';
 
 class EventScreen extends GetView<EventController> {
-  const EventScreen({super.key});
+  EventScreen({super.key});
+
+  final DashboardController dashboardController = Get.find();
 
   void _showCreateNewEventBottomSheet() {
     Get.lazyPut(() => CreateEventController(sheetMode: SheetMode.ADD));
@@ -44,39 +47,59 @@ class EventScreen extends GetView<EventController> {
           onPressed: () => Get.back(),
         ),
       ),
-      body: SizedBox(
-        width: Get.width,
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: SlidableAutoCloseBehavior(
-                child: RefreshIndicator(
-                  onRefresh: () async {
-                    await controller.getAllEvents();
-                  },
-                  child: SingleChildScrollView(
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: SlidableAutoCloseBehavior(
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  await controller.getAllEvents();
+                },
+                child: Obx(() {
+                  final events = controller.events;
+
+                  if (events.isEmpty) {
+                    return ListView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      children: [
+                        SizedBox(
+                          height: Get.height * 0.5,
+                          child: Center(
+                            child: Text(
+                              'Không có sự kiện nào',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+
+                  return ListView.builder(
                     padding: const EdgeInsets.all(16),
                     physics: const BouncingScrollPhysics(),
-                    child: SizedBox(
-                      width: Get.width,
-                      child: Obx(() => Wrap(
-                            spacing: AppSize.kPadding,
-                            direction: Axis.vertical,
-                            children: [
-                              ...controller.events.map(
-                                (item) => EventItem(
-                                  event: item,
-                                  controller: controller,
-                                ),
-                              ),
-                              SizedBox(height: 40.h),
-                            ],
-                          )),
-                    ),
-                  ),
-                ),
+                    itemCount: events.length + 1, // +1 for spacing at bottom
+                    itemBuilder: (context, index) {
+                      if (index == events.length) {
+                        return SizedBox(height: 40.h); // Spacing at bottom
+                      }
+
+                      final event = events[index];
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: AppSize.kPadding),
+                        child: EventItem(
+                          event: event,
+                          controller: controller,
+                        ),
+                      );
+                    },
+                  );
+                }),
               ),
             ),
+          ),
+          if (dashboardController.myInfo.value.role == 'ADMIN' ||
+              dashboardController.myInfo.value.role == 'LEADER')
             Positioned(
               bottom: AppSize.kPadding * 1.5,
               left: 16,
@@ -86,8 +109,7 @@ class EventScreen extends GetView<EventController> {
                 onPressed: () => _showCreateNewEventBottomSheet(),
               ),
             ),
-          ],
-        ),
+        ],
       ),
     );
   }

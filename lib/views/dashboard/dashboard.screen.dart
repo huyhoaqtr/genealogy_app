@@ -39,6 +39,7 @@ class DashboardScreen extends GetView<DashboardController> {
             top: BorderSide(color: AppColors.borderColor, width: 0.5),
           ),
         ),
+        padding: const EdgeInsets.only(top: AppSize.kPadding / 3),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

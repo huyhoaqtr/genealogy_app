@@ -40,6 +40,7 @@ class NotificationScreen extends GetView<NotificationController> {
           } else {
             // Hiển thị danh sách thông báo khi có item
             return ListView.builder(
+              controller: controller.scrollController,
               itemCount: controller.notifications.length,
               physics: const AlwaysScrollableScrollPhysics(),
               itemBuilder: (context, index) {

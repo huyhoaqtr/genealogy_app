@@ -162,7 +162,8 @@ class FeedItem extends StatelessWidget {
                             )),
                         const SizedBox(width: AppSize.kPadding / 2),
                         Obx(() => Text(
-                              "${controller.feed.value.createdAt}",
+                              formatDateTimeFromString(
+                                  "${controller.feed.value.createdAt}"),
                               style: Theme.of(context)
                                   .textTheme
                                   .labelSmall!

@@ -113,7 +113,7 @@ class AppPages {
     GetPage(
       binding: FundBinding(),
       name: AppRoutes.fund,
-      page: () => const FundScreen(),
+      page: () => FundScreen(),
     ),
     GetPage(
       binding: FundDetailBinding(),
@@ -123,7 +123,7 @@ class AppPages {
     GetPage(
       binding: VoteBinding(),
       name: AppRoutes.vote,
-      page: () => const VoteScreen(),
+      page: () => VoteScreen(),
     ),
     GetPage(
       binding: VoteDetailBinding(),
@@ -143,7 +143,7 @@ class AppPages {
     GetPage(
       binding: EventBinding(),
       name: AppRoutes.event,
-      page: () => const EventScreen(),
+      page: () => EventScreen(),
     ),
     GetPage(
       binding: EventDetailBinding(),

@@ -142,8 +142,9 @@ class FamilyTreeScreen extends GetView<FamilyTreeController> {
               ),
               child: Container(
                 width: 360 * (0.5 / 4.5),
-                height: 360 * (0.5 / 4.5) / 2.5,
-                margin: const EdgeInsets.only(top: AppSize.kPadding / 2),
+                height: 360 * (0.5 / 4.5) / 3,
+                // color: Colors.blue,
+                margin: const EdgeInsets.only(top: AppSize.kPadding / 1.75),
                 alignment: Alignment.center,
                 child: AutoSizeText(
                   "${dashboardController.tribe.value?.name}",
@@ -154,6 +155,7 @@ class FamilyTreeScreen extends GetView<FamilyTreeController> {
                       ),
                   textAlign: TextAlign.center,
                   minFontSize: 5,
+                  maxFontSize: 10,
                 ),
               ),
             )),

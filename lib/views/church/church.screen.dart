@@ -18,24 +18,46 @@ class ChurchScreen extends GetView<ChurchController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ChurchScreen'),
+        title: const Text('Từ đường'),
         leading: IconButtonComponent(
           iconPath: 'assets/icons/arrow-left.svg',
           onPressed: () => Get.back(),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        physics: const BouncingScrollPhysics(),
-        child: SizedBox(
-          width: Get.width,
-          child: Obx(() => Column(
-                children: controller
-                    .filterMembers()
-                    .map((item) => _buildContentItem(context, item))
-                    .toList(),
-              )),
-        ),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await controller.familyTreeController.fetchBlocks();
+        },
+        child: Obx(() {
+          final members = controller.filterMembers();
+
+          if (members.isEmpty) {
+            return ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: [
+                SizedBox(
+                  height: Get.height * 0.5,
+                  child: Center(
+                    child: Text(
+                      'Chưa có thành viên nào mất',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+
+          return ListView.builder(
+            padding: const EdgeInsets.all(16),
+            physics: const BouncingScrollPhysics(),
+            itemCount: members.length,
+            itemBuilder: (context, index) {
+              final item = members[index];
+              return _buildContentItem(context, item);
+            },
+          );
+        }),
       ),
     );
   }

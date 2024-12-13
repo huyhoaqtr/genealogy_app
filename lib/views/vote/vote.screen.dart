@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 
 import '../../constants/app_colors.dart';
 import '../../constants/app_size.dart';
@@ -11,7 +12,9 @@ import 'view/vote.item.dart';
 import 'vote.controller.dart';
 
 class VoteScreen extends GetView<VoteController> {
-  const VoteScreen({super.key});
+  VoteScreen({super.key});
+
+  final DashboardController dashboardController = Get.find();
 
   void _showCreateNewVoteBottomSheet() {
     Get.lazyPut(() => CreateVoteController());
@@ -27,7 +30,9 @@ class VoteScreen extends GetView<VoteController> {
       ),
       backgroundColor: AppColors.backgroundColor,
     ).then((value) {
-      Get.delete<CreateVoteController>();
+      Future.delayed(const Duration(milliseconds: 300), () {
+        Get.delete<CreateVoteController>();
+      });
     });
   }
 
@@ -41,37 +46,58 @@ class VoteScreen extends GetView<VoteController> {
           onPressed: () => Get.back(),
         ),
       ),
-      body: SizedBox(
-        width: Get.width,
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: RefreshIndicator(
-                onRefresh: () async {
-                  await controller.getAllVoteSession();
-                },
-                child: SingleChildScrollView(
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                await controller.getAllVoteSession();
+              },
+              child: Obx(() {
+                final voteSessions = controller.voteSessions;
+
+                if (voteSessions.isEmpty) {
+                  return ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: [
+                      SizedBox(
+                        height: Get.height * 0.5,
+                        child: Center(
+                          child: Text(
+                            'Không có biểu quyết nào',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+
+                return ListView.builder(
                   padding: const EdgeInsets.all(16),
                   physics: const BouncingScrollPhysics(),
-                  child: SizedBox(
-                    width: Get.width,
-                    child: Obx(() => Wrap(
-                          spacing: AppSize.kPadding,
-                          direction: Axis.vertical,
-                          children: [
-                            ...controller.voteSessions.map(
-                              (item) => VoteItem(
-                                voteSession: item,
-                                controller: controller,
-                              ),
-                            ),
-                            SizedBox(height: 40.h),
-                          ],
-                        )),
-                  ),
-                ),
-              ),
+                  itemCount:
+                      voteSessions.length + 1, // +1 for spacing at bottom
+                  itemBuilder: (context, index) {
+                    if (index == voteSessions.length) {
+                      return SizedBox(height: 40.h); // Spacing at bottom
+                    }
+
+                    final voteSession = voteSessions[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: AppSize.kPadding),
+                      child: VoteItem(
+                        voteSession: voteSession,
+                        controller: controller,
+                      ),
+                    );
+                  },
+                );
+              }),
             ),
+          ),
+          if (dashboardController.myInfo.value.role == 'LEADER' ||
+              dashboardController.myInfo.value.role == 'ADMIN')
             Positioned(
               bottom: AppSize.kPadding * 1.5,
               left: 16,
@@ -81,8 +107,7 @@ class VoteScreen extends GetView<VoteController> {
                 onPressed: () => _showCreateNewVoteBottomSheet(),
               ),
             ),
-          ],
-        ),
+        ],
       ),
     );
   }

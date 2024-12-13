@@ -57,72 +57,73 @@ class GenealogySettingScreen extends GetView<GenealogySettingController> {
           const SizedBox(width: AppSize.kPadding),
         ],
       ),
-      body: SizedBox(
-        width: Get.width,
-        child: SingleChildScrollView(
+      body: Obx(() {
+        GenealogyModel genealogy =
+            controller.genealogyController.genealogyData.value;
+
+        if (genealogy.data == null || genealogy.data!.isEmpty) {
+          return Center(
+            child: Text(
+              "Không có dữ liệu",
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          );
+        }
+
+        return ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: AppSize.kPadding),
-          child: Obx(() {
-            GenealogyModel genealogy =
-                controller.genealogyController.genealogyData.value;
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...genealogy.data!.map(
-                  (item) => Padding(
-                    padding: const EdgeInsets.only(
-                      bottom: AppSize.kPadding,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "${item.title}",
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            const SizedBox(width: AppSize.kPadding / 2),
-                            IconButtonComponent(
-                              iconColor: AppColors.infoColor,
-                              iconPath: 'assets/icons/pen.svg',
-                              iconSize: 28,
-                              iconPadding: 4,
-                              onPressed: () => _showCreateNewPdfPageBottomSheet(
-                                SheetMode.EDIT,
-                                item,
-                              ),
-                            ),
-                            if (item.isDelete == true)
-                              const SizedBox(width: AppSize.kPadding / 2),
-                            if (item.isDelete == true)
-                              IconButtonComponent(
-                                iconColor: AppColors.errorColor,
-                                iconPath: 'assets/icons/trash.svg',
-                                iconSize: 28,
-                                iconPadding: 4,
-                                onPressed: () => DialogHelper.showConfirmDialog(
-                                  "Xác nhận",
-                                  "Bạn có muốn xoá dữ liệu này không?",
-                                  onConfirm: () =>
-                                      controller.deletePdfPage(item.sId ?? ""),
-                                ),
-                              ),
-                          ],
-                        )
-                      ],
+          itemCount: genealogy.data!.length,
+          itemBuilder: (context, index) {
+            final item = genealogy.data![index];
+            return Padding(
+              padding: const EdgeInsets.only(bottom: AppSize.kPadding),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "${item.title}",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                ),
-                const SizedBox(height: AppSize.kPadding * 2),
-              ],
+                  Row(
+                    children: [
+                      const SizedBox(width: AppSize.kPadding / 2),
+                      if (index != 2)
+                        IconButtonComponent(
+                          iconColor: AppColors.infoColor,
+                          iconPath: 'assets/icons/pen.svg',
+                          iconSize: 28,
+                          iconPadding: 4,
+                          onPressed: () => _showCreateNewPdfPageBottomSheet(
+                            SheetMode.EDIT,
+                            item,
+                          ),
+                        ),
+                      if (item.isDelete == true)
+                        const SizedBox(width: AppSize.kPadding / 2),
+                      if (item.isDelete == true)
+                        IconButtonComponent(
+                          iconColor: AppColors.errorColor,
+                          iconPath: 'assets/icons/trash.svg',
+                          iconSize: 28,
+                          iconPadding: 4,
+                          onPressed: () => DialogHelper.showConfirmDialog(
+                            "Xác nhận",
+                            "Bạn có muốn xoá dữ liệu này không?",
+                            onConfirm: () =>
+                                controller.deletePdfPage(item.sId ?? ""),
+                          ),
+                        ),
+                    ],
+                  ),
+                ],
+              ),
             );
-          }),
-        ),
-      ),
+          },
+        );
+      }),
     );
   }
 }
