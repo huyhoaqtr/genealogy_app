@@ -103,7 +103,7 @@ class AppPages {
     GetPage(
       binding: FeedBinding(),
       name: AppRoutes.feed,
-      page: () => const FeedScreen(),
+      page: () => FeedScreen(),
     ),
     GetPage(
       binding: FeedDetailBinding(),

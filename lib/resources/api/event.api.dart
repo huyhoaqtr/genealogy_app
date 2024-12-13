@@ -35,6 +35,29 @@ class EventApi {
     }
   }
 
+  Future<ApiResponse<Event>> getEventById({
+    required String eventId,
+  }) async {
+    try {
+      // Gửi request đến API
+      final response = await DioClient().get('/event/get-event/$eventId');
+
+      return ApiResponse<Event>.fromJson(
+        response.data,
+        (json) => Event.fromJson(json),
+      );
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      if (e is DioException && e.response != null) {
+        return ApiResponse<Event>(
+          statusCode: e.response?.statusCode,
+          message: e.response?.data['message'] ?? 'An error occurred',
+        );
+      }
+      rethrow; // Quăng lỗi nếu không phải lỗi từ API
+    }
+  }
+
   Future<ApiResponse<Event>> createEvent({
     required String title,
     required String desc,

@@ -31,6 +31,34 @@ class VoteApi {
     }
   }
 
+  Future<ApiResponse<VoteSession>> getVoteSessionById({
+    required String id,
+  }) async {
+    try {
+      // Gửi request đến API
+      final response = await DioClient().get(
+        '/vote/get-vote-session-by-id/$id',
+      );
+
+      // Parse dữ liệu response
+
+      return ApiResponse<VoteSession>(
+        statusCode: response.statusCode,
+        message: response.data['message'] ?? 'Success',
+        data: VoteSession.fromJson(response.data['data']),
+      );
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      if (e is DioException && e.response != null) {
+        return ApiResponse<VoteSession>(
+          statusCode: e.response?.statusCode,
+          message: e.response?.data['message'] ?? 'An error occurred',
+        );
+      }
+      rethrow; // Quăng lỗi nếu không phải lỗi từ API
+    }
+  }
+
   Future<ApiResponse<VoteSession>> createVoteSession({
     required String title,
     required String desc,

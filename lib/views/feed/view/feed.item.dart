@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:getx_app/utils/widgets/common/avatar_image.dart';
+import 'package:getx_app/utils/widgets/common/network_image.dart';
 import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 import 'package:getx_app/views/feed/feed.controller.dart';
 import 'package:readmore/readmore.dart';
@@ -141,11 +143,10 @@ class FeedItem extends StatelessWidget {
                     Row(
                       children: [
                         if (isDetail)
-                          Obx(() => CircleAvatar(
-                                backgroundColor: AppColors.primaryColor,
-                                radius: 16.w,
-                                backgroundImage: NetworkImage(
-                                    "${controller.feed.value.user?.info?.avatar}"),
+                          Obx(() => AvatarImage(
+                                size: 16.w,
+                                imageUrl:
+                                    "${controller.feed.value.user?.info?.avatar}",
                               )),
                         if (isDetail)
                           const SizedBox(
@@ -155,7 +156,7 @@ class FeedItem extends StatelessWidget {
                               "${controller.feed.value.user?.info?.fullName}",
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodySmall!
+                                  .bodyMedium!
                                   .copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -222,11 +223,10 @@ class FeedItem extends StatelessWidget {
                               child: ClipRRect(
                                 borderRadius:
                                     BorderRadius.circular(AppSize.kRadius),
-                                child: Image.network(
-                                  image,
-                                  fit: BoxFit.cover,
+                                child: CustomNetworkImage(
+                                  imageUrl: image,
                                   height: 200.h,
-                                  width: 150.h,
+                                  width: 150.w,
                                 ),
                               ),
                             ),

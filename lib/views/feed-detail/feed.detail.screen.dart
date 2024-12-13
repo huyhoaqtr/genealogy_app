@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:getx_app/utils/widgets/progress_indicator.dart';
 import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 import 'package:getx_app/views/feed-detail/feed.detail.controller.dart';
 import 'package:getx_app/views/feed/view/feed.item.dart';
@@ -22,40 +23,44 @@ class FeedDetailScreen extends GetView<FeedDetailController> {
       body: SafeArea(
         child: SizedBox(
             width: Get.width,
-            height: Get.height,
             child: Stack(
               children: [
-                SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      Obx(() => controller.feed.value.sId != null
-                          ? FeedItem(
-                              isDetail: true,
-                              controller: FeedItemController(
-                                initialFeed: controller.feed.value,
-                              ),
-                            )
-                          : const SizedBox()),
-                      Obx(() {
-                        if (controller.feed.value.sId == null) {
-                          return const SizedBox();
-                        }
-                        return Column(
-                          children: [
-                            _buildCommentContentView(context),
-                            ...controller.comments.map((item) => CommentItem(
-                                  commentFeed: item,
-                                ))
-                          ],
-                        );
-                      }),
-                      SizedBox(
-                        height: 50.h,
-                      ),
-                    ],
-                  ),
-                ),
+                Positioned.fill(child: Obx(() {
+                  if (controller.feed.value.sId == null) {
+                    return const ProgressIndicatorComponent();
+                  }
+                  return SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        Obx(() => controller.feed.value.sId != null
+                            ? FeedItem(
+                                isDetail: true,
+                                controller: FeedItemController(
+                                  initialFeed: controller.feed.value,
+                                ),
+                              )
+                            : const SizedBox()),
+                        Obx(() {
+                          if (controller.feed.value.sId == null) {
+                            return const SizedBox();
+                          }
+                          return Column(
+                            children: [
+                              _buildCommentContentView(context),
+                              ...controller.comments.map((item) => CommentItem(
+                                    commentFeed: item,
+                                  ))
+                            ],
+                          );
+                        }),
+                        SizedBox(
+                          height: 50.h,
+                        ),
+                      ],
+                    ),
+                  );
+                })),
                 _buildCommentInputView(context),
               ],
             )),
@@ -101,10 +106,9 @@ class FeedDetailScreen extends GetView<FeedDetailController> {
       child: Container(
         color: AppColors.backgroundColor,
         padding: const EdgeInsets.only(
-          bottom: AppSize.kPadding / 2,
           left: AppSize.kPadding,
           right: AppSize.kPadding,
-          top: AppSize.kPadding / 2,
+          bottom: AppSize.kPadding / 2,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -172,6 +176,7 @@ class FeedDetailScreen extends GetView<FeedDetailController> {
                   const SizedBox(width: AppSize.kPadding / 2),
                   Expanded(
                     child: TextField(
+                      focusNode: controller.commentInputFocusNode.value,
                       controller: controller.commentInputController.value,
                       cursorColor: AppColors.primaryColor,
                       cursorHeight: 15.h,

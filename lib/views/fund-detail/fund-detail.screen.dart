@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
+import 'package:getx_app/utils/widgets/progress_indicator.dart';
 import 'package:getx_app/utils/widgets/text_button.common.dart';
 
 import '../../constants/app_colors.dart';
@@ -49,13 +50,15 @@ class FundDetailScreen extends GetView<FundDetailController> {
           onPressed: () => Get.back(),
         ),
       ),
-      body: SizedBox(
-        width: Get.width,
-        child: Stack(
-          children: [
-            _buildMainContentView(context),
-            _buildFooterButtonGroup(),
-          ],
+      body: SafeArea(
+        child: SizedBox(
+          width: Get.width,
+          child: Stack(
+            children: [
+              _buildMainContentView(context),
+              _buildFooterButtonGroup(),
+            ],
+          ),
         ),
       ),
     );
@@ -63,33 +66,38 @@ class FundDetailScreen extends GetView<FundDetailController> {
 
   Positioned _buildMainContentView(BuildContext context) {
     return Positioned.fill(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: AppSize.kPadding / 2),
-        physics: const BouncingScrollPhysics(),
-        child: SizedBox(
-          width: Get.width,
-          child: Obx(
-            () => controller.fund.value.sId != null
-                ? Wrap(
-                    spacing: AppSize.kPadding,
-                    direction: Axis.vertical,
-                    children: [
-                      _buildHeaderContentView(context),
-                      _buildFundDetailContentView(context),
-                      _buildTransactionListView(context),
-                      SizedBox(height: 50.h),
-                    ],
-                  )
-                : Container(),
+      child: Obx(() {
+        if (controller.fund.value.sId == null) {
+          return const ProgressIndicatorComponent();
+        }
+        return SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: AppSize.kPadding),
+          physics: const BouncingScrollPhysics(),
+          child: SizedBox(
+            width: Get.width - AppSize.kPadding * 2,
+            child: Obx(
+              () => controller.fund.value.sId != null
+                  ? Wrap(
+                      spacing: AppSize.kPadding,
+                      direction: Axis.vertical,
+                      children: [
+                        _buildHeaderContentView(context),
+                        _buildFundDetailContentView(context),
+                        _buildTransactionListView(context),
+                        SizedBox(height: 50.h),
+                      ],
+                    )
+                  : Container(),
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 
   Widget _buildHeaderContentView(BuildContext context) {
     return Container(
-      width: Get.width - AppSize.kPadding,
+      width: Get.width - AppSize.kPadding * 2,
       padding: const EdgeInsets.all(AppSize.kPadding),
       decoration: BoxDecoration(
         color: AppColors.textColor.withOpacity(0.05),
@@ -132,7 +140,7 @@ class FundDetailScreen extends GetView<FundDetailController> {
 
   Widget _buildFundDetailContentView(BuildContext context) {
     return Container(
-      width: Get.width - AppSize.kPadding,
+      width: Get.width - AppSize.kPadding * 2,
       padding: const EdgeInsets.all(AppSize.kPadding),
       decoration: BoxDecoration(
         color: AppColors.textColor.withOpacity(0.05),
@@ -204,7 +212,7 @@ class FundDetailScreen extends GetView<FundDetailController> {
 
   Widget _buildTransactionListView(BuildContext context) {
     return Container(
-      width: Get.width - AppSize.kPadding,
+      width: Get.width - AppSize.kPadding * 2,
       padding: const EdgeInsets.all(AppSize.kPadding / 2),
       decoration: BoxDecoration(
         color: AppColors.textColor.withOpacity(0.05),
@@ -228,7 +236,7 @@ class FundDetailScreen extends GetView<FundDetailController> {
                 )
               else
                 Container(
-                  width: Get.width - AppSize.kPadding * 2,
+                  width: Get.width - AppSize.kPadding * 3,
                   padding: const EdgeInsets.symmetric(
                     vertical: AppSize.kPadding * 2,
                   ),
@@ -253,9 +261,9 @@ class FundDetailScreen extends GetView<FundDetailController> {
 
   Positioned _buildFooterButtonGroup() {
     return Positioned(
-      bottom: AppSize.kPadding,
-      left: 16,
-      right: 16,
+      bottom: 0,
+      left: AppSize.kPadding,
+      right: AppSize.kPadding,
       child: Row(
         children: [
           Expanded(

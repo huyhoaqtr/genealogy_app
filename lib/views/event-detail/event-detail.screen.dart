@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:getx_app/constants/app_colors.dart';
-import 'package:getx_app/constants/app_size.dart';
-import 'package:getx_app/utils/string/string.dart';
+import '../../constants/app_colors.dart';
+import '../../constants/app_size.dart';
+import '../../utils/string/string.dart';
+import '../../utils/widgets/progress_indicator.dart';
 import '../../utils/lunar/lunar_solar_utils.dart';
 import '../../utils/widgets/icon_button.common.dart';
 import '../event/create_event.sheet.dart';
@@ -58,56 +59,61 @@ class EventDetailScreen extends GetView<EventDetailController> {
       ),
       body: SizedBox(
         width: Get.width,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: AppSize.kPadding),
-          child: Obx(() {
-            final DateTime startDate =
-                DateTime.parse(controller.event.value.startDate!);
-            final lunarDates = convertSolar2Lunar(
-                startDate.day, startDate.month, startDate.year, 7);
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "${controller.event.value.title}",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(fontWeight: FontWeight.w600),
-                ),
-                const SizedBox(height: AppSize.kPadding / 4),
-                Text(
-                  "Thời gian: ${controller.event.value.startTime}",
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const SizedBox(height: AppSize.kPadding / 4),
-                Text(
-                  "Ngày: ${formatDate(controller.event.value.startDate!)} (DL) - ${lunarDates[0]}/${lunarDates[1]}/${lunarDates[2]} (ÂL)",
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const SizedBox(height: AppSize.kPadding / 4),
-                Text(
-                  "Tạo bởi: ${controller.event.value.user?.info?.fullName}",
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const SizedBox(height: AppSize.kPadding / 4),
-                Text(
-                  "${controller.event.value.desc}",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                const SizedBox(height: AppSize.kPadding / 4),
-                Text(
-                  "Đã tạo vào ${formatRelativeOrAbsolute(controller.event.value.createdAt!)}",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall!
-                      .copyWith(color: AppColors.textColor.withOpacity(0.5)),
-                ),
-              ],
-            );
-          }),
-        ),
+        child: Obx(() {
+          if (controller.event.value.sId == null) {
+            return const ProgressIndicatorComponent();
+          }
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: AppSize.kPadding),
+            child: Obx(() {
+              final DateTime startDate =
+                  DateTime.parse(controller.event.value.startDate!);
+              final lunarDates = convertSolar2Lunar(
+                  startDate.day, startDate.month, startDate.year, 7);
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "${controller.event.value.title}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: AppSize.kPadding / 4),
+                  Text(
+                    "Thời gian: ${controller.event.value.startTime}",
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: AppSize.kPadding / 4),
+                  Text(
+                    "Ngày: ${formatDate(controller.event.value.startDate!)} (DL) - ${lunarDates[0]}/${lunarDates[1]}/${lunarDates[2]} (ÂL)",
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: AppSize.kPadding / 4),
+                  Text(
+                    "Tạo bởi: ${controller.event.value.user?.info?.fullName}",
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: AppSize.kPadding / 4),
+                  Text(
+                    "${controller.event.value.desc}",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const SizedBox(height: AppSize.kPadding / 4),
+                  Text(
+                    "Đã tạo vào ${formatRelativeOrAbsolute(controller.event.value.createdAt!)}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(color: AppColors.textColor.withOpacity(0.5)),
+                  ),
+                ],
+              );
+            }),
+          );
+        }),
       ),
     );
   }

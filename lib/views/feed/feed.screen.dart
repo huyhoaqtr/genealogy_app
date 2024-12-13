@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 import 'package:getx_app/views/feed/view/create_feed.sheet.dart';
 import 'package:getx_app/views/feed/view/feed.item.dart';
 
 import '../../constants/app_colors.dart';
 import '../../constants/app_size.dart';
+import '../../resources/models/user.model.dart';
 import '../../utils/widgets/icon_button.common.dart';
 import 'feed.controller.dart';
 
 class FeedScreen extends GetView<FeedController> {
-  const FeedScreen({super.key});
+  FeedScreen({super.key});
+
+  final DashboardController dashboardController = Get.find();
 
   void _showCreateNewPostBottomSheet(BuildContext context) {
     Get.lazyPut(() => CreateFormController());
@@ -36,21 +40,24 @@ class FeedScreen extends GetView<FeedController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: SingleChildScrollView(
-        controller: controller.scrollController,
-        physics: const BouncingScrollPhysics(),
-        child: SizedBox(
-          width: Get.width,
-          child: Obx(() => Column(
-                children: [
-                  _buildCreateNewPostView(context),
-                  ...controller.feeds.value.map((item) => FeedItem(
-                        isDetail: false,
-                        controller: FeedItemController(initialFeed: item),
-                      ))
-                ],
-              )),
-        ),
+      body: SizedBox(
+        width: Get.width,
+        child: Obx(() => ListView.builder(
+              controller: controller.scrollController,
+              physics: const BouncingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: controller.feeds.value.length + 1,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return _buildCreateNewPostView(context);
+                }
+                final item = controller.feeds.value[index - 1];
+                return FeedItem(
+                  isDetail: false,
+                  controller: FeedItemController(initialFeed: item),
+                );
+              },
+            )),
       ),
     );
   }
@@ -66,6 +73,7 @@ class FeedScreen extends GetView<FeedController> {
   }
 
   Widget _buildCreateNewPostView(BuildContext context) {
+    User? user = dashboardController.myInfo.value;
     return Container(
       width: Get.width,
       padding: const EdgeInsets.only(
@@ -86,9 +94,7 @@ class FeedScreen extends GetView<FeedController> {
           CircleAvatar(
             backgroundColor: AppColors.primaryColor,
             radius: 16.w,
-            backgroundImage: const NetworkImage(
-              "https://images.unsplash.com/photo-1499714608240-22fc6ad53fb2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
-            ),
+            backgroundImage: NetworkImage("${user.info?.avatar}"),
           ),
           const SizedBox(
             width: AppSize.kPadding / 2,
@@ -102,7 +108,7 @@ class FeedScreen extends GetView<FeedController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Tran Ngoc Phong",
+                    "${user.info?.fullName}",
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),

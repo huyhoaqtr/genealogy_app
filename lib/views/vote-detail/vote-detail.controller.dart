@@ -12,17 +12,24 @@ class VoteDetailController extends GetxController {
   RxString selectedVote = RxString('');
   RxString oldSelectedVote = RxString('');
   Rx<VoteSession> voteSession = Rx<VoteSession>(VoteSession());
-  final VoteController voteController = Get.find<VoteController>();
+
   final LoadingController loadingController = Get.find<LoadingController>();
   @override
   void onInit() {
     super.onInit();
-    voteSession.value = Get.arguments['voteSession'];
+    if (Get.arguments != null && Get.arguments['voteSession'] != null) {
+      voteSession.value = Get.arguments['voteSession'];
+    }
   }
 
   @override
   Future<void> onReady() async {
     super.onReady();
+    if (Get.arguments != null && Get.arguments['voteId'] != null) {
+      final response =
+          await VoteApi().getVoteSessionById(id: Get.arguments['voteId']);
+      voteSession.value = response.data!;
+    }
     myUser.value = await StorageManager.getUser();
     checkSelectedVote();
   }
@@ -58,11 +65,14 @@ class VoteDetailController extends GetxController {
       voteSession.value = response.data!;
       oldSelectedVote.value = selectedVote.value;
 
-      final index = voteController.voteSessions
-          .indexWhere((item) => item.sId == voteSession.value.sId);
-      if (index != -1) {
-        voteController.voteSessions[index] = response.data!;
-        voteController.voteSessions.refresh();
+      if (Get.isRegistered<VoteController>()) {
+        VoteController voteController = Get.find<VoteController>();
+        final index = voteController.voteSessions
+            .indexWhere((item) => item.sId == voteSession.value.sId);
+        if (index != -1) {
+          voteController.voteSessions[index] = response.data!;
+          voteController.voteSessions.refresh();
+        }
       }
     }
     loadingController.hide();

@@ -19,13 +19,30 @@ class NotificationItem extends StatelessWidget {
       case "EVENT":
         Get.toNamed(AppRoutes.eventDetail,
             arguments: {"eventId": notification.screenId});
-
+        break;
+      case "VOTE":
+        Get.toNamed(AppRoutes.voteDetail,
+            arguments: {"voteId": notification.screenId});
         break;
       case "FEED":
         Get.toNamed(AppRoutes.feedDetail,
             arguments: {"feedId": notification.screenId});
         await controller.isReadNotification(notification);
         break;
+      case "FUND":
+        Get.toNamed(AppRoutes.fundDetail,
+            arguments: {"fundId": notification.screenId});
+        await controller.isReadNotification(notification);
+        break;
+      case "DEFAULT":
+        Get.toNamed(AppRoutes.feedDetail,
+            arguments: {"feedId": notification.screenId});
+        await controller.isReadNotification(notification);
+        break;
+      default:
+        Get.toNamed(AppRoutes.feedDetail,
+            arguments: {"feedId": notification.screenId});
+        await controller.isReadNotification(notification);
     }
   }
 

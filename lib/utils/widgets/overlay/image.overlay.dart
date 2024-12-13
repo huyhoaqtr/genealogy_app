@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getx_app/utils/widgets/common/network_image.dart';
 
 class ImageOverlay extends StatelessWidget {
   final Rx<Offset> position;
@@ -60,10 +61,7 @@ class ImageOverlay extends StatelessWidget {
                               (1 - (min(difference.abs() / 2, 50) / 100)),
                           height: (Get.height * 0.75) *
                               (1 - (min(difference.abs() / 2, 50) / 100)),
-                          child: Image.network(
-                            url,
-                            fit: BoxFit.contain,
-                          ),
+                          child: CustomNetworkImage(imageUrl: url),
                         ),
                       ),
                     ],

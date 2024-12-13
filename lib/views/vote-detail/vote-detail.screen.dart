@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
+import 'package:getx_app/utils/widgets/progress_indicator.dart';
 import 'package:getx_app/utils/widgets/text_button.common.dart';
 import 'package:getx_app/views/vote-detail/view/vote_user.sheet.dart';
 
@@ -53,8 +54,11 @@ class VoteDetailScreen extends GetView<VoteDetailController> {
   }
 
   Positioned _buildMainContentView(BuildContext context) {
-    return Positioned.fill(
-      child: SingleChildScrollView(
+    return Positioned.fill(child: Obx(() {
+      if (controller.voteSession.value.sId == null) {
+        return const ProgressIndicatorComponent();
+      }
+      return SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: AppSize.kPadding),
         physics: const BouncingScrollPhysics(),
         child: SizedBox(
@@ -134,8 +138,8 @@ class VoteDetailScreen extends GetView<VoteDetailController> {
             ],
           ),
         ),
-      ),
-    );
+      );
+    }));
   }
 
   Positioned _buildFooterButtonGroup(BuildContext context) {

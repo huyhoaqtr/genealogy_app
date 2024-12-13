@@ -16,6 +16,7 @@ class FeedDetailController extends GetxController {
   Rx<CommentFeed?> parentComment = Rx<CommentFeed?>(null);
   Rx<TextEditingController> commentInputController =
       TextEditingController().obs;
+  Rx<FocusNode> commentInputFocusNode = FocusNode().obs;
   final ScrollController scrollController = ScrollController();
   final LoadingController loadingController = Get.find();
 
@@ -106,6 +107,8 @@ class FeedDetailController extends GetxController {
 
   void onReplyTap(CommentFeed comment) {
     parentComment.value = comment;
+    //focus comment input
+    commentInputFocusNode.value.requestFocus();
   }
 
   void onRemoveReplyTap() {
