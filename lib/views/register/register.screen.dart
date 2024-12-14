@@ -118,17 +118,44 @@ class RegisterScreen extends GetView<RegisterController> {
                                   : null,
                         ))),
                     SizedBox(height: 16.h),
-                    CustomButton(
-                      text: 'register'.tr,
-                      onPressed: controller.handleRegister,
+                    Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius:
+                              BorderRadius.circular(AppSize.kRadius * 2),
+                          child: Container(
+                            color: AppColors.backgroundColor,
+                            child: OutlinedButton(
+                              onPressed: () => Get.to(const QRCodeScanner()),
+                              style: OutlinedButton.styleFrom(
+                                side: BorderSide(
+                                    width: 1, color: AppColors.primaryColor),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      AppSize.kRadius * 2),
+                                ),
+                                elevation: 0,
+                                shadowColor: Colors.transparent,
+                                minimumSize: const Size(48, 48),
+                                padding: const EdgeInsets.all(0),
+                              ),
+                              child: SvgPicture.asset(
+                                'assets/icons/scanner.svg',
+                                width: 24.w,
+                                height: 24.w,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: AppSize.kPadding / 2),
+                        Expanded(
+                          child: CustomButton(
+                            text: 'register'.tr,
+                            onPressed: controller.handleRegister,
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 16.h),
-                    if (controller.role == UserRole.MEMBER)
-                      CustomButton(
-                        text: 'Quét mã',
-                        isOutlined: true,
-                        onPressed: () => Get.to(() => const QRCodeScanner()),
-                      ),
                   ],
                 ),
                 const SizedBox(height: AppSize.kPadding * 2)

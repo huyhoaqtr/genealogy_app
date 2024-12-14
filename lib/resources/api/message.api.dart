@@ -6,6 +6,7 @@ import 'package:getx_app/resources/models/user.model.dart';
 import 'package:getx_app/views/message/model/conversation.model.dart';
 import 'package:getx_app/views/message_detail/model/message.model.dart';
 import 'package:http_parser/http_parser.dart';
+import '../../utils/widgets/dialog/dialog.helper.dart';
 import '../dio/dio_client.dart';
 
 class MessageApi {
@@ -28,6 +29,10 @@ class MessageApi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return PagingResponse<Conversation>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],
@@ -65,6 +70,10 @@ class MessageApi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return PagingResponse<Message>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],
@@ -125,6 +134,10 @@ class MessageApi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse<Message>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],
@@ -154,6 +167,10 @@ class MessageApi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return PagingResponse<User>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],

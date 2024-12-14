@@ -4,24 +4,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
+import 'package:getx_app/utils/widgets/common/network_image.dart';
 import 'package:getx_app/utils/widgets/icon_button.common.dart';
 import 'package:getx_app/utils/widgets/loading/loading.controller.dart';
 import 'package:getx_app/utils/widgets/text_button.common.dart';
+import 'package:getx_app/views/event/create_event.sheet.dart';
 import 'package:getx_app/views/feed/feed.controller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 import '../../../constants/app_colors.dart';
 import '../../../resources/api/feed.api.dart';
+import '../../../resources/models/feed.model.dart';
+import '../../../utils/widgets/dialog/dialog.helper.dart';
 import '../../../utils/widgets/media/media_picker.dart';
 
 class CreateFormController extends GetxController {
   final Rx<TextEditingController> contentController =
       TextEditingController().obs;
   RxList<File> tempImages = RxList<File>([]);
+  RxList<String> tempImageUrls = RxList<String>([]);
+  RxList<String> removeImageUrls = RxList<String>([]);
   final ImagePicker _picker = ImagePicker();
 
   final LoadingController loadingController = Get.find();
   final FeedController feedController = Get.find();
+
+  final SheetMode sheetMode;
+  final Feed? feed;
+
+  CreateFormController({
+    required this.sheetMode,
+    this.feed,
+  });
+  @override
+  void onInit() {
+    super.onInit();
+    if (sheetMode == SheetMode.EDIT) {
+      contentController.value.text = feed!.content ?? "";
+      tempImageUrls.addAll(feed!.images ?? []);
+    }
+  }
 
   Future<void> openCamera() async {
     final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
@@ -35,15 +57,59 @@ class CreateFormController extends GetxController {
   Future<void> createNewFeed() async {
     FocusManager.instance.primaryFocus?.unfocus();
     loadingController.show();
-    final response = await FeedApi().createNewFeed(
-      content: contentController.value.text,
-      files: tempImages,
-    );
-    if (response.statusCode == 201) {
-      Get.back();
-      feedController.feeds.insert(0, response.data!);
+    try {
+      final response = await FeedApi().createNewFeed(
+        content: contentController.value.text,
+        files: tempImages,
+      );
+      if (response.statusCode == 201) {
+        Get.back();
+        feedController.feeds.insert(0, response.data!);
+      }
+    } catch (e) {
+      print(e);
+      DialogHelper.showToast(
+          "Có lỗi xảy ra, vui lòng thử lại sau", ToastType.warning);
+    } finally {
+      loadingController.hide();
     }
-    loadingController.hide();
+  }
+
+  Future<void> updateFeed() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    loadingController.show();
+    try {
+      final response = await FeedApi().updateFeed(
+        feedId: feed!.sId!,
+        content: contentController.value.text,
+        files: tempImages,
+        deleteImages: removeImageUrls,
+      );
+
+      if (response.statusCode == 200) {
+        Get.back();
+
+        int index = feedController.feeds
+            .indexWhere((element) => element.sId == feed!.sId);
+
+        if (index != -1) {
+          feedController.feeds[index] = response.data!;
+        }
+
+        feedController.feeds.refresh();
+      }
+    } catch (e) {
+      print(e);
+      DialogHelper.showToast(
+          "Có lỗi xảy ra, vui lòng thử lại sau", ToastType.warning);
+    } finally {
+      loadingController.hide();
+    }
+  }
+
+  void removeOldImage(String image) {
+    tempImageUrls.remove(image);
+    removeImageUrls.add(image);
   }
 }
 
@@ -54,7 +120,8 @@ class CreateFeedForm extends GetView<CreateFormController> {
   void _showMediaPickerBottomSheet() {
     Get.lazyPut(() => MediaPickerController(
           requestType: RequestType.image,
-          maxSelectedCount: maxImages - controller.tempImages.length,
+          maxSelectedCount: maxImages -
+              (controller.tempImages.length + controller.tempImageUrls.length),
         ));
     showModalBottomSheet(
       context: Get.context!,
@@ -130,11 +197,14 @@ class CreateFeedForm extends GetView<CreateFormController> {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         physics: const BouncingScrollPhysics(),
-                        child: Wrap(
-                            spacing: AppSize.kPadding / 2,
-                            children: controller.tempImages
-                                .map((e) => _buildTempImage(e))
-                                .toList()),
+                        child: Wrap(spacing: AppSize.kPadding / 2, children: [
+                          ...controller.tempImages.map(
+                              (e) => _buildTempImage(e)) // Xử lý tempImages
+                          ,
+                          ...controller.tempImageUrls.map(
+                              (e) => _buildTempImage(e)) // Xử lý tempImagePath
+                          ,
+                        ]),
                       ),
                     )),
                 _buildPickerGroup(),
@@ -152,7 +222,9 @@ class CreateFeedForm extends GetView<CreateFormController> {
   }
 
   Widget _buildPickerGroup() {
-    return Obx(() => controller.tempImages.length < maxImages
+    return Obx(() => (controller.tempImages.length +
+                controller.tempImageUrls.length) <
+            maxImages
         ? Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSize.kPadding),
             child: Row(children: [
@@ -225,8 +297,12 @@ class CreateFeedForm extends GetView<CreateFormController> {
               width:
                   (Get.width - AppSize.kPadding * 2) / 2 - AppSize.kPadding / 2,
               child: CustomButton(
-                text: "Đăng bài",
-                onPressed: () => controller.createNewFeed(),
+                text: controller.sheetMode == SheetMode.ADD
+                    ? "Đăng bài"
+                    : "Cập nhật",
+                onPressed: () => controller.sheetMode == SheetMode.ADD
+                    ? controller.createNewFeed()
+                    : controller.updateFeed(),
               ),
             ),
           ],
@@ -235,7 +311,7 @@ class CreateFeedForm extends GetView<CreateFormController> {
     );
   }
 
-  Widget _buildTempImage(File e) {
+  Widget _buildTempImage(dynamic image) {
     return Container(
       width: 100.w,
       height: 150.w,
@@ -250,7 +326,7 @@ class CreateFeedForm extends GetView<CreateFormController> {
         borderRadius: BorderRadius.circular(AppSize.kRadius),
         child: Stack(
           children: [
-            Positioned.fill(child: Image.file(e, fit: BoxFit.cover)),
+            Positioned.fill(child: imageWidget(image)),
             Positioned(
               top: 0,
               right: 0,
@@ -258,12 +334,24 @@ class CreateFeedForm extends GetView<CreateFormController> {
                 iconPath: 'assets/icons/cross.svg',
                 iconSize: 20,
                 iconPadding: 2,
-                onPressed: () => controller.tempImages.remove(e),
+                onPressed: () => image is File
+                    ? controller.tempImages.remove(image)
+                    : controller.removeOldImage(image),
               ),
             )
           ],
         ),
       ),
     );
+  }
+
+  Widget imageWidget(dynamic image) {
+    if (image is File) {
+      return Positioned.fill(child: Image.file(image, fit: BoxFit.cover));
+    } else if (image is String) {
+      return Positioned.fill(child: CustomNetworkImage(imageUrl: image));
+    } else {
+      return Positioned.fill(child: Container(color: Colors.grey));
+    }
   }
 }

@@ -1,5 +1,9 @@
 import 'package:get/route_manager.dart';
-
+import 'package:getx_app/views/change-password/change-password.binding.dart';
+import 'package:getx_app/views/change-password/change-password.screen.dart';
+import '../views/my-post/my-post.binding.dart';
+import '../views/my-post/my-post.screen.dart';
+import '../views/user-info/user-info.binding.dart';
 import '../views/genealogy-setting/genealogy-setting.binding.dart';
 import '../views/genealogy-setting/genealogy-setting.screen.dart';
 import '../views/genealogy/genealogy.binding.dart';
@@ -28,6 +32,7 @@ import '../views/pedigree/pedigree.screen.dart';
 import '../views/profile/profile.binding.dart';
 import '../views/tree_member/tree-member.binding.dart';
 import '../views/tree_member/tree-member.screen.dart';
+import '../views/user-info/user-info.screen.dart';
 import '../views/vote/vote.binding.dart';
 import '../views/vote/vote.screen.dart';
 import '../views/chat-bot/chatbot.binding.dart';
@@ -98,7 +103,7 @@ class AppPages {
     GetPage(
       binding: PedigreeBinding(),
       name: AppRoutes.pedigree,
-      page: () => const PedigreeScreen(),
+      page: () => PedigreeScreen(),
     ),
     GetPage(
       binding: FeedBinding(),
@@ -164,6 +169,21 @@ class AppPages {
       binding: GenealogySettingBinding(),
       name: AppRoutes.genealogySetting,
       page: () => const GenealogySettingScreen(),
+    ),
+    GetPage(
+      binding: UserInfoBinding(),
+      name: AppRoutes.userInfo,
+      page: () => const UserInfoScreen(),
+    ),
+    GetPage(
+      binding: ChangePasswordBinding(),
+      name: AppRoutes.changePassword,
+      page: () => const ChangePasswordScreen(),
+    ),
+    GetPage(
+      binding: MyPostBinding(),
+      name: AppRoutes.myPost,
+      page: () => const MyPostScreen(),
     ),
   ];
 }

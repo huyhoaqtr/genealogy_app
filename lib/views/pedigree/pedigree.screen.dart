@@ -5,6 +5,7 @@ import 'package:getx_app/constants/app_colors.dart';
 import 'package:getx_app/constants/app_size.dart';
 import 'package:getx_app/resources/models/tree_member.model.dart';
 import 'package:getx_app/utils/widgets/common/network_image.dart';
+import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 
 import '../../services/ads/ad_manager.dart';
 import '../../utils/string/string.dart';
@@ -16,7 +17,9 @@ import '../family_tree/view/add_user.controller.dart';
 import 'pedigree.controller.dart';
 
 class PedigreeScreen extends GetView<PedigreeController> {
-  const PedigreeScreen({super.key});
+  PedigreeScreen({super.key});
+
+  final DashboardController dashboardController = Get.find();
 
   void _showAddUserBottomSheet(AddUserMode mode, TreeMember selectedMember) {
     final AddUserController addUserController = Get.put(AddUserController(
@@ -63,6 +66,29 @@ class PedigreeScreen extends GetView<PedigreeController> {
         },
       ),
     ]);
+  }
+
+  void _showEditUserBottomSheet(AddUserMode mode, TreeMember selectedBlock) {
+    Get.lazyPut(() => AddUserController(
+          mode: mode,
+          sheetMode: SheetMode.EDIT,
+          selectedTreeMember: selectedBlock,
+        ));
+    showModalBottomSheet(
+      context: Get.context!,
+      isScrollControlled: true,
+      builder: (context) => AddUserBottomSheetUI(),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+      ),
+    ).then((value) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        Get.delete<AddUserController>();
+      });
+    });
   }
 
   @override
@@ -142,124 +168,131 @@ class PedigreeScreen extends GetView<PedigreeController> {
   }
 
   Widget _buildContentItem(BuildContext context, String role, TreeMember data) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: role == "PARENT" ? AppColors.primaryColor : Colors.white,
-        borderRadius: BorderRadius.circular(AppSize.kRadius),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 40.w,
-            width: 40.w,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(AppSize.kRadius),
-              child: CustomNetworkImage(imageUrl: "${data.avatar}"),
+    return GestureDetector(
+      onTap: () => _showEditUserBottomSheet(AddUserMode.CHILD, data),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: role == "PARENT" ? AppColors.primaryColor : Colors.white,
+          borderRadius: BorderRadius.circular(AppSize.kRadius),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 40.w,
+              width: 40.w,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(AppSize.kRadius),
+                child: CustomNetworkImage(imageUrl: "${data.avatar}"),
+              ),
             ),
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${data.fullName}",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  color: role == "PARENT"
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                            textAlign: TextAlign.left,
-                          ),
-                          if (data.title != null)
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             Text(
-                              "${data.title}",
+                              "${data.fullName}",
                               style: Theme.of(context)
                                   .textTheme
-                                  .labelSmall!
+                                  .bodyMedium!
                                   .copyWith(
                                     color: role == "PARENT"
                                         ? Colors.white
                                         : Colors.black,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w700,
                                   ),
                               textAlign: TextAlign.left,
                             ),
-                        ],
+                            if (data.title != null)
+                              Text(
+                                "${data.title}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelSmall!
+                                    .copyWith(
+                                      color: role == "PARENT"
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                textAlign: TextAlign.left,
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
-                    if (role == "PARENT")
-                      IconButtonComponent(
-                        onPressed: () {
-                          AdManager.showInterstitialAd(
-                            onAdClosed: () =>
-                                _showAddMemberDialog(context, data),
-                          );
-                        },
-                        iconPadding: 5,
-                        iconPath: "assets/icons/user-add.svg",
-                        iconSize: 24.w,
-                      )
-                  ],
-                ),
-                SizedBox(height: 1.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "GT: ${genderOptions.where(
-                            (item) => item['value'] == data.gender,
-                          ).first['name']}",
-                      style: Theme.of(context).textTheme.labelSmall,
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      "Đời: ${data.level}",
-                      style: Theme.of(context).textTheme.labelSmall,
-                      textAlign: TextAlign.center,
-                    ),
-                    if (role == "PARENT")
+                      if (role == "PARENT" &&
+                          (dashboardController.myInfo.value.role == "ADMIN" ||
+                              role == "PARENT" &&
+                                  dashboardController.myInfo.value.role ==
+                                      "LEADER"))
+                        IconButtonComponent(
+                          onPressed: () {
+                            AdManager.showInterstitialAd(
+                              onAdClosed: () =>
+                                  _showAddMemberDialog(context, data),
+                            );
+                          },
+                          iconPadding: 5,
+                          iconPath: "assets/icons/user-add.svg",
+                          iconSize: 24.w,
+                        )
+                    ],
+                  ),
+                  SizedBox(height: 1.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
                       Text(
-                        "Vợ: ${data.couple?.length ?? 0}",
+                        "GT: ${genderOptions.where(
+                              (item) => item['value'] == data.gender,
+                            ).first['name']}",
                         style: Theme.of(context).textTheme.labelSmall,
                         textAlign: TextAlign.center,
                       ),
-                    Text(
-                      "Tuổi: ${data.dateOfBirth != null ? calculateAge(
-                          data.dateOfBirth!,
-                          deathDateString: data.dateOfDeath,
-                        ) : "?"}",
-                      style: Theme.of(context).textTheme.labelSmall,
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      "Con: ${data.children?.length ?? 0}",
-                      style: Theme.of(context).textTheme.labelSmall,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                )
-              ],
-            ),
-          )
-        ],
+                      Text(
+                        "Đời: ${data.level}",
+                        style: Theme.of(context).textTheme.labelSmall,
+                        textAlign: TextAlign.center,
+                      ),
+                      if (role == "PARENT")
+                        Text(
+                          "Vợ: ${data.couple?.length ?? 0}",
+                          style: Theme.of(context).textTheme.labelSmall,
+                          textAlign: TextAlign.center,
+                        ),
+                      Text(
+                        "Tuổi: ${data.dateOfBirth != null ? calculateAge(
+                            data.dateOfBirth!,
+                            deathDateString: data.dateOfDeath,
+                          ) : "?"}",
+                        style: Theme.of(context).textTheme.labelSmall,
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        "Con: ${data.children?.length ?? 0}",
+                        style: Theme.of(context).textTheme.labelSmall,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

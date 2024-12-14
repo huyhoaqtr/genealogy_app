@@ -1,35 +1,38 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:getx_app/resources/models/api_response.dart';
 
-import '../models/gemini.dart';
+import '../../utils/widgets/dialog/dialog.helper.dart';
+import '../dio/dio_client.dart';
 
 class GeminiApi {
-  Future<GeminiModel> getGeminiData({
+  Future<ApiResponse<String>> getGeminiData({
     required String prompt,
   }) async {
     try {
-      final response = await Dio().post(
-        dotenv.env['GEMINI_API']!,
-        queryParameters: {
-          'key': dotenv.env['GEMINI_API_KEY']!,
-        },
+      final response = await DioClient().post(
+        '/chatbot/query',
         data: {
-          "contents": [
-            {
-              "parts": [
-                {
-                  "text":
-                      "Bạn là một trợ lý thông minh. Hãy trả lời chính xác và rõ ràng bằng tiếng Việt - ${prompt}"
-                }
-              ]
-            }
-          ]
+          'prompt': prompt,
         },
       );
 
-      return GeminiModel.fromJson(response.data);
+      return ApiResponse<String>(
+        statusCode: response.statusCode,
+        message: response.data['message'],
+        data: response.data['data'],
+      );
     } catch (e) {
-      print("Error: $e");
+      if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
+        return ApiResponse<String>(
+          statusCode: e.response!.statusCode,
+          message: e.response!.data['message'] ?? "Đã có lỗi xảy ra",
+          data: e.response!.data['data'] ?? "Đã có lỗi xảy ra",
+        );
+      }
       rethrow;
     }
   }

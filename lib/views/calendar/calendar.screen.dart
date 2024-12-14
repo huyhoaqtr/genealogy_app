@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:getx_app/utils/lunar/holiday.dart';
 import 'package:intl/intl.dart';
 
 import '../../constants/app_size.dart';
 import '../../resources/models/weather.dart';
+import '../../utils/lunar/date_utils.dart';
 import '../../utils/lunar/lunar_day_tasks.dart';
 import '../../utils/string/string.dart';
 
@@ -27,6 +29,7 @@ class CalendarScreen extends GetView<CalendarController> {
         Expanded(
           child: RefreshIndicator(
             onRefresh: () async {
+              controller.selectedDate.value = DateTime.now();
               await controller.loadWeatherData();
             },
             child: SingleChildScrollView(
@@ -171,67 +174,78 @@ class CalendarScreen extends GetView<CalendarController> {
         final dayCanChi = getCanDay(newJdn);
         final hourCanChi = getCurrentCanChiHour(newJdn, DateTime.now());
         final monthCanChi = getCanChiMonth(lunarDates[1], lunarDates[2]);
-
-        return Row(children: [
-          const Spacer(),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Giờ",
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Colors.grey,
-                    ),
+        final String? holidayName =
+            getHoliday("${lunarDates[0]}/${lunarDates[1]}");
+        return Column(
+          children: [
+            if (holidayName != null)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(holidayName,
+                    style: Theme.of(context).textTheme.bodyMedium),
               ),
-              Text(
-                hourCanChi,
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      fontFamily: "davida",
-                      color: AppColors.primaryColor,
-                    ),
+            Row(children: [
+              const Spacer(),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Giờ",
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Colors.grey,
+                        ),
+                  ),
+                  Text(
+                    hourCanChi,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontFamily: "davida",
+                          color: AppColors.primaryColor,
+                        ),
+                  ),
+                ],
               ),
-            ],
-          ),
-          const Spacer(),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Ngày",
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Colors.grey,
-                    ),
+              const Spacer(),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Ngày",
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Colors.grey,
+                        ),
+                  ),
+                  Text(
+                    dayCanChi,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontFamily: "davida",
+                          color: AppColors.primaryColor,
+                        ),
+                  ),
+                ],
               ),
-              Text(
-                dayCanChi,
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      fontFamily: "davida",
-                      color: AppColors.primaryColor,
-                    ),
+              const Spacer(),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Tháng",
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Colors.grey,
+                        ),
+                  ),
+                  Text(
+                    monthCanChi,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontFamily: "davida",
+                          color: AppColors.primaryColor,
+                        ),
+                  ),
+                ],
               ),
-            ],
-          ),
-          const Spacer(),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Tháng",
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Colors.grey,
-                    ),
-              ),
-              Text(
-                monthCanChi,
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      fontFamily: "davida",
-                      color: AppColors.primaryColor,
-                    ),
-              ),
-            ],
-          ),
-          const Spacer()
-        ]);
+              const Spacer()
+            ]),
+          ],
+        );
       }),
     );
   }
@@ -257,7 +271,7 @@ class CalendarScreen extends GetView<CalendarController> {
             Row(
               children: [
                 Text(
-                  "Thời tiết",
+                  "Thời tiết hôm nay",
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 const Spacer(),
@@ -391,11 +405,11 @@ class CalendarScreen extends GetView<CalendarController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                getTietKhi(jdn(
-                  controller.selectedDate.value.day,
-                  controller.selectedDate.value.month,
+                getSolarTerm(
                   controller.selectedDate.value.year,
-                )),
+                  controller.selectedDate.value.month,
+                  controller.selectedDate.value.day,
+                ),
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       fontSize: 14.sp,
                     ),

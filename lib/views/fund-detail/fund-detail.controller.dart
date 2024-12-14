@@ -1,10 +1,13 @@
 import 'package:get/get.dart';
+import 'package:getx_app/utils/widgets/loading/loading.controller.dart';
 
 import '../../resources/api/fund.api.dart';
 import '../../resources/models/fund.model.dart';
+import '../../utils/widgets/dialog/dialog.helper.dart';
 
 class FundDetailController extends GetxController {
   Rx<Fund> fund = Rx<Fund>(Fund());
+  final LoadingController loadingController = Get.find();
 
   @override
   Future<void> onInit() async {
@@ -28,14 +31,25 @@ class FundDetailController extends GetxController {
     required String desc,
     required String amount,
   }) async {
-    final response = await FundApi().createTransaction(
-      fundId: fund.value.sId!,
-      type: type,
-      desc: desc,
-      amount: amount,
-    );
-    if (response.statusCode == 200) {
-      await getFundDetail(fund.value.sId!);
+    loadingController.show();
+    try {
+      final response = await FundApi().createTransaction(
+        fundId: fund.value.sId!,
+        type: type,
+        desc: desc,
+        amount: amount,
+      );
+      if (response.statusCode == 200) {
+        await getFundDetail(fund.value.sId!);
+      }
+    } catch (e) {
+      print("Error: $e");
+      DialogHelper.showToast(
+        "Có lỗi xảy ra, vui lòng thử lại sau",
+        ToastType.warning,
+      );
+    } finally {
+      loadingController.hide();
     }
   }
 }

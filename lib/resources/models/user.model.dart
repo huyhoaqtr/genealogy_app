@@ -57,6 +57,9 @@ class Info {
   List<String>? couple;
   String? createdAt;
   String? updatedAt;
+  String? gender;
+  String? dateOfBirth;
+  String? email;
   int? iV;
 
   Info(
@@ -67,6 +70,9 @@ class Info {
       this.couple,
       this.createdAt,
       this.updatedAt,
+      this.gender,
+      this.dateOfBirth,
+      this.email,
       this.iV});
 
   Info.fromJson(Map<String, dynamic> json) {
@@ -82,6 +88,9 @@ class Info {
     }
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    gender = json['gender'];
+    dateOfBirth = json['dateOfBirth'];
+    email = json['email'];
     iV = json['__v'];
   }
 
@@ -94,6 +103,9 @@ class Info {
     data['couple'] = couple;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
+    data['gender'] = gender;
+    data['dateOfBirth'] = dateOfBirth;
+    data['email'] = email;
     data['__v'] = iV;
     return data;
   }

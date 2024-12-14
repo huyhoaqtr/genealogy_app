@@ -3,6 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/resources/api/weather.api.dart';
 import 'package:getx_app/resources/models/weather.dart';
+import 'package:getx_app/utils/widgets/dialog/dialog.helper.dart';
 
 import '../../utils/geolocator/geolocator.dart';
 
@@ -18,15 +19,21 @@ class CalendarController extends GetxController {
   }
 
   Future<void> loadWeatherData() async {
-    Position position = await determinePosition();
+    try {
+      Position position = await determinePosition();
 
-    final response = await WeatherApi().getWeatherData(
-      lat: position.latitude.toString(),
-      lon: position.longitude.toString(),
-    );
-    location.value =
-        await getLocationData(position.latitude, position.longitude);
-    weather.value = response;
+      final response = await WeatherApi().getWeatherData(
+        lat: position.latitude.toString(),
+        lon: position.longitude.toString(),
+      );
+      location.value =
+          await getLocationData(position.latitude, position.longitude);
+      weather.value = response;
+    } catch (e) {
+      print("Error: $e");
+      DialogHelper.showToast(
+          "Có lỗi xây ra, vui lòng thử lại sau", ToastType.warning);
+    }
   }
 
   String getDayOfWeek(DateTime dateTime) {

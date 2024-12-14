@@ -96,33 +96,6 @@ const ICON = [
   'assets/images/congiap-12.png',
 ];
 
-const TIETKHI = [
-  'Xuân phân',
-  'Thanh minh',
-  'Cốc vũ',
-  'Lập hạ',
-  'Tiểu mãn',
-  'Mang chủng',
-  'Hạ chí',
-  'Tiểu thử',
-  'Đại thử',
-  'Lập thu',
-  'Xử thử',
-  'Bạch lộ',
-  'Thu phân',
-  'Hàn lộ',
-  'Sương giáng',
-  'Lập đông',
-  'Tiểu tuyết',
-  'Đại tuyết',
-  'Đông chí',
-  'Tiểu hàn',
-  'Đại hàn',
-  'Lập xuân',
-  'Vũ thủy',
-  'Kinh trập'
-];
-
 const GIO_HD = [
   '110100101100',
   '001101001011',
@@ -234,8 +207,7 @@ NewMoon(k) {
  */
 SunLongitude(jdn) {
   var T, T2, dr, M, L0, DL, L;
-  T = (jdn - 2451545.0) /
-      36525; // Time in Julian centuries from 2000-01-01 12:00:00 GMT
+  T = (jdn - 2451545.0) / 36525;
   T2 = T * T;
   dr = PI / 180; // degree to radian
   M = 357.52910 +
@@ -260,7 +232,7 @@ SunLongitude(jdn) {
  * After that, return 1, 2, 3 ... 
  */
 getSunLongitude(dayNumber, timeZone) {
-  return INT(SunLongitude(dayNumber - 0.5 - timeZone / 24) / PI * 12);
+  return INT(SunLongitude(dayNumber - 0.5 - timeZone / 24) / PI * 6);
 }
 
 /* Compute the day of the k-th new moon in the given time zone.
@@ -382,7 +354,7 @@ convertLunar2Solar(lunarDay, lunarMonth, lunarYear, lunarLeap, timeZone) {
 getCanChiYear(int year) {
   var can = canList[year % 10];
   var chi = chiList[year % 12];
-  return '${can} ${chi}';
+  return '$can $chi';
 }
 
 getCanChiMonth(int month, int year) {
@@ -405,7 +377,7 @@ getCanChiMonth(int month, int year) {
   if (can == "Mậu" || can == "Quý") {
     indexCan = 4;
   }
-  return '${canList[(indexCan + month - 1) % 10]} ${chi}';
+  return '${canList[(indexCan + month - 1) % 10]} $chi';
 }
 
 // getDayName(lunarDate) {
@@ -465,16 +437,12 @@ List<Map<String, String>> getGioHoangDao(int jd) {
       ret.add({
         'key': key,
         'icon': ICON[i],
-        'value': '${startHour}-${endHour}h'
+        'value': '$startHour-${endHour}h'
       }); // Thêm vào danh sách
     }
   }
 
   return ret; // Trả về kết quả
-}
-
-getTietKhi(jd) {
-  return TIETKHI[getSunLongitude(jd + 1, 7.0)];
 }
 
 getBeginHour(jdn) {

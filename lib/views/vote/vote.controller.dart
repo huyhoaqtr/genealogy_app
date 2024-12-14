@@ -4,6 +4,7 @@ import 'package:getx_app/resources/models/vote.model.dart';
 import '../../resources/api/vote.api.dart';
 
 class VoteController extends GetxController {
+  RxBool isLoading = false.obs;
   RxList<VoteSession> voteSessions = RxList<VoteSession>([]);
 
   @override
@@ -13,10 +14,12 @@ class VoteController extends GetxController {
   }
 
   Future<void> getAllVoteSession() async {
+    isLoading.value = true;
     var response = await VoteApi().getAllVoteSession();
     if (response.statusCode == 201) {
       voteSessions.value = response.data!;
     }
+    isLoading.value = false;
   }
 
   List<Options> filterOptions(List<Options> options) {

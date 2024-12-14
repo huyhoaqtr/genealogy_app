@@ -22,7 +22,6 @@ import 'utils/theme/theme.dart';
 import 'utils/widgets/loading/loading.common.dart';
 import 'utils/widgets/loading/loading.controller.dart';
 import 'views/splash/splash.binding.dart';
-import 'views/splash/splash.screen.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -80,7 +79,6 @@ class _MyAppState extends State<MyApp> {
                 .listLanguages[HiveManager.shared.getCurrentAppLanguage()],
             fallbackLocale: const Locale('vi', 'VN'),
             translations: AppTranslations(),
-            home: const SplashScreen(),
             theme: buildThemeData(),
             initialBinding: SplashBinding(),
             builder: (context, child) {

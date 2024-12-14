@@ -56,15 +56,12 @@ class CreateTransactionController extends GetxController {
         "Bạn có muốn tạo giao dịch ${transactionType == TransactionType.DEPOSIT ? "NẠP QUỸ" : "CHI QUỸ"} với số tiền là ${formatCurrency(double.tryParse(amountController.value.text) ?? 0)} ?",
         onConfirm: () async {
           FocusManager.instance.primaryFocus?.unfocus();
-          loadingController.show();
           await fundDetailController.createTransaction(
             type: transactionType.name,
             desc: contentController.value.text,
             amount: amountController.value.text,
           );
           Get.back();
-
-          loadingController.hide();
         },
       );
     }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/app_colors.dart';
 import '../../resources/models/vote.model.dart';
@@ -324,5 +325,14 @@ Color getToastColor(ToastType type) {
       return AppColors.warningColor;
     case ToastType.info:
       return AppColors.infoColor;
+  }
+}
+
+Future<void> openUrl(String url) async {
+  final Uri uri = Uri.parse(url);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri);
+  } else {
+    throw Exception('Could not launch $uri');
   }
 }

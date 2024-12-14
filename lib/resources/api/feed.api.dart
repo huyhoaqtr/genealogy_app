@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 
+import '../../utils/widgets/dialog/dialog.helper.dart';
 import '../dio/dio_client.dart';
 import '../models/comment.model.dart';
 import '../models/feed.model.dart';
@@ -29,6 +30,44 @@ class FeedApi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
+        return PagingResponse<Feed>(
+          statusCode: e.response?.statusCode,
+          message: e.response?.data['message'] ?? 'An error occurred',
+        );
+      }
+      rethrow; // Quăng lỗi nếu không phải lỗi từ API
+    }
+  }
+
+  Future<PagingResponse<Feed>> getAllFeedByUserId({
+    required int page,
+    required int limit,
+  }) async {
+    try {
+      // Gửi request đến API
+      final response = await DioClient().get(
+        '/feed/get-all-feed-by-user',
+        queryParameters: {
+          'page': page,
+          'limit': limit,
+        },
+      );
+
+      return PagingResponse<Feed>.fromJson(
+        response.data,
+        (json) => Feed.fromJson(json),
+      );
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return PagingResponse<Feed>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'] ?? 'An error occurred',
@@ -55,6 +94,10 @@ class FeedApi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse<Feed>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'] ?? 'An error occurred',
@@ -79,6 +122,10 @@ class FeedApi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'] ?? 'An error occurred',
@@ -105,6 +152,10 @@ class FeedApi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'] ?? 'An error occurred',
@@ -157,6 +208,71 @@ class FeedApi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
+        return ApiResponse<Feed>(
+          statusCode: e.response?.statusCode,
+          message: e.response?.data['message'],
+        );
+      }
+      rethrow;
+    }
+  }
+
+  Future<ApiResponse<Feed>> updateFeed({
+    required String feedId,
+    String? content,
+    List<File>? files,
+    List<String>? deleteImages,
+  }) async {
+    try {
+      final fields = {
+        if (content != null && content.isNotEmpty) 'content': content,
+        if (deleteImages != null && deleteImages.isNotEmpty)
+          'removeImages': deleteImages,
+        'feedId': feedId,
+      };
+
+      // Chuyển Map thành FormData
+      final formData = FormData.fromMap(fields);
+
+      // Thêm file (nếu có)
+      if (files != null) {
+        for (final file in files) {
+          formData.files.add(MapEntry(
+            'images',
+            await MultipartFile.fromFile(
+              file.path,
+              filename: file.path.split('/').last,
+              contentType: MediaType('image', file.path.split('.').last),
+            ),
+          ));
+        }
+      }
+
+      // Gửi request đến API
+      final response = await DioClient().put(
+        '/feed/update-feed/$feedId',
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      );
+
+      // Parse dữ liệu response
+      return ApiResponse<Feed>.fromJson(
+        response.data,
+        (json) => Feed.fromJson(json),
+      );
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse<Feed>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],
@@ -189,6 +305,10 @@ class FeedApi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return PagingResponse<CommentFeed>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'] ?? 'An error occurred',
@@ -226,7 +346,37 @@ class FeedApi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse<CommentFeed>(
+          statusCode: e.response?.statusCode,
+          message: e.response?.data['message'],
+        );
+      }
+      rethrow;
+    }
+  }
+
+  Future<ApiResponse> deleteFeed({required String feedId}) async {
+    try {
+      // Gửi request đến API
+      final response = await DioClient().delete('/feed/delete-feed/$feedId');
+
+      // Parse dữ liệu response
+      return ApiResponse.fromJson(
+        response.data,
+        (json) => CommentFeed.fromJson(json),
+      );
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
+        return ApiResponse(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],
         );

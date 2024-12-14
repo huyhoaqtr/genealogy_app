@@ -35,7 +35,7 @@ class MessageDetailScreen extends GetView<MessageDetailController> {
           await Get.find<MediaPickerController>().selectedAssets.first.file;
       controller.sendMessage(MessageType.IMAGE);
     }).then((value) async {
-      Future.delayed(const Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 200), () {
         Get.delete<MediaPickerController>();
       });
     });

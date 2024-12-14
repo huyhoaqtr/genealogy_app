@@ -20,7 +20,7 @@ import '../../utils/widgets/loading/loading.controller.dart';
 enum ScreenMode { VIEW, EDIT }
 
 class FamilyTreeController extends GetxController {
-  RxBool isLoading = true.obs;
+  RxBool isLoading = false.obs;
   late TransformationController transformationController;
   RxList<TreeMember> blocks = <TreeMember>[].obs;
   Rx<List<TreeMember>> tree = Rx<List<TreeMember>>([]);
@@ -44,11 +44,10 @@ class FamilyTreeController extends GetxController {
     transformationController = TransformationController();
     transformationController.value = Matrix4.identity()..scale(1.0);
     await fetchBlocks();
-
-    isLoading.value = false;
   }
 
   Future<void> fetchBlocks() async {
+    isLoading.value = true;
     try {
       final response = await TribeAPi().getTribeTree();
 
@@ -57,8 +56,14 @@ class FamilyTreeController extends GetxController {
         generateTree();
       }
     } catch (e) {
-      print('Error loading data: $e');
-    } finally {}
+      print("Error: $e");
+      DialogHelper.showToast(
+        "Có lỗi xây ra, vui lòng thử lại sau",
+        ToastType.warning,
+      );
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   Future<void> generateTree() async {
@@ -231,20 +236,27 @@ class FamilyTreeController extends GetxController {
     if (isScreenMode.value == ScreenMode.VIEW) {
       isScreenMode.value = ScreenMode.EDIT;
     } else {
-      isScreenMode.value = ScreenMode.VIEW;
-      loadingController.show();
-      final List<Map<String, dynamic>> data = blocks
-          .map((item) => {
-                'id': item.sId,
-                'positionX': item.positionX,
-                'positionY': item.positionY,
-              })
-          .toList();
+      try {
+        isScreenMode.value = ScreenMode.VIEW;
+        loadingController.show();
+        final List<Map<String, dynamic>> data = blocks
+            .map((item) => {
+                  'id': item.sId,
+                  'positionX': item.positionX,
+                  'positionY': item.positionY,
+                })
+            .toList();
 
-      String payload = jsonEncode(data);
-      await TribeAPi().updateAllTribePosition(payload: payload);
-      // await fetchBlocks();
-      loadingController.hide();
+        String payload = jsonEncode(data);
+        await TribeAPi().updateAllTribePosition(payload: payload);
+        // await fetchBlocks();
+      } catch (e) {
+        print("Error: $e");
+        DialogHelper.showToast(
+            "Có lỗi xảy ra, vui lòng thử lại sau", ToastType.warning);
+      } finally {
+        loadingController.hide();
+      }
     }
   }
 

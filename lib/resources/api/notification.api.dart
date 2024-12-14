@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import '../../resources/models/api_response.dart';
 import '../../resources/models/notification.model.dart';
+import '../../utils/widgets/dialog/dialog.helper.dart';
 import '../dio/dio_client.dart';
 
 class NotificationApi {
@@ -22,6 +23,10 @@ class NotificationApi {
       );
     } catch (e) {
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return PagingResponse<NotificationModel>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],
@@ -47,6 +52,10 @@ class NotificationApi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'] ?? 'An error occurred',

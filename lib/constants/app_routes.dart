@@ -23,4 +23,8 @@ class AppRoutes {
   static const String introduce = '/introduce';
   static const String genealogy = '/genealogy';
   static const String genealogySetting = '/genealogy-setting';
+  static const String forgetPassword = '/forget-password';
+  static const String userInfo = '/user-info';
+  static const String changePassword = '/change-password';
+  static const String myPost = '/my-post';
 }

@@ -188,7 +188,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
             top: 10.h,
             left: 0,
             right: 0,
-            bottom: 55.h,
+            bottom: 0,
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: GestureDetector(
@@ -211,6 +211,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                               context,
                               "Họ và tên",
                               Obx(() => TextFieldComponent(
+                                    enabled: controller.editRole.value,
                                     controller: controller.fullNameController,
                                     hintText: "Nguyen Van A",
                                     radius: AppSize.kRadius,
@@ -226,6 +227,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                               context,
                               "Danh xưng",
                               TextFieldComponent(
+                                enabled: controller.editRole.value,
                                 controller: controller.titleController,
                                 hintText: "Thuỷ tổ",
                                 radius: AppSize.kRadius,
@@ -240,7 +242,9 @@ class AddUserBottomSheetUI extends StatelessWidget {
                       "Giới tính",
                       SizedBox(
                         child: GestureDetector(
-                          onTap: () => showGenderPicker(context),
+                          onTap: () => controller.editRole.value
+                              ? showGenderPicker(context)
+                              : null,
                           child: Obx(() => Column(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -259,8 +263,10 @@ class AddUserBottomSheetUI extends StatelessWidget {
                                         color: controller
                                                 .genderError.value.isNotEmpty
                                             ? AppColors.errorColor
-                                            : AppColors.textColor
-                                                .withOpacity(0.6),
+                                            : controller.editRole.value
+                                                ? AppColors.textColor
+                                                    .withOpacity(0.6)
+                                                : AppColors.borderColor,
                                         width: 1,
                                       ),
                                     ),
@@ -338,6 +344,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                               "Toạ độ X",
                               TextFieldComponent(
                                 hintText: "X",
+                                enabled: controller.editRole.value,
                                 controller: controller.positionXController,
                                 radius: AppSize.kRadius,
                                 keyboardType: TextInputType.number,
@@ -350,6 +357,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                               "Toạ độ Y",
                               TextFieldComponent(
                                 hintText: "Y",
+                                enabled: controller.editRole.value,
                                 controller: controller.positionYController,
                                 radius: AppSize.kRadius,
                                 keyboardType: TextInputType.number,
@@ -373,8 +381,9 @@ class AddUserBottomSheetUI extends StatelessWidget {
                           SizedBox(
                             width: Get.width - 32.w,
                             child: GestureDetector(
-                              onTap: () =>
-                                  _showUserPickerSheet(controller.mode),
+                              onTap: () => controller.editRole.value
+                                  ? _showUserPickerSheet(controller.mode)
+                                  : null,
                               child: Container(
                                 width: Get.width - 32.w,
                                 height: AppSize.kButtonHeight,
@@ -385,7 +394,9 @@ class AddUserBottomSheetUI extends StatelessWidget {
                                   borderRadius:
                                       BorderRadius.circular(AppSize.kRadius),
                                   border: Border.all(
-                                    color: AppColors.textColor.withOpacity(0.6),
+                                    color: controller.editRole.value
+                                        ? AppColors.textColor.withOpacity(0.6)
+                                        : AppColors.borderColor,
                                     width: 1,
                                   ),
                                 ),
@@ -453,8 +464,10 @@ class AddUserBottomSheetUI extends StatelessWidget {
                           child: Column(
                             children: [
                               GestureDetector(
-                                onTap: () => _showProvincePickerSheet(
-                                    ProvinceLevel.PROVINCE),
+                                onTap: () => controller.editRole.value
+                                    ? _showProvincePickerSheet(
+                                        ProvinceLevel.PROVINCE)
+                                    : null,
                                 child: Container(
                                   width: Get.width - 32.w,
                                   height: AppSize.kButtonHeight,
@@ -465,8 +478,9 @@ class AddUserBottomSheetUI extends StatelessWidget {
                                     borderRadius:
                                         BorderRadius.circular(AppSize.kRadius),
                                     border: Border.all(
-                                      color:
-                                          AppColors.textColor.withOpacity(0.6),
+                                      color: controller.editRole.value
+                                          ? AppColors.textColor.withOpacity(0.6)
+                                          : AppColors.borderColor,
                                       width: 1,
                                     ),
                                   ),
@@ -504,7 +518,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                               SizedBox(height: 10.h),
                               if (isProvinceValid)
                                 GestureDetector(
-                                  onTap: () => isProvinceValid
+                                  onTap: () => controller.editRole.value
                                       ? _showProvincePickerSheet(
                                           ProvinceLevel.DISTRICT)
                                       : null,
@@ -518,8 +532,10 @@ class AddUserBottomSheetUI extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(
                                           AppSize.kRadius),
                                       border: Border.all(
-                                        color: AppColors.textColor
-                                            .withOpacity(0.6),
+                                        color: controller.editRole.value
+                                            ? AppColors.textColor
+                                                .withOpacity(0.6)
+                                            : AppColors.borderColor,
                                         width: 1,
                                       ),
                                     ),
@@ -557,7 +573,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                               if (isProvinceValid) SizedBox(height: 10.h),
                               if (isDistrictValid)
                                 GestureDetector(
-                                  onTap: () => isDistrictValid
+                                  onTap: () => controller.editRole.value
                                       ? _showProvincePickerSheet(
                                           ProvinceLevel.WARD)
                                       : null,
@@ -571,8 +587,10 @@ class AddUserBottomSheetUI extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(
                                           AppSize.kRadius),
                                       border: Border.all(
-                                        color: AppColors.textColor
-                                            .withOpacity(0.6),
+                                        color: controller.editRole.value
+                                            ? AppColors.textColor
+                                                .withOpacity(0.6)
+                                            : AppColors.borderColor,
                                         width: 1,
                                       ),
                                     ),
@@ -616,6 +634,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                       context,
                       "Số điện thoại",
                       TextFieldComponent(
+                        enabled: controller.editRole.value,
                         controller: controller.phoneNumberController,
                         hintText: "Nhập số điện thoại",
                         radius: AppSize.kRadius,
@@ -627,6 +646,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                       context,
                       "Tiểu sử",
                       TextFieldComponent(
+                        enabled: controller.editRole.value,
                         controller: controller.descController,
                         hintText: "Nhập tiểu sử",
                         radius: AppSize.kRadius,
@@ -657,7 +677,9 @@ class AddUserBottomSheetUI extends StatelessWidget {
                                 child: CupertinoSwitch(
                                   value: controller.isDead.value,
                                   onChanged: (value) {
-                                    controller.isDead.value = value;
+                                    if (controller.editRole.value) {
+                                      controller.isDead.value = value;
+                                    }
                                   },
                                   activeColor: AppColors.primaryColor,
                                 ),
@@ -666,24 +688,30 @@ class AddUserBottomSheetUI extends StatelessWidget {
                       ),
                     ),
                     _buildIsDeadComponent(context, controller),
+                    const SizedBox(height: 75),
                   ],
                 ),
               ),
             ),
           ),
-          Positioned(
-            bottom: 5.h,
-            left: 16.w,
-            right: 16.w,
-            child: CustomButton(
-              text: controller.sheetMode == SheetMode.ADD
-                  ? "Thêm thành viên"
-                  : "Cập nhật",
-              onPressed: () => controller.sheetMode == SheetMode.ADD
-                  ? controller.addTreeMember()
-                  : controller.updateTreeMember(),
+          if (controller.editRole.value)
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(AppSize.kPadding),
+                color: AppColors.backgroundColor,
+                child: CustomButton(
+                  text: controller.sheetMode == SheetMode.ADD
+                      ? "Thêm thành viên"
+                      : "Cập nhật",
+                  onPressed: () => controller.sheetMode == SheetMode.ADD
+                      ? controller.addTreeMember()
+                      : controller.updateTreeMember(),
+                ),
+              ),
             ),
-          ),
         ],
       ),
     );
@@ -707,6 +735,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                 context,
                 "Thờ cúng tại",
                 TextFieldComponent(
+                  enabled: controller.editRole.value,
                   controller: controller.placeOfWorshipController,
                   hintText: "Nhập nơi thờ cúng",
                   radius: AppSize.kRadius,
@@ -718,6 +747,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                 context,
                 "Người phụ trách",
                 TextFieldComponent(
+                  enabled: controller.editRole.value,
                   controller: controller.personInChargeController,
                   hintText: "Nhập tên người phụ trách",
                   radius: AppSize.kRadius,
@@ -729,6 +759,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                 context,
                 "Mộ táng",
                 TextFieldComponent(
+                  enabled: controller.editRole.value,
                   controller: controller.burialController,
                   hintText: "Nhập nơi an lạc (chôn cất)",
                   radius: AppSize.kRadius,
@@ -749,7 +780,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
         : null;
 
     return GestureDetector(
-      onTap: onTap,
+      onTap: controller.editRole.value ? onTap : null,
       child: Container(
         width: Get.width - 32.w,
         height: AppSize.kButtonHeight,
@@ -758,7 +789,9 @@ class AddUserBottomSheetUI extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppSize.kRadius),
           border: Border.all(
-            color: AppColors.textColor.withOpacity(0.6),
+            color: controller.editRole.value
+                ? AppColors.textColor.withOpacity(0.6)
+                : AppColors.borderColor,
             width: 1,
           ),
         ),
@@ -793,7 +826,8 @@ class AddUserBottomSheetUI extends StatelessWidget {
 
   GestureDetector _buildImagePicker(BuildContext context) {
     return GestureDetector(
-      onTap: () => _showMediaPickerBottomSheet(),
+      onTap: () =>
+          controller.editRole.value ? _showMediaPickerBottomSheet() : null,
       child: Container(
         color: Colors.transparent,
         child: Row(

@@ -27,23 +27,20 @@ class NotificationItem extends StatelessWidget {
       case "FEED":
         Get.toNamed(AppRoutes.feedDetail,
             arguments: {"feedId": notification.screenId});
-        await controller.isReadNotification(notification);
         break;
       case "FUND":
         Get.toNamed(AppRoutes.fundDetail,
             arguments: {"fundId": notification.screenId});
-        await controller.isReadNotification(notification);
         break;
       case "DEFAULT":
         Get.toNamed(AppRoutes.feedDetail,
             arguments: {"feedId": notification.screenId});
-        await controller.isReadNotification(notification);
         break;
       default:
         Get.toNamed(AppRoutes.feedDetail,
             arguments: {"feedId": notification.screenId});
-        await controller.isReadNotification(notification);
     }
+    await controller.isReadNotification(notification);
   }
 
   @override

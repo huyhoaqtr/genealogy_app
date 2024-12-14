@@ -55,12 +55,6 @@ class DatePickerController extends GetxController {
     super.onClose();
     displayedDate.value = DateTime.now();
     selectedDate.value = DateTime.now();
-    lunarSelectedDate = convertSolar2Lunar(
-      selectedDate.value.day,
-      selectedDate.value.month,
-      selectedDate.value.year,
-      7,
-    );
   }
 }
 

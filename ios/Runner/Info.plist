@@ -79,11 +79,14 @@
 		<array>
 			<string>http</string>
 			<string>https</string>
+			<string>sms</string>
+			<string>tel</string>
 		</array>
 		<key>UISupportsDocumentBrowser</key>
 		<true />
 		<key>UIFileSharingEnabled</key>
 		<true />
+
 
 	</dict>
 </plist>

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_app/resources/api/auth.api.dart';
-import 'package:getx_app/services/storage/storage_manager.dart';
-
+import '../../services/socket/SocketClientManager.dart';
+import '../../utils/widgets/loading/loading.controller.dart';
+import '../../resources/api/auth.api.dart';
+import '../../services/storage/storage_manager.dart';
+import '../../utils/widgets/dialog/dialog.helper.dart';
 import '../../constants/app_routes.dart';
 import '../../resources/models/user.model.dart';
-import '../../utils/widgets/show_custom_snackbar.dart';
 
 class LoginController extends GetxController {
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
+  final LoadingController loadingController = Get.find<LoadingController>();
   RxString phoneNumberError = "".obs;
   RxString passwordError = "".obs;
 
@@ -38,6 +39,7 @@ class LoginController extends GetxController {
   }
 
   void handleLogin() async {
+    loadingController.show();
     try {
       if (validateFields()) {
         final response = await AuthApi().login(
@@ -48,23 +50,13 @@ class LoginController extends GetxController {
         if (response.statusCode == 200) {
           StorageManager.setToken(response.data?.accessToken ?? '');
           StorageManager.setUser(response.data?.user ?? User());
-          showCustomSnackbar(
-            title: "Thành công",
-            message: response.message ?? "Đăng nhập thành công",
-            type: SnackbarType.success,
-          );
+          DialogHelper.showToast("Đăng nhập thành công", ToastType.success);
+          SocketClientManager().emit("online", response.data?.user?.sId);
           Get.offAllNamed(AppRoutes.dashBoard);
-        } else {
-          showCustomSnackbar(
-            title: "Có lỗi xảy ra",
-            message: response.message ?? "Đăng nhập thất bại",
-            type: SnackbarType.error,
-          );
         }
       }
-    } catch (e) {
-      print("Có lỗi không xác định xảy ra");
-      rethrow;
+    } finally {
+      loadingController.hide();
     }
   }
 }

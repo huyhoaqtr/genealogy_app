@@ -77,54 +77,67 @@ class CreateEventController extends GetxController {
   }
 
   Future<void> createEvent() async {
-    FocusManager.instance.primaryFocus?.unfocus();
+    try {
+      FocusManager.instance.primaryFocus?.unfocus();
 
-    if (validateFields()) {
-      loadingController.show();
-      final response = await EventApi().createEvent(
-        title: titleController.value.text,
-        desc: descController.value.text,
-        startTime: selectedTime.value,
-        startDate: selectedDate.value!.toIso8601String(),
-      );
+      if (validateFields()) {
+        loadingController.show();
+        final response = await EventApi().createEvent(
+          title: titleController.value.text,
+          desc: descController.value.text,
+          startTime: selectedTime.value,
+          startDate: selectedDate.value!.toIso8601String(),
+        );
 
-      if (response.statusCode == 200) {
-        eventController.events.insert(0, response.data!);
-        eventController.events.refresh();
-        Get.back();
+        if (response.statusCode == 200) {
+          eventController.events.insert(0, response.data!);
+          eventController.events.refresh();
+          Get.back();
+        }
       }
+    } catch (e) {
+      print("Error: $e");
+      DialogHelper.showToast(
+          "Có lỗi xây ra, vui lòng thử lại sau", ToastType.warning);
+    } finally {
       loadingController.hide();
     }
   }
 
   Future<void> updateEvent() async {
-    FocusManager.instance.primaryFocus?.unfocus();
+    try {
+      FocusManager.instance.primaryFocus?.unfocus();
 
-    if (validateFields()) {
-      loadingController.show();
+      if (validateFields()) {
+        loadingController.show();
 
-      final response = await EventApi().updateEvent(
-        eventId: event!.sId!,
-        title: titleController.value.text,
-        desc: descController.value.text,
-        startTime: selectedTime.value,
-        startDate: selectedDate.value!.toIso8601String(),
-      );
+        final response = await EventApi().updateEvent(
+          eventId: event!.sId!,
+          title: titleController.value.text,
+          desc: descController.value.text,
+          startTime: selectedTime.value,
+          startDate: selectedDate.value!.toIso8601String(),
+        );
 
-      if (response.statusCode == 201) {
-        final EventDetailController eventDetailController = Get.find();
-        final int index =
-            eventController.events.indexWhere((e) => e.sId == event!.sId);
+        if (response.statusCode == 201) {
+          final EventDetailController eventDetailController = Get.find();
+          final int index =
+              eventController.events.indexWhere((e) => e.sId == event!.sId);
 
-        if (index != -1) {
-          eventController.events[index] = response.data!;
-          eventDetailController.event.value = response.data!;
+          if (index != -1) {
+            eventController.events[index] = response.data!;
+            eventDetailController.event.value = response.data!;
+          }
+
+          eventController.events.refresh();
+          Get.back();
         }
-
-        eventController.events.refresh();
-        Get.back();
       }
-
+    } catch (e) {
+      print("Error: $e");
+      DialogHelper.showToast(
+          "Có lỗi xây ra, vui lòng thử lại sau", ToastType.warning);
+    } finally {
       loadingController.hide();
     }
   }

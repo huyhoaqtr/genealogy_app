@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:getx_app/resources/models/api_response.dart';
 import 'package:getx_app/resources/models/vote.model.dart';
 
+import '../../utils/widgets/dialog/dialog.helper.dart';
 import '../dio/dio_client.dart';
 
 class VoteApi {
@@ -50,6 +51,10 @@ class VoteApi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse<VoteSession>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'] ?? 'An error occurred',
@@ -83,6 +88,10 @@ class VoteApi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse<VoteSession>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'] ?? 'An error occurred',
@@ -113,6 +122,10 @@ class VoteApi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse<VoteSession>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'] ?? 'An error occurred',

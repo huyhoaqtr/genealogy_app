@@ -7,6 +7,7 @@ import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 
 import '../../constants/app_colors.dart';
 import '../../utils/widgets/icon_button.common.dart';
+import '../../utils/widgets/progress_indicator.dart';
 import 'fund.controller.dart';
 import 'view/create_fund.sheet.dart';
 import 'view/fund.item.dart';
@@ -49,46 +50,52 @@ class FundScreen extends GetView<FundController> {
       body: Stack(
         children: [
           Positioned.fill(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                await controller.getFunds();
-              },
-              child: Obx(() {
-                final funds = controller.funds.value;
+            child: Obx(() {
+              if (controller.isLoading.value) {
+                return const ProgressIndicatorComponent();
+              }
+              return RefreshIndicator(
+                onRefresh: () async {
+                  await controller.getFunds();
+                },
+                child: Obx(() {
+                  final funds = controller.funds.value;
 
-                if (funds.isEmpty) {
-                  return ListView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      children: [
-                        SizedBox(
-                          height: Get.height * 0.5,
-                          child: Center(
-                            child: Text(
-                              'Không có quỹ nào',
-                              style: Theme.of(context).textTheme.bodyMedium,
+                  if (funds.isEmpty) {
+                    return ListView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        children: [
+                          SizedBox(
+                            height: Get.height * 0.5,
+                            child: Center(
+                              child: Text(
+                                'Không có quỹ nào',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
                             ),
                           ),
-                        ),
-                      ]);
-                }
+                        ]);
+                  }
 
-                return ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: funds.length + 1, // +1 for spacing at the bottom
-                  itemBuilder: (context, index) {
-                    if (index == funds.length) {
-                      return SizedBox(height: 40.h); // Spacing at the bottom
-                    }
-                    final fund = funds[index];
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: AppSize.kPadding),
-                      child: FundItem(fund: fund),
-                    );
-                  },
-                );
-              }),
-            ),
+                  return ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: funds.length + 1, // +1 for spacing at the bottom
+                    itemBuilder: (context, index) {
+                      if (index == funds.length) {
+                        return SizedBox(height: 40.h); // Spacing at the bottom
+                      }
+                      final fund = funds[index];
+                      return Padding(
+                        padding:
+                            const EdgeInsets.only(bottom: AppSize.kPadding),
+                        child: FundItem(fund: fund),
+                      );
+                    },
+                  );
+                }),
+              );
+            }),
           ),
           if (dashboardController.myInfo.value.role == 'LEADER' ||
               dashboardController.myInfo.value.role == 'ADMIN')

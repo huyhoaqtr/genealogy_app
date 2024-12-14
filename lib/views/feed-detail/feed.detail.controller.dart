@@ -5,6 +5,7 @@ import 'package:getx_app/utils/widgets/loading/loading.controller.dart';
 import '../../resources/api/feed.api.dart';
 import '../../resources/models/comment.model.dart';
 import '../../resources/models/feed.model.dart';
+import '../../utils/widgets/dialog/dialog.helper.dart';
 
 class FeedDetailController extends GetxController {
   Rx<Feed> feed = Rx<Feed>(Feed());
@@ -39,18 +40,35 @@ class FeedDetailController extends GetxController {
   Future<void> onReady() async {
     super.onReady();
     if (Get.arguments != null && Get.arguments['feedId'] != null) {
-      final response = await FeedApi().getFeedById(id: Get.arguments['feedId']);
-      feed.value = response.data!;
+      try {
+        final response =
+            await FeedApi().getFeedById(id: Get.arguments['feedId']);
+        feed.value = response.data!;
+      } catch (e) {
+        print("Error: $e");
+        DialogHelper.showToast(
+          "Có lỗi xảy ra, vui lòng thử lại sau",
+          ToastType.warning,
+        );
+      }
     }
     await getComments();
   }
 
   Future<void> getComments() async {
-    final response = await FeedApi().getAllFeedComment(
-        page: page.value, limit: limit.value, feedId: feed.value.sId!);
-    if (response.statusCode == 201) {
-      comments.value += response.data?.data ?? [];
-      totalPages.value = response.data?.meta?.totalPages ?? 0;
+    try {
+      final response = await FeedApi().getAllFeedComment(
+          page: page.value, limit: limit.value, feedId: feed.value.sId!);
+      if (response.statusCode == 201) {
+        comments.value += response.data?.data ?? [];
+        totalPages.value = response.data?.meta?.totalPages ?? 0;
+      }
+    } catch (e) {
+      print("Error: $e");
+      DialogHelper.showToast(
+        "Có lỗi xảy ra, vui lòng thử lại sau",
+        ToastType.warning,
+      );
     }
   }
 

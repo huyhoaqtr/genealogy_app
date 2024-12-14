@@ -7,6 +7,7 @@ import 'package:http_parser/http_parser.dart';
 
 import '../../resources/models/tree_member.model.dart';
 import '../../resources/models/tribe.model.dart';
+import '../../utils/widgets/dialog/dialog.helper.dart';
 import '../dio/dio_client.dart';
 import '../models/api_response.dart';
 import '../models/web3_transaction.model.dart';
@@ -81,6 +82,10 @@ class TribeAPi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse<TreeMember>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],
@@ -160,6 +165,10 @@ class TribeAPi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse<TreeMember>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],
@@ -188,6 +197,10 @@ class TribeAPi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse<List<TreeMember>>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],
@@ -211,6 +224,10 @@ class TribeAPi {
       );
     } catch (e) {
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse(
           statusCode: e.response!.statusCode,
           message: e.response!.data['message'],
@@ -244,6 +261,10 @@ class TribeAPi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse<TribeModel>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],
@@ -263,6 +284,10 @@ class TribeAPi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse<GenealogyModel>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],
@@ -292,6 +317,10 @@ class TribeAPi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse<PageData>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],
@@ -325,6 +354,10 @@ class TribeAPi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse<PageData>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],
@@ -376,6 +409,10 @@ class TribeAPi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse<Web3Transaction>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],

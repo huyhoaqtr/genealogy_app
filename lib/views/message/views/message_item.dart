@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:getx_app/constants/app_colors.dart';
 import 'package:getx_app/constants/app_size.dart';
-import 'package:getx_app/utils/widgets/common/network_image.dart';
+import 'package:getx_app/utils/widgets/common/avatar_image.dart';
 import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 
 import '../../../utils/string/string.dart';
@@ -128,7 +128,7 @@ class MessageItem extends StatelessWidget {
           child: Stack(
             children: [
               Positioned.fill(
-                child: CustomNetworkImage(
+                child: AvatarImage(
                   imageUrl: conversation.members?.first.info?.avatar ?? "",
                 ),
               ),

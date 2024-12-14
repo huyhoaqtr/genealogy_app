@@ -57,6 +57,10 @@ class HomeApi {
     } catch (e) {
       // Xử lý lỗi nếu có
       if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
         return ApiResponse<TribeModel>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'] ?? 'An error occurred',

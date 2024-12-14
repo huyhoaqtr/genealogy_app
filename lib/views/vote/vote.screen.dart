@@ -6,6 +6,7 @@ import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_size.dart';
 import '../../utils/widgets/icon_button.common.dart';
+import '../../utils/widgets/progress_indicator.dart';
 import '../../utils/widgets/text_button.common.dart';
 import 'view/create_vote.sheet.dart';
 import 'view/vote.item.dart';
@@ -49,52 +50,58 @@ class VoteScreen extends GetView<VoteController> {
       body: Stack(
         children: [
           Positioned.fill(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                await controller.getAllVoteSession();
-              },
-              child: Obx(() {
-                final voteSessions = controller.voteSessions;
+            child: Obx(() {
+              if (controller.isLoading.value) {
+                return const ProgressIndicatorComponent();
+              }
+              return RefreshIndicator(
+                onRefresh: () async {
+                  await controller.getAllVoteSession();
+                },
+                child: Obx(() {
+                  final voteSessions = controller.voteSessions;
 
-                if (voteSessions.isEmpty) {
-                  return ListView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    children: [
-                      SizedBox(
-                        height: Get.height * 0.5,
-                        child: Center(
-                          child: Text(
-                            'Không có biểu quyết nào',
-                            style: Theme.of(context).textTheme.bodyMedium,
+                  if (voteSessions.isEmpty) {
+                    return ListView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      children: [
+                        SizedBox(
+                          height: Get.height * 0.5,
+                          child: Center(
+                            child: Text(
+                              'Không có biểu quyết nào',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                }
-
-                return ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  physics: const BouncingScrollPhysics(),
-                  itemCount:
-                      voteSessions.length + 1, // +1 for spacing at bottom
-                  itemBuilder: (context, index) {
-                    if (index == voteSessions.length) {
-                      return SizedBox(height: 40.h); // Spacing at bottom
-                    }
-
-                    final voteSession = voteSessions[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: AppSize.kPadding),
-                      child: VoteItem(
-                        voteSession: voteSession,
-                        controller: controller,
-                      ),
+                      ],
                     );
-                  },
-                );
-              }),
-            ),
+                  }
+
+                  return ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    physics: const BouncingScrollPhysics(),
+                    itemCount:
+                        voteSessions.length + 1, // +1 for spacing at bottom
+                    itemBuilder: (context, index) {
+                      if (index == voteSessions.length) {
+                        return SizedBox(height: 40.h); // Spacing at bottom
+                      }
+
+                      final voteSession = voteSessions[index];
+                      return Padding(
+                        padding:
+                            const EdgeInsets.only(bottom: AppSize.kPadding),
+                        child: VoteItem(
+                          voteSession: voteSession,
+                          controller: controller,
+                        ),
+                      );
+                    },
+                  );
+                }),
+              );
+            }),
           ),
           if (dashboardController.myInfo.value.role == 'LEADER' ||
               dashboardController.myInfo.value.role == 'ADMIN')

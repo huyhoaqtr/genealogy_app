@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../resources/api/home.api.dart';
 import '../../services/socket/SocketClientManager.dart';
+import '../../utils/widgets/dialog/dialog.helper.dart';
 import '../../views/message/message.controller.dart';
 import '../../views/message/model/conversation.model.dart';
 import '../../views/message_detail/message_detail.controller.dart';
@@ -99,10 +100,16 @@ class DashboardController extends GetxController {
   }
 
   Future<void> getTribeData() async {
-    final response = await HomeApi().getMyTribe();
-    if (response.statusCode == 200) {
-      await StorageManager.setTribe(response.data!);
-      tribe.value = response.data!;
+    try {
+      final response = await HomeApi().getMyTribe();
+      if (response.statusCode == 200) {
+        await StorageManager.setTribe(response.data!);
+        tribe.value = response.data!;
+      }
+    } catch (e) {
+      print("Error: $e");
+      DialogHelper.showToast(
+          "Có lỗi xây ra, vui lòng thử lại sau", ToastType.warning);
     }
   }
 

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_app/utils/types/type.dart';
-
+import '../../utils/types/type.dart';
 import '../../constants/app_routes.dart';
 import '../../resources/api/auth.api.dart';
 import '../../resources/models/user.model.dart';
 import '../../services/storage/storage_manager.dart';
+import '../../utils/widgets/dialog/dialog.helper.dart';
 import '../../utils/widgets/loading/loading.controller.dart';
-import '../../utils/widgets/show_custom_snackbar.dart';
 
 class RegisterController extends GetxController {
   late final UserRole role;
@@ -36,6 +35,7 @@ class RegisterController extends GetxController {
   }
 
   Future<void> handleRegister() async {
+    loadingController.show();
     if (validateFields()) {
       final response = await AuthApi().register(
         phoneNumber: phoneNumberController.text,
@@ -49,20 +49,11 @@ class RegisterController extends GetxController {
       if (response.statusCode == 201) {
         StorageManager.setToken(response.data?.accessToken ?? '');
         StorageManager.setUser(response.data?.user ?? User());
-        showCustomSnackbar(
-          title: "Thành công",
-          message: response.message ?? "Đăng nhập thành công",
-          type: SnackbarType.success,
-        );
+        DialogHelper.showToast("Đăng ký thành công", ToastType.success);
         Get.offAllNamed(AppRoutes.dashBoard);
-      } else {
-        showCustomSnackbar(
-          title: "Có lỗi xảy ra",
-          message: response.message ?? "Đăng nhập thất bại",
-          type: SnackbarType.error,
-        );
       }
     }
+    loadingController.hide();
   }
 
   bool validateFields() {

@@ -19,7 +19,7 @@ class DashboardScreen extends GetView<DashboardController> {
     const CalendarScreen(),
     const MessageScreen(),
     const NotificationScreen(),
-    const ProfileScreen(),
+    ProfileScreen(),
   ];
 
   @override

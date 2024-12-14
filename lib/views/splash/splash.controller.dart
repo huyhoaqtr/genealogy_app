@@ -14,14 +14,6 @@ class SplashController extends GetxController {
   void onInit() {
     super.onInit();
 
-    if (Get.arguments != null && Get.arguments['isLogout'] != null) {
-      final isLogout = Get.arguments['isLogout'];
-      if (isLogout == true) {
-        logoOpacityAnimated.value = false;
-        splashLoadingAnimated.value = false;
-      }
-    }
-
     handleInitFunc();
   }
 
@@ -49,5 +41,10 @@ class SplashController extends GetxController {
 
   void navigateToRegisterAsLeader() {
     Get.toNamed(AppRoutes.register, arguments: {'role': UserRole.LEADER});
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
   }
 }

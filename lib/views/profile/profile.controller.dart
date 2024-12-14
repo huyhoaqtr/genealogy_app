@@ -3,27 +3,28 @@ import 'package:getx_app/resources/models/user.model.dart';
 import 'package:getx_app/services/storage/storage_manager.dart';
 
 import '../../constants/app_routes.dart';
+import '../splash/splash.controller.dart';
 
 class ProfileController extends GetxController {
-  final Rx<User> user = Rx<User>(User());
-
   @override
   void onInit() {
     super.onInit();
-    loadInitData();
-  }
-
-  void loadInitData() {
-    StorageManager.getUser().then((value) {
-      if (value != null) {
-        user.value = value;
-      }
-    });
-    // fullname.value = Get.arguments['fullname'];
   }
 
   void logout() {
+    Get.delete<SplashController>();
     StorageManager.clearData();
     Get.offAllNamed(AppRoutes.splash, arguments: {'isLogout': true});
+  }
+
+  String getRole(String role) {
+    switch (role) {
+      case 'ADMIN':
+        return 'Tộc lão';
+      case 'LEADER':
+        return 'Tộc trưởng';
+      default:
+        return 'Thành viên';
+    }
   }
 }

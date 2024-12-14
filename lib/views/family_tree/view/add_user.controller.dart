@@ -4,8 +4,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:getx_app/resources/api/tribe.api.dart';
 import 'package:getx_app/resources/models/tree_member.model.dart';
+import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 import '../../../constants/app_size.dart';
@@ -23,6 +25,7 @@ class AddUserController extends GetxController {
   late Rx<CroppedFile?> croppedData;
   late Rx<DateTime?> birthday;
   late Rx<DateTime?> deathday;
+  RxBool editRole = false.obs;
   RxBool isDead = false.obs;
   RxString gender = "".obs;
   TextEditingController fullNameController = TextEditingController();
@@ -43,6 +46,8 @@ class AddUserController extends GetxController {
   Rx<Districts> selectedDistrict = Rx<Districts>(Districts());
   Rx<Wards> selectedWards = Rx<Wards>(Wards());
 
+  final DashboardController dashboardController =
+      Get.find<DashboardController>();
   final LoadingController loadingController = Get.find<LoadingController>();
   final FamilyTreeController familyTreeController =
       Get.find<FamilyTreeController>();
@@ -102,6 +107,9 @@ class AddUserController extends GetxController {
 
       gender.value = selectedTreeMember!.gender ?? "";
     }
+
+    editRole.value = dashboardController.myInfo.value.role == "ADMIN" ||
+        dashboardController.myInfo.value.role == "LEADER";
   }
 
   void cropImage(String filePath) async {
@@ -243,24 +251,20 @@ class AddUserController extends GetxController {
 
         if (response.statusCode == 200) {
           Get.back();
-          showCustomSnackbar(
-            title: "Thành công",
-            message: response.message ?? "Tạo thành viên thành công",
-            type: SnackbarType.success,
+          DialogHelper.showToast(
+            "Tạo thành viên thành công",
+            ToastType.success,
           );
 
           familyTreeController.fetchBlocks();
-        } else {
-          showCustomSnackbar(
-            title: "Có lỗi xảy ra",
-            message: response.message ?? "Tạo thành viên thất bại",
-            type: SnackbarType.error,
-          );
         }
       }
     } catch (e) {
       print(e);
-      rethrow;
+      DialogHelper.showToast(
+        "Có lỗi xây ra, vui lòng thử lại sau",
+        ToastType.warning,
+      );
     } finally {
       loadingController.hide();
     }
@@ -319,17 +323,14 @@ class AddUserController extends GetxController {
           );
 
           familyTreeController.fetchBlocks();
-        } else {
-          showCustomSnackbar(
-            title: "Có lỗi xảy ra",
-            message: response.message ?? "Tạo thành viên thất bại",
-            type: SnackbarType.error,
-          );
         }
       }
     } catch (e) {
       print(e);
-      rethrow;
+      DialogHelper.showToast(
+        "Có lỗi xây ra, vui lòng thử lại sau",
+        ToastType.warning,
+      );
     } finally {
       loadingController.hide();
     }

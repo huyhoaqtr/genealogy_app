@@ -52,14 +52,12 @@ class CreateFundController extends GetxController {
     FocusManager.instance.primaryFocus?.unfocus();
 
     if (validateFields()) {
-      loadingController.show();
       await fundController.createFund(
         title: titleController.value.text,
         desc: descController.value.text,
         amount: amountController.value.text,
       );
       Get.back();
-      loadingController.hide();
     }
   }
 }
