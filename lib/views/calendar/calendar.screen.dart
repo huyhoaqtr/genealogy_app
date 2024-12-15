@@ -477,7 +477,7 @@ class CalendarScreen extends GetView<CalendarController> {
             const SizedBox(height: AppSize.kPadding / 4),
             Text(
               getThapNhiTruc(lunarSelectedDate[0], lunarSelectedDate[1])[1],
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: AppSize.kPadding / 2),
             RichText(
