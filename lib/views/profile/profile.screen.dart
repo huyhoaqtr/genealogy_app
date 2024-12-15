@@ -106,7 +106,7 @@ class ProfileScreen extends GetView<ProfileController> {
               ),
               _buildButtonComponent(
                 context,
-                "Quyền riêng tư",
+                "Điều khoản sử dụng",
                 "assets/icons/security-user.svg",
                 () => openUrl(
                     "https://giatocviet.id.vn/terms-and-conditions.html"),
