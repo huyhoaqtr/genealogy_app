@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/views/archive/archive.controller.dart';
-import 'package:getx_app/views/archive/archive.detail.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_size.dart';
 import '../../resources/models/web3-transaction.model.dart';
@@ -18,7 +17,9 @@ class TransactionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get..to(ArchiveDetailScreen(transaction: transaction)),
+      onTap: () => Get.toNamed("/archive-detail", arguments: {
+        "transaction": transaction.toJson(),
+      }),
       child: Container(
           width: Get.width - AppSize.kPadding * 2,
           padding: const EdgeInsets.all(AppSize.kPadding / 2),
@@ -46,7 +47,10 @@ class TransactionItem extends StatelessWidget {
                       Expanded(
                         child: Text(
                           obfuscateHash("${transaction.txHash}", 10),
-                          style: Theme.of(context).textTheme.bodyMedium!,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(fontWeight: FontWeight.w500),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -64,7 +68,7 @@ class TransactionItem extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: AppSize.kPadding / 1.5),
                   child: FutureBuilder<dynamic>(
-                    future: controller.getFileInfo(transaction.blockId),
+                    future: getFileInfo(transaction.blockId),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Text(

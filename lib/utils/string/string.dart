@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image/image.dart' as img;
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -9,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/app_colors.dart';
 import '../../resources/models/vote.model.dart';
+import '../../services/contract/file-storage.dart';
 import '../permission.dart';
 import '../widgets/dialog/dialog.helper.dart';
 
@@ -349,4 +351,16 @@ Future<void> openUrl(String url) async {
   } else {
     throw Exception('Could not launch $uri');
   }
+}
+
+Future<String> getFileInfo(String? blockId) async {
+  if (blockId == null) return "";
+  final fileStorage = FileStorageContract(
+    rpcUrl: dotenv.env['CHAIN_NET'] ?? '',
+    contractAddress: dotenv.env['CONTRACT_ADDRESS'] ?? '',
+    privateKey: dotenv.env['PRIVATE_KEY'] ?? '',
+  );
+  await fileStorage.initializeContract();
+  final file = await fileStorage.getFile(int.parse(blockId));
+  return file["ipfsAddress"] ?? "";
 }

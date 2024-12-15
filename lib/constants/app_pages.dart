@@ -1,6 +1,9 @@
-import 'package:get/route_manager.dart';
-import 'package:getx_app/views/change-password/change-password.binding.dart';
-import 'package:getx_app/views/change-password/change-password.screen.dart';
+import 'package:get/get.dart';
+
+import '../views/change-password/change-password.binding.dart';
+import '../views/change-password/change-password.screen.dart';
+import '../views/archive-detail/archive-detail.binding.dart';
+import '../views/archive-detail/archive-detail.screen.dart';
 import '../views/archive/archive.binding.dart';
 import '../views/archive/archive.screen.dart';
 import '../views/compass/compass.binding.dart';
@@ -193,6 +196,11 @@ class AppPages {
       binding: ArchiveBinding(),
       name: AppRoutes.archive,
       page: () => const ArchiveScreen(),
+    ),
+    GetPage(
+      binding: ArchiveDetailBinding(),
+      name: AppRoutes.archiveDetail,
+      page: () => const ArchiveDetailScreen(),
     ),
     GetPage(
       binding: CompassBinding(),

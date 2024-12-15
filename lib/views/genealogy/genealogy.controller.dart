@@ -9,7 +9,6 @@ import 'package:getx_app/resources/models/genealogy.model.dart';
 import 'package:getx_app/resources/models/tribe.model.dart';
 import 'package:getx_app/utils/widgets/icon_button.common.dart';
 import 'package:getx_app/utils/widgets/loading/loading.controller.dart';
-import 'package:getx_app/views/archive/archive.detail.dart';
 import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -18,6 +17,7 @@ import 'dart:async';
 
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../constants/app_routes.dart';
 import '../../utils/widgets/dialog/dialog.helper.dart'; // For using Isolate
 
 class GenealogyController extends GetxController {
@@ -537,8 +537,12 @@ class GenealogyController extends GetxController {
                     iconSize: 32,
                     iconPadding: 4,
                     iconPath: "assets/icons/arrow-right-2.svg",
-                    onPressed: () => Get.to(
-                        ArchiveDetailScreen(transaction: response.data!)),
+                    onPressed: () => Get.toNamed(
+                      AppRoutes.archiveDetail,
+                      arguments: {
+                        "transaction": response.data!.toJson(),
+                      },
+                    ),
                   )
                 ],
               ),

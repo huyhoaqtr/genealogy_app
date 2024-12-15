@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
+import 'package:getx_app/utils/widgets/progress_indicator.dart';
 import '../../utils/widgets/icon_button.common.dart';
 import 'archive.controller.dart';
 import 'transaction_item.dart';
@@ -21,6 +22,9 @@ class ArchiveScreen extends GetView<ArchiveController> {
         width: Get.width,
         padding: const EdgeInsets.symmetric(horizontal: AppSize.kPadding),
         child: Obx(() {
+          if (controller.isLoading.value) {
+            return const ProgressIndicatorComponent();
+          }
           if (controller.transactions.isEmpty) {
             return ListView(
               physics: const AlwaysScrollableScrollPhysics(),

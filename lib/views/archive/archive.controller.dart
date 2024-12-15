@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-import 'package:getx_app/resources/api/tribe.api.dart';
-import 'package:getx_app/utils/widgets/dialog/dialog.helper.dart';
-
+import '../../resources/api/tribe.api.dart';
+import '../../utils/widgets/dialog/dialog.helper.dart';
 import '../../resources/models/web3-transaction.model.dart';
-import '../../services/contract/file-storage.dart';
 
 class ArchiveController extends GetxController {
   RxList<Web3Transaction> transactions = <Web3Transaction>[].obs;
@@ -38,9 +35,6 @@ class ArchiveController extends GetxController {
       if (response.statusCode == 200) {
         transactions.value = response.data!.data!;
         totalPage.value = response.data!.meta!.totalPages!;
-
-        final url = await getFileInfo(transactions.last.blockId);
-        print("url: $url");
       }
     } catch (e) {
       print("Error: $e");
@@ -61,17 +55,5 @@ class ArchiveController extends GetxController {
     await getTransactions();
 
     isLoadMore.value = false;
-  }
-
-  Future<String> getFileInfo(String? blockId) async {
-    if (blockId == null) return "";
-    final fileStorage = FileStorageContract(
-      rpcUrl: dotenv.env['CHAIN_NET'] ?? '',
-      contractAddress: dotenv.env['CONTRACT_ADDRESS'] ?? '',
-      privateKey: dotenv.env['PRIVATE_KEY'] ?? '',
-    );
-    await fileStorage.initializeContract();
-    final file = await fileStorage.getFile(int.parse(blockId));
-    return file["ipfsAddress"] ?? "";
   }
 }

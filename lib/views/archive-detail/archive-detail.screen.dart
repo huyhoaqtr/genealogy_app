@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_app/resources/models/web3-transaction.model.dart';
-import 'package:getx_app/utils/string/string.dart';
-import 'package:getx_app/utils/widgets/dialog/dialog.helper.dart';
-import 'package:getx_app/views/archive/archive.controller.dart';
 
+import '../../resources/models/web3-transaction.model.dart';
+import '../../utils/string/string.dart';
+import '../../utils/widgets/dialog/dialog.helper.dart';
 import '../../constants/app_size.dart';
 import '../../utils/widgets/icon_button.common.dart';
+import 'archive-detail.controller.dart';
 
-class ArchiveDetailScreen extends StatelessWidget {
-  ArchiveDetailScreen({super.key, required this.transaction});
-
-  final Web3Transaction transaction;
-  final ArchiveController controller = Get.find();
+class ArchiveDetailScreen extends GetView<ArchiveDetailController> {
+  const ArchiveDetailScreen({super.key});
 
   // The method to fetch the file URL
-  Future<String> getFileUrl() async {
-    final url = await controller.getFileInfo(transaction.blockId);
+  Future<String> getFileUrl(Web3Transaction transaction) async {
+    final url = await getFileInfo(transaction.blockId);
     return url;
   }
 
@@ -43,19 +40,23 @@ class ArchiveDetailScreen extends StatelessWidget {
                 Expanded(
                   child: Text(
                     "Địa chỉ hash: ",
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(fontWeight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(width: AppSize.kPadding / 2),
                 IconButtonComponent(
                   iconSize: 32,
                   iconPath: "./assets/icons/clipboard.svg",
-                  onPressed: () => copyTribeCode("${transaction.txHash}"),
+                  onPressed: () =>
+                      copyTribeCode("${controller.transaction.value.txHash}"),
                   iconPadding: 6,
                 ),
                 TextButton(
                   onPressed: () => openUrl(
-                      "https://holesky.etherscan.io/tx/${transaction.txHash}"),
+                      "https://holesky.etherscan.io/tx/${controller.transaction.value.txHash}"),
                   child: Text(
                     "Xem",
                     style: Theme.of(context).textTheme.bodyMedium,
@@ -63,7 +64,7 @@ class ArchiveDetailScreen extends StatelessWidget {
                 ),
               ]),
               Text(
-                transaction.txHash!,
+                controller.transaction.value.txHash!,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               // FutureBuilder to display file URL
@@ -71,7 +72,10 @@ class ArchiveDetailScreen extends StatelessWidget {
                 Expanded(
                   child: Text(
                     "File url: ",
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(fontWeight: FontWeight.w500),
                   ),
                 ),
                 const SizedBox(width: AppSize.kPadding / 2),
@@ -80,7 +84,7 @@ class ArchiveDetailScreen extends StatelessWidget {
                   iconPath: "./assets/icons/clipboard.svg",
                   onPressed: () async {
                     DialogHelper.showToast("Đang tải lên...", ToastType.info);
-                    final url = await getFileUrl();
+                    final url = await getFileUrl(controller.transaction.value);
                     copyTribeCode(url);
                   },
                   iconPadding: 6,
@@ -88,7 +92,7 @@ class ArchiveDetailScreen extends StatelessWidget {
                 TextButton(
                   onPressed: () async {
                     DialogHelper.showToast("Đang tải lên...", ToastType.info);
-                    final url = await getFileUrl();
+                    final url = await getFileUrl(controller.transaction.value);
                     openUrl(url);
                   },
                   child: Text(
@@ -98,7 +102,7 @@ class ArchiveDetailScreen extends StatelessWidget {
                 ),
               ]),
               FutureBuilder<dynamic>(
-                future: getFileUrl(),
+                future: getFileUrl(controller.transaction.value),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Text(
@@ -144,7 +148,7 @@ class ArchiveDetailScreen extends StatelessWidget {
               ),
               const SizedBox(height: AppSize.kPadding / 2),
               Text(
-                "Tạo bởi: ${transaction.user?.info?.fullName} - ${formatDate(transaction.createdAt!, format: 'hh:mm dd/MM/yyyy')}",
+                "Tạo bởi: ${controller.transaction.value.user?.info?.fullName} - ${formatDate(controller.transaction.value.createdAt!, format: 'hh:mm dd/MM/yyyy')}",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
