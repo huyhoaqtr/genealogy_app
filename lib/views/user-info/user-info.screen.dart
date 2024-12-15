@@ -23,10 +23,12 @@ class UserInfoScreen extends GetView<UserInfoController> {
   const UserInfoScreen({super.key});
 
   void _showMediaPickerBottomSheet() {
-    Get.lazyPut(() => MediaPickerController(
-          requestType: RequestType.image,
-          maxSelectedCount: 1,
-        ));
+    if (Get.isRegistered<MediaPickerController>()) {
+      Get.put(() => MediaPickerController(
+            requestType: RequestType.image,
+            maxSelectedCount: 1,
+          ));
+    }
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
@@ -38,11 +40,16 @@ class UserInfoScreen extends GetView<UserInfoController> {
         ),
       ),
     ).whenComplete(() async {
-      File? filePath =
-          await Get.find<MediaPickerController>().selectedAssets.first.file;
-      controller.cropImage(filePath!.path);
+      final mediaPickerController = Get.find<MediaPickerController>();
+      final files = mediaPickerController.selectedAssets;
+      if (files.isNotEmpty) {
+        File? file = await files.first.file;
+        controller.cropImage(file!.path);
+      }
     }).then((value) {
-      Get.delete<MediaPickerController>();
+      Future.delayed(const Duration(milliseconds: 200), () {
+        Get.delete<MediaPickerController>();
+      });
     });
   }
 

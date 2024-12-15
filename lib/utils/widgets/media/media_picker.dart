@@ -4,16 +4,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:getx_app/constants/app_size.dart';
+import 'package:getx_app/utils/widgets/progress_indicator.dart';
 import 'package:getx_app/utils/widgets/text_button.common.dart';
 import 'package:photo_manager/photo_manager.dart';
 import '../../../constants/app_colors.dart';
 import '../../../services/media/media_services.dart';
 
 class MediaPickerController extends GetxController {
-  var selectedAlbum = Rxn<AssetPathEntity>();
-  var albums = <AssetPathEntity>[].obs;
-  var assets = <AssetEntity>[].obs;
-  var selectedAssets = <AssetEntity>[].obs;
+  RxList<AssetEntity> assets = <AssetEntity>[].obs;
+  RxList<AssetEntity> selectedAssets = <AssetEntity>[].obs;
+  RxBool isLoading = false.obs;
   final cache = <String, Uint8List>{}.obs;
 
   final RequestType requestType;
@@ -44,31 +44,16 @@ class MediaPickerController extends GetxController {
   }
 
   void _loadAlbums() async {
+    isLoading.value = true;
     final albumList = await MediaServices().loadAlbum(requestType);
     if (albumList.isNotEmpty) {
-      albums.assignAll(albumList);
-      selectedAlbum.value = albums[0];
-      _loadAssets(albums[0]);
+      _loadAssets(albumList[0]);
     }
+    isLoading.value = false;
   }
 
   void _loadAssets(AssetPathEntity album) async {
     final assetList = await MediaServices().loadAssets(album);
-
-    // // Lọc các ảnh có kích thước nhỏ hơn 10MB
-    // final filteredAssets = <AssetEntity>[];
-
-    // for (var asset in assetList) {
-    //   final file = await asset.file; // Lấy file của asset
-    //   if (file != null) {
-    //     final size = await file.length(); // Kiểm tra kích thước của file
-    //     if (size < 5 * 1024 * 1024) {
-    //       // Kiểm tra nếu kích thước < 10MB
-    //       filteredAssets.add(asset);
-    //     }
-    //   }
-    // }
-
     assets.assignAll(assetList);
   }
 
@@ -126,20 +111,12 @@ class MediaPicker extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(AppSize.kRadius * 2),
               child: Obx(() {
-                if (controller.albums.isEmpty) {
-                  return Center(
-                      child: SizedBox(
-                    width: 20.w,
-                    height: 20.w,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: AppColors.primaryColor,
-                    ),
-                  ));
+                if (controller.isLoading.value) {
+                  return const ProgressIndicatorComponent();
                 }
                 return GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
+                    crossAxisCount: 4,
                   ),
                   physics: const BouncingScrollPhysics(),
                   itemCount: controller.assets.length,
@@ -147,7 +124,9 @@ class MediaPicker extends StatelessWidget {
                     AssetEntity assetEntity = controller.assets[index];
                     return Padding(
                       padding: const EdgeInsets.all(0.5),
-                      child: _buildAssetWidget(assetEntity, controller),
+                      child: KeyedSubtree(
+                          key: ValueKey(assetEntity.id),
+                          child: _buildAssetWidget(assetEntity, controller)),
                     );
                   },
                 );

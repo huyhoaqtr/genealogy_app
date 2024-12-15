@@ -16,10 +16,12 @@ class MessageDetailScreen extends GetView<MessageDetailController> {
   const MessageDetailScreen({super.key});
 
   void _showMediaPickerBottomSheet() {
-    Get.lazyPut(() => MediaPickerController(
-          requestType: RequestType.image,
-          maxSelectedCount: 1,
-        ));
+    if (!Get.isRegistered<MediaPickerController>()) {
+      Get.put(MediaPickerController(
+        requestType: RequestType.image,
+        maxSelectedCount: 1,
+      ));
+    }
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
@@ -31,9 +33,12 @@ class MessageDetailScreen extends GetView<MessageDetailController> {
         ),
       ),
     ).whenComplete(() async {
-      controller.tempImage.value =
-          await Get.find<MediaPickerController>().selectedAssets.first.file;
-      controller.sendMessage(MessageType.IMAGE);
+      final mediaPickerController = Get.find<MediaPickerController>();
+      final files = mediaPickerController.selectedAssets;
+      if (files.isNotEmpty) {
+        controller.tempImage.value = await files.first.file;
+        controller.sendMessage(MessageType.IMAGE);
+      }
     }).then((value) async {
       Future.delayed(const Duration(milliseconds: 200), () {
         Get.delete<MediaPickerController>();
@@ -154,54 +159,54 @@ class MessageDetailScreen extends GetView<MessageDetailController> {
 
   Widget _buildMessageListView(BuildContext context) {
     return Expanded(
-      child: Obx(() => ListView.builder(
-            controller: controller.scrollController,
-            itemCount: controller.messages.length,
-            shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            reverse: true,
-            padding:
-                const EdgeInsets.symmetric(horizontal: AppSize.kPadding / 2),
-            itemBuilder: (context, index) {
-              bool isSameUser = controller.myId.value ==
-                  controller.messages[index].sender?.sId;
-              if (index == controller.messages.length - 1) {
-                return Center(
-                  child: Column(
-                    children: [
-                      Obx(() => controller.isLoadMore.value
-                          ? Container(
-                              width: 20.w,
-                              height: 20.w,
-                              margin: const EdgeInsets.symmetric(
-                                vertical: AppSize.kPadding,
-                              ),
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: AppColors.primaryColor,
-                              ),
-                            )
-                          : Container()),
-                      MessageItem(
-                        // key: controller.itemKeys[index],
-                        isSameUser: isSameUser,
-                        message: controller.messages[index],
-                        conversationType:
-                            controller.conversation.value.type ?? "SINGLE",
-                      ),
-                    ],
-                  ),
-                );
-              }
-              return MessageItem(
-                // key: controller.itemKeys[index],
-                isSameUser: isSameUser,
-                message: controller.messages[index],
-                conversationType:
-                    controller.conversation.value.type ?? "SINGLE",
+      child: Obx(() {
+        return ListView.builder(
+          controller: controller.scrollController,
+          itemCount: controller.messages.length,
+          shrinkWrap: true,
+          physics: const BouncingScrollPhysics(),
+          reverse: true,
+          padding: const EdgeInsets.symmetric(horizontal: AppSize.kPadding / 2),
+          itemBuilder: (context, index) {
+            bool isSameUser =
+                controller.myId.value == controller.messages[index].sender?.sId;
+            if (index == controller.messages.length - 1) {
+              return Center(
+                child: Column(
+                  children: [
+                    Obx(() => controller.isLoadMore.value
+                        ? Container(
+                            width: 20.w,
+                            height: 20.w,
+                            margin: const EdgeInsets.symmetric(
+                              vertical: AppSize.kPadding,
+                            ),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: AppColors.primaryColor,
+                            ),
+                          )
+                        : Container()),
+                    MessageItem(
+                      // key: controller.itemKeys[index],
+                      isSameUser: isSameUser,
+                      message: controller.messages[index],
+                      conversationType:
+                          controller.conversation.value.type ?? "SINGLE",
+                    ),
+                  ],
+                ),
               );
-            },
-          )),
+            }
+            return MessageItem(
+              // key: controller.itemKeys[index],
+              isSameUser: isSameUser,
+              message: controller.messages[index],
+              conversationType: controller.conversation.value.type ?? "SINGLE",
+            );
+          },
+        );
+      }),
     );
   }
 

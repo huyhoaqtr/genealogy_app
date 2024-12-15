@@ -6,7 +6,9 @@ class MediaServices {
     List<AssetPathEntity> albums = [];
 
     if (permission.isAuth == true) {
-      albums = await PhotoManager.getAssetPathList(type: requestType);
+      albums = await PhotoManager.getAssetPathList(
+        type: requestType,
+      );
     } else {
       PhotoManager.openSetting();
     }

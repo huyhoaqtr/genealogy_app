@@ -133,11 +133,14 @@ class CreateFeedForm extends GetView<CreateFormController> {
   final int maxImages = 3;
 
   void _showMediaPickerBottomSheet() {
-    Get.lazyPut(() => MediaPickerController(
-          requestType: RequestType.image,
-          maxSelectedCount: maxImages -
-              (controller.tempImages.length + controller.tempImageUrls.length),
-        ));
+    if (Get.isRegistered<MediaPickerController>()) {
+      Get.put(() => MediaPickerController(
+            requestType: RequestType.image,
+            maxSelectedCount: maxImages -
+                (controller.tempImages.length +
+                    controller.tempImageUrls.length),
+          ));
+    }
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
@@ -159,7 +162,9 @@ class CreateFeedForm extends GetView<CreateFormController> {
         }
       }
     }).then((value) {
-      Get.delete<MediaPickerController>();
+      Future.delayed(const Duration(milliseconds: 200), () {
+        Get.delete<MediaPickerController>();
+      });
     });
   }
 

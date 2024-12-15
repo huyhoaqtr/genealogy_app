@@ -115,6 +115,9 @@ class MessageApi {
             contentType: MediaType('image', file.path.split('.').last),
           ),
         ));
+
+        print("fileName: ${file.path.split('/').last}");
+        print("fileSize: ${file.lengthSync()}");
       }
 
       // Gửi request đến API

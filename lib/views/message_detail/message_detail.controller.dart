@@ -143,7 +143,6 @@ class MessageDetailController extends GetxController {
     );
   }
 
-// Hàm reset trạng thái sau khi gửi tin nhắn
   void _resetMessageState() {
     replyMessage.value = Message();
     tempImage.value = null;
