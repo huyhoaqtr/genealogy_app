@@ -223,12 +223,10 @@ class FeedItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isDetail)
-            CircleAvatar(
-              backgroundColor: AppColors.primaryColor,
-              radius: 16.w,
-              backgroundImage:
-                  NetworkImage("${controller.feed.value.user?.info?.avatar}"),
-            ),
+            Obx(() => AvatarImage(
+                  size: 32,
+                  imageUrl: "${controller.feed.value.user?.info?.avatar}",
+                )),
           if (!isDetail)
             const SizedBox(
               width: AppSize.kPadding / 2,
@@ -244,7 +242,7 @@ class FeedItem extends StatelessWidget {
                       children: [
                         if (isDetail)
                           Obx(() => AvatarImage(
-                                size: 16.w,
+                                size: 32,
                                 imageUrl:
                                     "${controller.feed.value.user?.info?.avatar}",
                               )),

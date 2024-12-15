@@ -5,6 +5,7 @@ import '../../resources/models/tribe.model.dart';
 import '../../constants/app_size.dart';
 
 import '../../constants/app_colors.dart';
+import '../../utils/string/string.dart';
 import '../../utils/widgets/icon_button.common.dart';
 import 'introduce.controller.dart';
 import 'update_tribe.sheet.dart';
@@ -92,8 +93,7 @@ class IntroduceScreen extends GetView<IntroduceController> {
                     IconButtonComponent(
                       iconSize: 28,
                       iconPath: "./assets/icons/clipboard.svg",
-                      onPressed: () =>
-                          controller.copyTribeCode("${tribe?.code}"),
+                      onPressed: () => copyTribeCode("${tribe?.code}"),
                       iconPadding: 4,
                     )
                   ],

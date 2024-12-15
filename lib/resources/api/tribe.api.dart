@@ -10,7 +10,7 @@ import '../../resources/models/tribe.model.dart';
 import '../../utils/widgets/dialog/dialog.helper.dart';
 import '../dio/dio_client.dart';
 import '../models/api_response.dart';
-import '../models/web3_transaction.model.dart';
+import '../models/web3-transaction.model.dart';
 
 class TribeAPi {
   Future<ApiResponse<TreeMember>> createTreeMember({
@@ -414,6 +414,37 @@ class TribeAPi {
           e.response?.data['message'] ?? 'An error occurred',
         );
         return ApiResponse<Web3Transaction>(
+          statusCode: e.response?.statusCode,
+          message: e.response?.data['message'],
+        );
+      }
+      rethrow;
+    }
+  }
+
+  Future<PagingResponse<Web3Transaction>> getAllTransactionByTribe({
+    required int page,
+    required int limit,
+  }) async {
+    try {
+      final response = await DioClient()
+          .get('/web3/get-all-transaction-by-tribe', queryParameters: {
+        'page': page,
+        'limit': limit,
+      });
+
+      return PagingResponse<Web3Transaction>.fromJson(
+        response.data,
+        (json) => Web3Transaction.fromJson(json),
+      );
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
+        return PagingResponse<Web3Transaction>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],
         );

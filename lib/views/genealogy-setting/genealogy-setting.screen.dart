@@ -6,12 +6,15 @@ import 'package:getx_app/utils/widgets/dialog/dialog.helper.dart';
 
 import '../../constants/app_size.dart';
 import '../../utils/widgets/icon_button.common.dart';
+import '../dashboard/dashboard.controller.dart';
 import '../event/create_event.sheet.dart';
 import 'add-page.sheet.dart';
 import 'genealogy-setting.controller.dart';
 
 class GenealogySettingScreen extends GetView<GenealogySettingController> {
-  const GenealogySettingScreen({super.key});
+  GenealogySettingScreen({super.key});
+
+  final dashboardController = Get.find<DashboardController>();
 
   void _showCreateNewPdfPageBottomSheet(
       SheetMode sheetMode, PageData? pageData) {
@@ -39,6 +42,8 @@ class GenealogySettingScreen extends GetView<GenealogySettingController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isUpload = dashboardController.myInfo.value.role == 'ADMIN' ||
+        dashboardController.myInfo.value.role == 'LEADER';
     return Scaffold(
       appBar: AppBar(
         title: const Text('Thiết lập nội dung'),
@@ -47,13 +52,14 @@ class GenealogySettingScreen extends GetView<GenealogySettingController> {
           onPressed: () => Get.back(),
         ),
         actions: [
-          IconButtonComponent(
-            iconPath: 'assets/icons/pen-add.svg',
-            iconSize: 32,
-            iconPadding: 4,
-            onPressed: () =>
-                _showCreateNewPdfPageBottomSheet(SheetMode.ADD, null),
-          ),
+          if (isUpload)
+            IconButtonComponent(
+              iconPath: 'assets/icons/pen-add.svg',
+              iconSize: 32,
+              iconPadding: 4,
+              onPressed: () =>
+                  _showCreateNewPdfPageBottomSheet(SheetMode.ADD, null),
+            ),
           const SizedBox(width: AppSize.kPadding),
         ],
       ),
@@ -87,37 +93,38 @@ class GenealogySettingScreen extends GetView<GenealogySettingController> {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  Row(
-                    children: [
-                      const SizedBox(width: AppSize.kPadding / 2),
-                      if (index != 2)
-                        IconButtonComponent(
-                          iconColor: AppColors.infoColor,
-                          iconPath: 'assets/icons/pen.svg',
-                          iconSize: 28,
-                          iconPadding: 4,
-                          onPressed: () => _showCreateNewPdfPageBottomSheet(
-                            SheetMode.EDIT,
-                            item,
-                          ),
-                        ),
-                      if (item.isDelete == true)
+                  if (isUpload)
+                    Row(
+                      children: [
                         const SizedBox(width: AppSize.kPadding / 2),
-                      if (item.isDelete == true)
-                        IconButtonComponent(
-                          iconColor: AppColors.errorColor,
-                          iconPath: 'assets/icons/trash.svg',
-                          iconSize: 28,
-                          iconPadding: 4,
-                          onPressed: () => DialogHelper.showConfirmDialog(
-                            "Xác nhận",
-                            "Bạn có muốn xoá dữ liệu này không?",
-                            onConfirm: () =>
-                                controller.deletePdfPage(item.sId ?? ""),
+                        if (index != 2)
+                          IconButtonComponent(
+                            iconColor: AppColors.infoColor,
+                            iconPath: 'assets/icons/pen.svg',
+                            iconSize: 28,
+                            iconPadding: 4,
+                            onPressed: () => _showCreateNewPdfPageBottomSheet(
+                              SheetMode.EDIT,
+                              item,
+                            ),
                           ),
-                        ),
-                    ],
-                  ),
+                        if (item.isDelete == true)
+                          const SizedBox(width: AppSize.kPadding / 2),
+                        if (item.isDelete == true)
+                          IconButtonComponent(
+                            iconColor: AppColors.errorColor,
+                            iconPath: 'assets/icons/trash.svg',
+                            iconSize: 28,
+                            iconPadding: 4,
+                            onPressed: () => DialogHelper.showConfirmDialog(
+                              "Xác nhận",
+                              "Bạn có muốn xoá dữ liệu này không?",
+                              onConfirm: () =>
+                                  controller.deletePdfPage(item.sId ?? ""),
+                            ),
+                          ),
+                      ],
+                    ),
                 ],
               ),
             );

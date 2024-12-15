@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:getx_app/constants/app_colors.dart';
 import 'package:getx_app/constants/app_size.dart';
 import 'package:getx_app/utils/widgets/progress_indicator.dart';
+import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 import '../../utils/widgets/dialog/dialog.helper.dart';
 import '../../utils/widgets/icon_button.common.dart';
 import '../../utils/widgets/loading/loading.common.dart';
@@ -10,10 +11,13 @@ import 'genealogy.controller.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 
 class GenealogyScreen extends GetView<GenealogyController> {
-  const GenealogyScreen({super.key});
+  GenealogyScreen({super.key});
+  final DashboardController dashboardController = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    bool isUpload = dashboardController.myInfo.value.role == 'ADMIN' ||
+        dashboardController.myInfo.value.role == 'LEADER';
     return Scaffold(
       appBar: AppBar(
         title: const Text('Phả ký gia tộc'),
@@ -23,20 +27,21 @@ class GenealogyScreen extends GetView<GenealogyController> {
           onPressed: () => Get.back(),
         ),
         actions: [
-          Obx(() => controller.isUploading.value
-              ? const SizedBox(
-                  child: LoadingIcon(size: 32),
-                )
-              : IconButtonComponent(
-                  iconPath: 'assets/icons/eth.svg',
-                  iconSize: 32,
-                  iconPadding: 5,
-                  onPressed: () => DialogHelper.showConfirmDialog(
-                    "Xác nhận",
-                    "Bạn có muốn lưu nó lên blockchain?",
-                    onConfirm: () => controller.uploadToWeb3(),
-                  ),
-                )),
+          if (isUpload)
+            Obx(() => controller.isUploading.value
+                ? const SizedBox(
+                    child: LoadingIcon(size: 32),
+                  )
+                : IconButtonComponent(
+                    iconPath: 'assets/icons/eth.svg',
+                    iconSize: 32,
+                    iconPadding: 5,
+                    onPressed: () => DialogHelper.showConfirmDialog(
+                      "Xác nhận",
+                      "Bạn có muốn lưu nó lên blockchain?",
+                      onConfirm: () => controller.uploadToWeb3(),
+                    ),
+                  )),
           IconButtonComponent(
             iconPath: 'assets/icons/printer.svg',
             iconSize: 32,
@@ -47,12 +52,13 @@ class GenealogyScreen extends GetView<GenealogyController> {
               onConfirm: () => controller.savePdfToDevice(),
             ),
           ),
-          IconButtonComponent(
-            iconPath: 'assets/icons/settings.svg',
-            iconSize: 32,
-            iconPadding: 6,
-            onPressed: () => Get.toNamed('/genealogy-setting'),
-          ),
+          if (isUpload)
+            IconButtonComponent(
+              iconPath: 'assets/icons/settings.svg',
+              iconSize: 32,
+              iconPadding: 6,
+              onPressed: () => Get.toNamed('/genealogy-setting'),
+            ),
           const SizedBox(width: AppSize.kPadding),
         ],
       ),

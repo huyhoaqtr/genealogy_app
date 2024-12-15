@@ -9,6 +9,7 @@ import 'package:getx_app/resources/models/genealogy.model.dart';
 import 'package:getx_app/resources/models/tribe.model.dart';
 import 'package:getx_app/utils/widgets/icon_button.common.dart';
 import 'package:getx_app/utils/widgets/loading/loading.controller.dart';
+import 'package:getx_app/views/archive/archive.detail.dart';
 import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -536,7 +537,8 @@ class GenealogyController extends GetxController {
                     iconSize: 32,
                     iconPadding: 4,
                     iconPath: "assets/icons/arrow-right-2.svg",
-                    onPressed: () {},
+                    onPressed: () => Get.to(
+                        ArchiveDetailScreen(transaction: response.data!)),
                   )
                 ],
               ),

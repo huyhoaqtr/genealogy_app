@@ -8,6 +8,7 @@ import 'package:getx_app/utils/widgets/text_button.common.dart';
 import '../../constants/app_colors.dart';
 import '../../utils/string/string.dart';
 import '../../utils/widgets/icon_button.common.dart';
+import '../dashboard/dashboard.controller.dart';
 import 'fund-detail.controller.dart';
 import 'view/create.transaction.sheet.dart';
 import 'view/fund.detail.item.dart';
@@ -18,7 +19,9 @@ enum TransactionType {
 }
 
 class FundDetailScreen extends GetView<FundDetailController> {
-  const FundDetailScreen({super.key});
+  FundDetailScreen({super.key});
+
+  final DashboardController dashboardController = Get.find();
 
   void _showCreateNewTransactionBottomSheet(TransactionType type) {
     Get.lazyPut(() => CreateTransactionController(transactionType: type));
@@ -42,6 +45,8 @@ class FundDetailScreen extends GetView<FundDetailController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isOperation = dashboardController.myInfo.value.role == 'ADMIN' ||
+        dashboardController.myInfo.value.role == 'LEADER';
     return Scaffold(
       appBar: AppBar(
         title: const Text('Chi tiết'),
@@ -56,7 +61,7 @@ class FundDetailScreen extends GetView<FundDetailController> {
           child: Stack(
             children: [
               _buildMainContentView(context),
-              _buildFooterButtonGroup(),
+              if (isOperation) _buildFooterButtonGroup(),
             ],
           ),
         ),

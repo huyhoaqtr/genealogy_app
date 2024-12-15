@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:getx_app/utils/widgets/common/avatar_image.dart';
 import 'package:getx_app/utils/widgets/progress_indicator.dart';
 import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 import 'package:getx_app/views/feed/view/create_feed.sheet.dart';
@@ -126,11 +127,7 @@ class FeedScreen extends GetView<FeedController> {
           ))),
       child: Row(
         children: [
-          CircleAvatar(
-            backgroundColor: AppColors.primaryColor,
-            radius: 16.w,
-            backgroundImage: NetworkImage("${user.info?.avatar}"),
-          ),
+          AvatarImage(size: 36, imageUrl: "${user.info?.avatar}"),
           const SizedBox(
             width: AppSize.kPadding / 2,
           ),

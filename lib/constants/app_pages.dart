@@ -127,7 +127,7 @@ class AppPages {
     GetPage(
       binding: FundDetailBinding(),
       name: AppRoutes.fundDetail,
-      page: () => const FundDetailScreen(),
+      page: () => FundDetailScreen(),
     ),
     GetPage(
       binding: VoteBinding(),
@@ -167,12 +167,12 @@ class AppPages {
     GetPage(
       binding: GenealogyBinding(),
       name: AppRoutes.genealogy,
-      page: () => const GenealogyScreen(),
+      page: () => GenealogyScreen(),
     ),
     GetPage(
       binding: GenealogySettingBinding(),
       name: AppRoutes.genealogySetting,
-      page: () => const GenealogySettingScreen(),
+      page: () => GenealogySettingScreen(),
     ),
     GetPage(
       binding: UserInfoBinding(),

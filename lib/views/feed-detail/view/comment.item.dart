@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/utils/string/string.dart';
+import 'package:getx_app/utils/widgets/common/avatar_image.dart';
 import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 import 'package:getx_app/views/feed-detail/feed.detail.controller.dart';
 
@@ -61,12 +62,10 @@ class CommentItem extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
-                    backgroundColor: AppColors.primaryColor,
-                    radius: 12.w,
-                    backgroundImage: NetworkImage(
-                      "${commentFeed.user?.info?.avatar}",
-                    )),
+                AvatarImage(
+                  size: 24,
+                  imageUrl: "${commentFeed.user?.info?.avatar}",
+                ),
                 const SizedBox(
                   width: AppSize.kPadding / 2,
                 ),

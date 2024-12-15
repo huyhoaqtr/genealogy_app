@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -300,13 +301,21 @@ String formatNumberWithSuffix(dynamic number) {
   }
 }
 
-String formatDate(String isoDate) {
+void copyTribeCode(String code) {
+  Clipboard.setData(ClipboardData(text: code));
+  DialogHelper.showToast(
+    "Đã sao chép vào clipboard.",
+    ToastType.success,
+  );
+}
+
+String formatDate(String isoDate, {String format = 'dd/MM/yyyy'}) {
   try {
     // Parse chuỗi ISO 8601
     DateTime parsedDate = DateTime.parse(isoDate);
 
     // Định dạng ngày thành dd/MM/yyyy
-    String formattedDate = DateFormat('dd/MM/yyyy').format(parsedDate);
+    String formattedDate = DateFormat(format).format(parsedDate);
 
     return formattedDate;
   } catch (e) {
@@ -326,6 +335,11 @@ Color getToastColor(ToastType type) {
     case ToastType.info:
       return AppColors.infoColor;
   }
+}
+
+String obfuscateHash(String hash, int length) {
+  if (hash.length <= length * 2) return hash;
+  return '${hash.substring(0, length)}**************${hash.substring(hash.length - length)}';
 }
 
 Future<void> openUrl(String url) async {
