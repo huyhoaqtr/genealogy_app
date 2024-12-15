@@ -51,6 +51,9 @@ class PasswordFieldComponent extends StatelessWidget {
           hintText: hintText,
           labelText: labelText,
           errorText: errorText,
+          errorStyle: Theme.of(context).textTheme.labelSmall!.copyWith(
+                color: AppColors.errorColor,
+              ),
           labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(),
           hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
                 color: AppColors.textColor.withOpacity(0.5),
