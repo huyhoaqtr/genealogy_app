@@ -1,6 +1,10 @@
 import 'package:get/route_manager.dart';
 import 'package:getx_app/views/change-password/change-password.binding.dart';
 import 'package:getx_app/views/change-password/change-password.screen.dart';
+import '../views/archive/archive.binding.dart';
+import '../views/archive/archive.screen.dart';
+import '../views/compass/compass.binding.dart';
+import '../views/compass/compass.screen.dart';
 import '../views/my-post/my-post.binding.dart';
 import '../views/my-post/my-post.screen.dart';
 import '../views/user-info/user-info.binding.dart';
@@ -184,6 +188,16 @@ class AppPages {
       binding: MyPostBinding(),
       name: AppRoutes.myPost,
       page: () => const MyPostScreen(),
+    ),
+    GetPage(
+      binding: ArchiveBinding(),
+      name: AppRoutes.archive,
+      page: () => const ArchiveScreen(),
+    ),
+    GetPage(
+      binding: CompassBinding(),
+      name: AppRoutes.compass,
+      page: () => const CompassScreen(),
     ),
   ];
 }

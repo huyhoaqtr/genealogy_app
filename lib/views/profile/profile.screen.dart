@@ -82,9 +82,15 @@ class ProfileScreen extends GetView<ProfileController> {
               ),
               _buildButtonComponent(
                 context,
+                "La bàn phong thuỷ",
+                "assets/icons/compass.svg",
+                () => Get.toNamed(AppRoutes.compass),
+              ),
+              _buildButtonComponent(
+                context,
                 "Kho lưu trữ",
                 "assets/icons/box.svg",
-                () => controller.logout(),
+                () => Get.toNamed(AppRoutes.archive),
               ),
               _buildButtonComponent(
                 context,
@@ -123,38 +129,35 @@ class ProfileScreen extends GetView<ProfileController> {
   }
 
   Widget _buildButtonComponent(
-      BuildContext context, String title, String iconPath, Function() onPressed,
-      {bool isBorder = true}) {
-    return InkWell(
-      onTap: onPressed,
-      borderRadius: BorderRadius.circular(AppSize.kRadius),
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSize.kPadding,
-          vertical: AppSize.kPadding,
-        ),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: AppColors.borderColor,
-              width: 1,
-              style: isBorder ? BorderStyle.solid : BorderStyle.none,
-            ),
+    BuildContext context,
+    String title,
+    String iconPath,
+    Function() onPressed,
+  ) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onPressed,
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSize.kPadding,
+            vertical: AppSize.kPadding,
           ),
-        ),
-        child: Row(
-          children: [
-            IconButtonComponent(iconPath: iconPath),
-            const SizedBox(width: AppSize.kPadding),
-            Expanded(
-              child: Text(
-                title,
-                style: Theme.of(context).textTheme.bodyMedium,
+          child: Row(
+            children: [
+              IconButtonComponent(iconPath: iconPath),
+              const SizedBox(width: AppSize.kPadding),
+              Expanded(
+                child: Text(
+                  title,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
               ),
-            ),
-            const SizedBox(width: AppSize.kPadding),
-            const IconButtonComponent(iconPath: "assets/icons/arrow-right.svg"),
-          ],
+              const SizedBox(width: AppSize.kPadding),
+              const IconButtonComponent(
+                  iconPath: "assets/icons/arrow-right.svg"),
+            ],
+          ),
         ),
       ),
     );

@@ -41,7 +41,7 @@ class VoteScreen extends GetView<VoteController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Danh sách bình chọn'),
+        title: const Text('Danh sách biểu quyết'),
         leading: IconButtonComponent(
           iconPath: 'assets/icons/arrow-left.svg',
           onPressed: () => Get.back(),

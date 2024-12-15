@@ -27,4 +27,6 @@ class AppRoutes {
   static const String userInfo = '/user-info';
   static const String changePassword = '/change-password';
   static const String myPost = '/my-post';
+  static const String archive = '/archive';
+  static const String compass = '/compass';
 }

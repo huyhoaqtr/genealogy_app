@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:getx_app/resources/models/user.model.dart';
 import 'package:getx_app/services/storage/storage_manager.dart';
 
 import '../../constants/app_routes.dart';

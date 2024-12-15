@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_colors.dart';
 import 'package:getx_app/constants/app_size.dart';
+import 'package:getx_app/utils/widgets/progress_indicator.dart';
 import '../../utils/widgets/dialog/dialog.helper.dart';
 import '../../utils/widgets/icon_button.common.dart';
 import '../../utils/widgets/loading/loading.common.dart';
@@ -59,7 +60,7 @@ class GenealogyScreen extends GetView<GenealogyController> {
         margin: const EdgeInsets.symmetric(horizontal: AppSize.kPadding / 2),
         child: Obx(() {
           if (controller.isPdfGenerating.value) {
-            return const Center(child: CircularProgressIndicator());
+            return const ProgressIndicatorComponent();
           }
 
           if (controller.pdfData.value.isNotEmpty) {

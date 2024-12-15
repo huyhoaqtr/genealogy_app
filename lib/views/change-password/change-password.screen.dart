@@ -39,8 +39,8 @@ class ChangePasswordScreen extends GetView<ChangePasswordController> {
                     controller: controller.oldPasswordController.value,
                     hintText: "Nhập mật khẩu hiện tại",
                     labelText: "Mật khẩu hiện tại",
-                    keyboardType: TextInputType.number,
-                    textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
                     errorText: controller.oldPasswordError.value.isNotEmpty
                         ? controller.oldPasswordError.value
                         : null,
@@ -50,8 +50,8 @@ class ChangePasswordScreen extends GetView<ChangePasswordController> {
                     controller: controller.newPasswordController.value,
                     hintText: "Nhập mật khẩu mới",
                     labelText: "Mật khẩu mới",
-                    keyboardType: TextInputType.number,
-                    textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
                     errorText: controller.newPasswordError.value.isNotEmpty
                         ? controller.newPasswordError.value
                         : null,
@@ -61,7 +61,7 @@ class ChangePasswordScreen extends GetView<ChangePasswordController> {
                     controller: controller.confirmPasswordController.value,
                     hintText: "Nhập mật lại khẩu mới",
                     labelText: "Xác nhận mật khẩu",
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.done,
                     errorText: controller.confirmPasswordError.value.isNotEmpty
                         ? controller.confirmPasswordError.value

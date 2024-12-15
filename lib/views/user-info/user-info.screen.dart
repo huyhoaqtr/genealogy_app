@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:getx_app/utils/widgets/common/network_image.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
@@ -122,12 +123,22 @@ class UserInfoScreen extends GetView<UserInfoController> {
             onPressed: () => Get.back(),
           ),
           actions: [
-            IconButtonComponent(
-              iconPath: 'assets/icons/pen.svg',
-              iconSize: 32,
-              iconPadding: 6,
-              onPressed: () => controller.isEdit.value = true,
-            ),
+            Obx(() => controller.isEdit.value
+                ? TextButton(
+                    onPressed: () => controller.isEdit.value = false,
+                    child: Text(
+                      "Huỷ",
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w400,
+                          ),
+                    ))
+                : IconButtonComponent(
+                    iconPath: 'assets/icons/pen.svg',
+                    iconSize: 32,
+                    iconPadding: 6,
+                    onPressed: () => controller.isEdit.value = true,
+                  )),
             const SizedBox(width: AppSize.kPadding),
           ]),
       body: SizedBox(
@@ -267,6 +278,7 @@ class UserInfoScreen extends GetView<UserInfoController> {
                             textInputAction: TextInputAction.next,
                           )),
                     ),
+                    const SizedBox(height: 50),
                   ],
                 ),
               ),
@@ -361,39 +373,27 @@ class UserInfoScreen extends GetView<UserInfoController> {
         color: Colors.transparent,
         child: Row(
           children: [
-            Obx(() => Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppSize.kRadius),
-                    border: Border.all(
-                      color: AppColors.primaryColor,
-                      width: 1,
-                    ),
+            Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppSize.kRadius),
+                  border: Border.all(
+                    color: AppColors.primaryColor,
+                    width: 1,
                   ),
-                  child: controller.isEdit.value ||
-                          controller.croppedData.value != null
-                      ? Obx(() => ClipRRect(
-                            borderRadius:
-                                BorderRadius.circular(AppSize.kRadius),
-                            child: controller.croppedData.value != null
-                                ? Image.file(
-                                    File(controller.croppedData.value!.path),
-                                    fit: BoxFit.cover,
-                                    width: 80.w,
-                                    height: 80.w,
-                                  )
-                                : Image.asset(
-                                    "assets/images/default-avatar.webp",
-                                    width: 80.w,
-                                    height: 80.w,
-                                    fit: BoxFit.cover,
-                                  ),
-                          ))
-                      : ClipRRect(
-                          borderRadius: BorderRadius.circular(AppSize.kRadius),
-                          child: controller.user.value.info?.avatar != null
-                              ? Image.network(
-                                  "${controller.user.value.info!.avatar}",
-                                  fit: BoxFit.cover,
+                ),
+                child: Obx(() => ClipRRect(
+                      borderRadius: BorderRadius.circular(AppSize.kRadius),
+                      child: controller.croppedData.value != null
+                          ? Image.file(
+                              File(controller.croppedData.value!.path),
+                              fit: BoxFit.cover,
+                              width: 80.w,
+                              height: 80.w,
+                            )
+                          : controller.user.value.info!.avatar != null
+                              ? CustomNetworkImage(
+                                  imageUrl:
+                                      "${controller.user.value.info!.avatar}",
                                   width: 80.w,
                                   height: 80.w,
                                 )
@@ -403,8 +403,7 @@ class UserInfoScreen extends GetView<UserInfoController> {
                                   height: 80.w,
                                   fit: BoxFit.cover,
                                 ),
-                        ),
-                )),
+                    ))),
             SizedBox(width: 16.w),
             Expanded(
               child: SizedBox(

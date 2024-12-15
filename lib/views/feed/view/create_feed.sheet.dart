@@ -17,6 +17,7 @@ import '../../../resources/api/feed.api.dart';
 import '../../../resources/models/feed.model.dart';
 import '../../../utils/widgets/dialog/dialog.helper.dart';
 import '../../../utils/widgets/media/media_picker.dart';
+import '../../my-post/my-post.controller.dart';
 
 class CreateFormController extends GetxController {
   final Rx<TextEditingController> contentController =
@@ -27,7 +28,6 @@ class CreateFormController extends GetxController {
   final ImagePicker _picker = ImagePicker();
 
   final LoadingController loadingController = Get.find();
-  final FeedController feedController = Get.find();
 
   final SheetMode sheetMode;
   final Feed? feed;
@@ -64,7 +64,11 @@ class CreateFormController extends GetxController {
       );
       if (response.statusCode == 201) {
         Get.back();
-        feedController.feeds.insert(0, response.data!);
+        if (Get.isRegistered<FeedController>()) {
+          final FeedController feedController = Get.find();
+
+          feedController.feeds.insert(0, response.data!);
+        }
       }
     } catch (e) {
       print(e);
@@ -89,14 +93,25 @@ class CreateFormController extends GetxController {
       if (response.statusCode == 200) {
         Get.back();
 
-        int index = feedController.feeds
-            .indexWhere((element) => element.sId == feed!.sId);
-
-        if (index != -1) {
-          feedController.feeds[index] = response.data!;
+        if (Get.isRegistered<FeedController>()) {
+          final FeedController feedController = Get.find();
+          int index = feedController.feeds
+              .indexWhere((element) => element.sId == feed!.sId);
+          if (index != -1) {
+            feedController.feeds[index] = response.data!;
+          }
+          feedController.feeds.refresh();
         }
 
-        feedController.feeds.refresh();
+        if (Get.isRegistered<MyPostController>()) {
+          final MyPostController myPostController = Get.find();
+          int index = myPostController.feeds
+              .indexWhere((element) => element.sId == feed!.sId);
+          if (index != -1) {
+            myPostController.feeds[index] = response.data!;
+          }
+          myPostController.feeds.refresh();
+        }
       }
     } catch (e) {
       print(e);
