@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
@@ -22,22 +21,22 @@ class SplashScreen extends GetView<SplashController> {
           () {
             double scale = controller.splashLoadingAnimated.value ? 0.75 : 1.0;
             double topPosition = controller.splashLoadingAnimated.value
-                ? 75.h
-                : (Get.height - 200.w) / 2;
+                ? 75
+                : (Get.height - 200) / 2;
             double bottomPosition =
-                controller.splashLoadingAnimated.value ? 32.h : -250.h;
+                controller.splashLoadingAnimated.value ? 32 : -250;
 
             return Stack(
               children: [
                 AnimatedPositioned(
                   duration: const Duration(milliseconds: 500),
-                  top: controller.splashLoadingAnimated.value ? 56.w : -56.w,
-                  right: controller.splashLoadingAnimated.value ? 16.w : -120.w,
+                  top: controller.splashLoadingAnimated.value ? 56 : -56,
+                  right: controller.splashLoadingAnimated.value ? 16 : -120,
                   child: AnimatedOpacity(
                     duration: const Duration(milliseconds: 500),
                     opacity: controller.splashLoadingAnimated.value ? 1.0 : 0.0,
                     child: SizedBox(
-                      width: 120.w,
+                      width: 120,
                       child: Image.asset(
                         'assets/images/img_6.png',
                       ),
@@ -46,13 +45,13 @@ class SplashScreen extends GetView<SplashController> {
                 ),
                 AnimatedPositioned(
                   duration: const Duration(milliseconds: 500),
-                  top: controller.splashLoadingAnimated.value ? 56.w : -56.w,
-                  left: controller.splashLoadingAnimated.value ? 16.w : -120.w,
+                  top: controller.splashLoadingAnimated.value ? 56 : -56,
+                  left: controller.splashLoadingAnimated.value ? 16 : -120,
                   child: AnimatedOpacity(
                     duration: const Duration(milliseconds: 500),
                     opacity: controller.splashLoadingAnimated.value ? 1.0 : 0.0,
                     child: SizedBox(
-                      width: 120.w,
+                      width: 120,
                       child: Image.asset(
                         'assets/images/img_7.png',
                       ),
@@ -75,13 +74,13 @@ class SplashScreen extends GetView<SplashController> {
                 AnimatedPositioned(
                   duration: const Duration(milliseconds: 500),
                   top: topPosition,
-                  left: Get.width / 2 - (200.w / 2),
+                  left: Get.width / 2 - (200 / 2),
                   child: AnimatedScale(
                     scale: scale,
                     duration: const Duration(milliseconds: 500),
                     child: SizedBox(
-                      height: 200.w,
-                      width: 200.w,
+                      height: 200,
+                      width: 200,
                       child: SvgPicture.asset(
                         'assets/images/logo.svg',
                         semanticsLabel: 'App Logo',

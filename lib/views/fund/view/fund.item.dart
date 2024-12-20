@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
@@ -33,8 +32,8 @@ class FundItem extends StatelessWidget {
           child: Row(
             children: [
               SizedBox(
-                width: 24.w,
-                height: 24.w,
+                width: 24,
+                height: 24,
                 child: SvgPicture.asset("assets/icons/wallet.svg"),
               ),
               const SizedBox(width: AppSize.kPadding),
@@ -61,8 +60,8 @@ class FundItem extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            width: 18.w,
-                            height: 18.w,
+                            width: 18,
+                            height: 18,
                             child: SvgPicture.asset(
                               "assets/icons/award.svg",
                               colorFilter: const ColorFilter.mode(

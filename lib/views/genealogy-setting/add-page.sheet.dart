@@ -1,4 +1,3 @@
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:getx_app/resources/api/tribe.api.dart';
@@ -160,7 +159,7 @@ class AddPdfPageSheetUI extends GetView<AddPdfPageController> {
                             )),
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).viewInsets.bottom + 45.h,
+                        height: MediaQuery.of(context).viewInsets.bottom + 45,
                       )
                     ])),
           )),
@@ -170,8 +169,8 @@ class AddPdfPageSheetUI extends GetView<AddPdfPageController> {
             right: 0,
             child: Center(
               child: Container(
-                width: 50.w,
-                height: 5.w,
+                width: 50,
+                height: 5,
                 decoration: BoxDecoration(
                   color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(10),
@@ -198,7 +197,7 @@ class AddPdfPageSheetUI extends GetView<AddPdfPageController> {
 
   Widget _buildSheetItem(BuildContext context, String label, Widget child) {
     return Container(
-      width: Get.width - 32.w,
+      width: Get.width - 32,
       margin: const EdgeInsets.only(bottom: AppSize.kPadding / 2),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -210,7 +209,7 @@ class AddPdfPageSheetUI extends GetView<AddPdfPageController> {
                     fontWeight: FontWeight.w600,
                   ),
             ),
-            SizedBox(height: 8.h),
+            const SizedBox(height: 8),
             child,
           ]),
     );

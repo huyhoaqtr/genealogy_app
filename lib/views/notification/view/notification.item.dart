@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_routes.dart';
 import 'package:getx_app/views/notification/notification.controller.dart';
@@ -72,8 +71,8 @@ class NotificationItem extends StatelessWidget {
                   top: 0,
                   left: 0,
                   child: Container(
-                    width: 6.w,
-                    height: 6.w,
+                    width: 6,
+                    height: 6,
                     decoration: const BoxDecoration(
                       color: Colors.red,
                       shape: BoxShape.circle,

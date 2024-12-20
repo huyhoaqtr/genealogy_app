@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../constants/app_colors.dart';
@@ -80,7 +79,7 @@ class ChatBotScreen extends GetView<ChatBotController> {
                   Expanded(
                     child: Container(
                       width: Get.width,
-                      height: 35.w,
+                      height: 35,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(AppSize.kRadius),
                         color: Colors.black.withOpacity(0.075),

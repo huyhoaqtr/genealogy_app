@@ -25,6 +25,7 @@ class GenealogySettingScreen extends GetView<GenealogySettingController> {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => const AddPdfPageSheetUI(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(

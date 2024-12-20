@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
@@ -40,8 +39,8 @@ class RegisterScreen extends GetView<RegisterController> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
-                  height: 150.w,
-                  width: 150.w,
+                  height: 150,
+                  width: 150,
                   child: SvgPicture.asset(
                     'assets/images/logo.svg',
                     semanticsLabel: 'App Logo',
@@ -59,7 +58,7 @@ class RegisterScreen extends GetView<RegisterController> {
                               ? controller.fullNameError.value
                               : null,
                         ))),
-                    SizedBox(height: 16.h),
+                    const SizedBox(height: AppSize.kPadding),
                     controller.role == UserRole.MEMBER
                         ? Obx(() => (TextFieldComponent(
                               controller: controller.tribeCodeController,
@@ -81,7 +80,7 @@ class RegisterScreen extends GetView<RegisterController> {
                                       ? controller.tribeNameError.value
                                       : null,
                             ))),
-                    SizedBox(height: 16.h),
+                    const SizedBox(height: AppSize.kPadding),
                     Obx(() => (TextFieldComponent(
                           controller: controller.phoneNumberController,
                           hintText: 'enterPhoneNumber'.tr,
@@ -93,7 +92,7 @@ class RegisterScreen extends GetView<RegisterController> {
                                   ? controller.phoneNumberError.value
                                   : null,
                         ))),
-                    SizedBox(height: 16.h),
+                    const SizedBox(height: AppSize.kPadding),
                     Obx(() => (PasswordFieldComponent(
                           key: const Key('password'),
                           textEditingController: controller.passwordController,
@@ -104,7 +103,7 @@ class RegisterScreen extends GetView<RegisterController> {
                               ? controller.passwordError.value
                               : null,
                         ))),
-                    SizedBox(height: 16.h),
+                    const SizedBox(height: AppSize.kPadding),
                     Obx(() => (PasswordFieldComponent(
                           key: const Key('confirmPassword'),
                           textEditingController:
@@ -117,37 +116,39 @@ class RegisterScreen extends GetView<RegisterController> {
                                   ? controller.confirmPasswordError.value
                                   : null,
                         ))),
-                    SizedBox(height: 16.h),
+                    const SizedBox(height: AppSize.kPadding),
                     Row(
                       children: [
-                        ClipRRect(
-                          borderRadius:
-                              BorderRadius.circular(AppSize.kRadius * 2),
-                          child: Container(
-                            color: AppColors.backgroundColor,
-                            child: OutlinedButton(
-                              onPressed: () => Get.to(const QRCodeScanner()),
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(
-                                    width: 1, color: AppColors.primaryColor),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      AppSize.kRadius * 2),
+                        if (controller.role == UserRole.MEMBER)
+                          ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(AppSize.kRadius * 2),
+                            child: Container(
+                              color: AppColors.backgroundColor,
+                              child: OutlinedButton(
+                                onPressed: () => Get.to(const QRCodeScanner()),
+                                style: OutlinedButton.styleFrom(
+                                  side: BorderSide(
+                                      width: 1, color: AppColors.primaryColor),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        AppSize.kRadius * 2),
+                                  ),
+                                  elevation: 0,
+                                  shadowColor: Colors.transparent,
+                                  minimumSize: const Size(48, 48),
+                                  padding: const EdgeInsets.all(0),
                                 ),
-                                elevation: 0,
-                                shadowColor: Colors.transparent,
-                                minimumSize: const Size(48, 48),
-                                padding: const EdgeInsets.all(0),
-                              ),
-                              child: SvgPicture.asset(
-                                'assets/icons/scanner.svg',
-                                width: 24.w,
-                                height: 24.w,
+                                child: SvgPicture.asset(
+                                  'assets/icons/scanner.svg',
+                                  width: 24,
+                                  height: 24,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: AppSize.kPadding / 2),
+                        if (controller.role == UserRole.MEMBER)
+                          const SizedBox(width: AppSize.kPadding / 2),
                         Expanded(
                           child: CustomButton(
                             text: 'register'.tr,

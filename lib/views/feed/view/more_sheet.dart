@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../constants/app_colors.dart';
@@ -35,8 +34,8 @@ class FeedMoreBottomSheet extends StatelessWidget {
             right: 0,
             child: Center(
               child: Container(
-                width: 50.w,
-                height: 5.w,
+                width: 50,
+                height: 5,
                 decoration: BoxDecoration(
                   color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(10),

@@ -1,5 +1,6 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_colors.dart';
@@ -79,7 +80,7 @@ class DialogHelper {
         actions: [
           CustomButton(
             text: 'Huỷ',
-            width: 100.w,
+            width: 100,
             isOutlined: true,
             onPressed: () {
               Get.back();
@@ -88,7 +89,7 @@ class DialogHelper {
           ),
           CustomButton(
             text: 'Xác nhận',
-            width: 100.w,
+            width: 100,
             onPressed: () {
               Get.back();
               onConfirm();
@@ -135,9 +136,9 @@ class DialogHelper {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSize.kRadius * 1.5),
           ),
-          insetPadding: EdgeInsets.symmetric(horizontal: 16.w),
+          insetPadding: const EdgeInsets.symmetric(horizontal: 16),
           child: Container(
-            width: Get.width - 32.w,
+            width: min(Get.width - 32, 400),
             decoration: BoxDecoration(
               color: AppColors.backgroundColor,
               borderRadius: BorderRadius.circular(AppSize.kRadius * 1.5),

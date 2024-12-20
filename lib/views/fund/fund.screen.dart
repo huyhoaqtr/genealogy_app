@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
 import 'package:getx_app/utils/widgets/text_button.common.dart';
@@ -22,6 +21,7 @@ class FundScreen extends GetView<FundController> {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => const CreateFundSheetUI(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -83,7 +83,8 @@ class FundScreen extends GetView<FundController> {
                     itemCount: funds.length + 1, // +1 for spacing at the bottom
                     itemBuilder: (context, index) {
                       if (index == funds.length) {
-                        return SizedBox(height: 40.h); // Spacing at the bottom
+                        return const SizedBox(
+                            height: 40); // Spacing at the bottom
                       }
                       final fund = funds[index];
                       return Padding(

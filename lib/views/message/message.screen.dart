@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -114,7 +113,7 @@ class MessageScreen extends GetView<MessageController> {
               borderRadius: BorderRadius.circular(AppSize.kRadius),
               child: AnimatedContainer(
                 width: Get.width,
-                height: 35.w,
+                height: 35,
                 duration: const Duration(milliseconds: 200),
                 color: Colors.black.withOpacity(0.1),
                 child: Obx(() => TextField(
@@ -143,7 +142,7 @@ class MessageScreen extends GetView<MessageController> {
                           child: SvgPicture.asset(
                             "assets/icons/search-normal.svg",
                             fit: BoxFit.contain,
-                            width: 24.w,
+                            width: 24,
                             colorFilter: ColorFilter.mode(
                               AppColors.primaryColor,
                               BlendMode.srcIn,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/utils/widgets/progress_indicator.dart';
 import 'package:getx_app/views/dashboard/dashboard.controller.dart';
@@ -54,8 +53,8 @@ class FeedDetailScreen extends GetView<FeedDetailController> {
                             ],
                           );
                         }),
-                        SizedBox(
-                          height: 50.h,
+                        const SizedBox(
+                          height: 50,
                         ),
                       ],
                     ),
@@ -153,7 +152,7 @@ class FeedDetailScreen extends GetView<FeedDetailController> {
                   )
                 : Container()),
             Container(
-              height: 40.h,
+              height: 40,
               padding: const EdgeInsets.symmetric(
                 vertical: AppSize.kPadding / 4,
                 horizontal: AppSize.kPadding / 2,
@@ -168,7 +167,7 @@ class FeedDetailScreen extends GetView<FeedDetailController> {
                 children: [
                   CircleAvatar(
                     backgroundColor: AppColors.primaryColor,
-                    radius: 14.w,
+                    radius: 14,
                     backgroundImage: NetworkImage(
                       "${dashboardController.myInfo.value.info?.avatar}",
                     ),
@@ -179,7 +178,7 @@ class FeedDetailScreen extends GetView<FeedDetailController> {
                       focusNode: controller.commentInputFocusNode.value,
                       controller: controller.commentInputController.value,
                       cursorColor: AppColors.primaryColor,
-                      cursorHeight: 15.h,
+                      cursorHeight: 15,
                       textInputAction: TextInputAction.done,
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(),
                       decoration: InputDecoration(
@@ -197,7 +196,8 @@ class FeedDetailScreen extends GetView<FeedDetailController> {
                           iconSize: 20,
                         ),
                         contentPadding: const EdgeInsets.symmetric(
-                            vertical: AppSize.kPadding / 3),
+                          vertical: AppSize.kPadding,
+                        ),
                         border: InputBorder.none,
                       ),
                     ),

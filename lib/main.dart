@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -33,10 +32,7 @@ Future<void> main() async {
   if (!kIsWeb && (Platform.isAndroid)) {
     FCMService.initializeFCM();
   }
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+
   await initializeDateFormatting('vi', null);
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Future.delayed(const Duration(microseconds: 50))
@@ -51,8 +47,12 @@ Future<void> main() async {
 
   Get.put(LoadingController());
   SocketClientManager().initialize();
-
-  runApp(const MyApp());
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((_) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatefulWidget {
@@ -65,31 +65,25 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-        designSize: const Size(360, 690),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: (_, child) {
-          return GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-            initialRoute: AppRoutes.splash,
-            defaultTransition: Transition.cupertino,
-            getPages: AppPages.pages,
-            locale: AppLocale()
-                .listLanguages[HiveManager.shared.getCurrentAppLanguage()],
-            fallbackLocale: const Locale('vi', 'VN'),
-            translations: AppTranslations(),
-            theme: buildThemeData(),
-            initialBinding: SplashBinding(),
-            builder: (context, child) {
-              return Stack(
-                children: [
-                  child!,
-                  const LoadingOverlay(),
-                ],
-              );
-            },
-          );
-        });
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: AppRoutes.splash,
+      defaultTransition: Transition.cupertino,
+      getPages: AppPages.pages,
+      locale:
+          AppLocale().listLanguages[HiveManager.shared.getCurrentAppLanguage()],
+      fallbackLocale: const Locale('vi', 'VN'),
+      translations: AppTranslations(),
+      theme: buildThemeData(),
+      initialBinding: SplashBinding(),
+      builder: (context, child) {
+        return Stack(
+          children: [
+            child!,
+            const LoadingOverlay(),
+          ],
+        );
+      },
+    );
   }
 }

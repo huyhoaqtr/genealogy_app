@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_colors.dart';
 import 'package:getx_app/utils/widgets/text_button.common.dart';
@@ -32,16 +31,16 @@ class TreeMemberScreen extends GetView<TreeMemberController> {
                       child: GestureDetector(
                         onTap: controller.getFromGallery,
                         child: Container(
-                          height: 28.w,
-                          width: 28.w,
+                          height: 28,
+                          width: 28,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
                             color: Colors.blue,
                           ),
-                          child: Icon(
+                          child: const Icon(
                             Icons.camera_alt_rounded,
                             color: Colors.white,
-                            size: 16.w,
+                            size: 16,
                           ),
                         ),
                       ),
@@ -54,8 +53,8 @@ class TreeMemberScreen extends GetView<TreeMemberController> {
         ),
       ),
       bottomNavigationBar: Container(
-        height: 40.h,
-        margin: EdgeInsets.only(bottom: 20.h, left: 20.w, right: 20.w),
+        height: 40,
+        margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
         child: CustomButton(
           text: "Xong",
           onPressed: () {
@@ -74,8 +73,8 @@ class TreeMemberScreen extends GetView<TreeMemberController> {
 
   Widget _buildMemberImage() {
     return Container(
-        width: 100.w,
-        height: 100.w,
+        width: 100,
+        height: 100,
         padding: const EdgeInsets.all(2),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(150),

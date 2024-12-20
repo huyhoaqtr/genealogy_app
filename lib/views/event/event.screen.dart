@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 
@@ -23,6 +22,7 @@ class EventScreen extends GetView<EventController> {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => const CreateEventSheetUI(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -86,7 +86,8 @@ class EventScreen extends GetView<EventController> {
                       itemCount: events.length + 1, // +1 for spacing at bottom
                       itemBuilder: (context, index) {
                         if (index == events.length) {
-                          return SizedBox(height: 40.h); // Spacing at bottom
+                          return const SizedBox(
+                              height: 40); // Spacing at bottom
                         }
 
                         final event = events[index];

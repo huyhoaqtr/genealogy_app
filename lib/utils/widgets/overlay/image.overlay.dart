@@ -61,7 +61,10 @@ class ImageOverlay extends StatelessWidget {
                               (1 - (min(difference.abs() / 2, 50) / 100)),
                           height: (Get.height * 0.75) *
                               (1 - (min(difference.abs() / 2, 50) / 100)),
-                          child: CustomNetworkImage(imageUrl: url),
+                          child: CustomNetworkImage(
+                            imageUrl: url,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                     ],

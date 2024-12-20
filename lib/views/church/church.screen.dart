@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../constants/app_colors.dart';
@@ -89,14 +88,14 @@ class ChurchScreen extends GetView<ChurchController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: 40.w,
-                  width: 40.w,
+                  height: 40,
+                  width: 40,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(AppSize.kRadius),
                     child: CustomNetworkImage(imageUrl: "${data.avatar}"),
                   ),
                 ),
-                SizedBox(width: 12.w),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -139,7 +138,7 @@ class ChurchScreen extends GetView<ChurchController> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 1.h),
+                      const SizedBox(height: 1),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

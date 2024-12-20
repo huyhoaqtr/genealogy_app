@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
 import 'package:getx_app/utils/widgets/common/network_image.dart';
@@ -25,6 +24,7 @@ class MessageDetailScreen extends GetView<MessageDetailController> {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => MediaPicker(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -93,8 +93,8 @@ class MessageDetailScreen extends GetView<MessageDetailController> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(
-              width: 32.w,
-              height: 32.w,
+              width: 32,
+              height: 32,
               child: ClipOval(
                 child: CustomNetworkImage(
                   imageUrl: conversationType == 'GROUP'
@@ -134,11 +134,11 @@ class MessageDetailScreen extends GetView<MessageDetailController> {
                       return Row(
                         children: [
                           Container(
-                            width: 6.w,
-                            height: 6.w,
+                            width: 6,
+                            height: 6,
                             decoration: BoxDecoration(
                               color: isOnline ? Colors.green : Colors.grey,
-                              borderRadius: BorderRadius.circular(4.w),
+                              borderRadius: BorderRadius.circular(4),
                             ),
                           ),
                           const SizedBox(width: AppSize.kPadding / 3),
@@ -176,8 +176,8 @@ class MessageDetailScreen extends GetView<MessageDetailController> {
                   children: [
                     Obx(() => controller.isLoadMore.value
                         ? Container(
-                            width: 20.w,
-                            height: 20.w,
+                            width: 20,
+                            height: 20,
                             margin: const EdgeInsets.symmetric(
                               vertical: AppSize.kPadding,
                             ),
@@ -222,7 +222,7 @@ class MessageDetailScreen extends GetView<MessageDetailController> {
 
             return AnimatedContainer(
               duration: const Duration(milliseconds: 200),
-              height: isReply ? 50.h : 0,
+              height: isReply ? 60 : 0,
               padding: const EdgeInsets.symmetric(
                 vertical: AppSize.kPadding / 2,
                 horizontal: AppSize.kPadding,
@@ -260,7 +260,7 @@ class MessageDetailScreen extends GetView<MessageDetailController> {
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall!
-                                      .copyWith(fontSize: 12.sp),
+                                      .copyWith(fontSize: 12),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -270,10 +270,10 @@ class MessageDetailScreen extends GetView<MessageDetailController> {
                         ),
                         if (isImage)
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(4.w),
+                            borderRadius: BorderRadius.circular(4),
                             child: SizedBox(
-                              width: 36.w,
-                              height: 36.w,
+                              width: 36,
+                              height: 36,
                               child: CustomNetworkImage(
                                 imageUrl:
                                     "${controller.replyMessage.value.file}",
@@ -310,7 +310,7 @@ class MessageDetailScreen extends GetView<MessageDetailController> {
                 Expanded(
                   child: Container(
                     width: Get.width,
-                    height: 35.w,
+                    height: 35,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(AppSize.kRadius),
                       color: Colors.black.withOpacity(0.075),

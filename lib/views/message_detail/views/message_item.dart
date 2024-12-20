@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/utils/widgets/common/network_image.dart';
 import 'package:getx_app/utils/widgets/loading/loading.controller.dart';
@@ -167,8 +166,8 @@ class MessageItem extends StatelessWidget {
                           const EdgeInsets.only(right: AppSize.kPadding / 2),
                       child: ClipOval(
                         child: SizedBox(
-                          height: 16.w,
-                          width: 16.w,
+                          height: 16,
+                          width: 16,
                           child: CustomNetworkImage(
                               imageUrl: "${message.sender?.info?.avatar}"),
                         ),
@@ -212,8 +211,8 @@ class MessageItem extends StatelessWidget {
                                         AppSize.kRadius,
                                       ),
                                       child: SizedBox(
-                                        width: 75.h,
-                                        height: 75.h,
+                                        width: 75,
+                                        height: 75,
                                         child: CustomNetworkImage(
                                             imageUrl:
                                                 "${message.replyMessage?.file}"),
@@ -297,7 +296,7 @@ class MessageItem extends StatelessWidget {
       margin: const EdgeInsets.only(top: AppSize.kPadding / 4),
       child: Text(
         text,
-        style: Theme.of(context).textTheme.labelSmall!.copyWith(fontSize: 8.sp),
+        style: Theme.of(context).textTheme.labelSmall!.copyWith(fontSize: 8),
       ),
     );
   }
@@ -311,8 +310,8 @@ class MessageItem extends StatelessWidget {
           ? Stack(
               children: [
                 SizedBox(
-                  width: 175.h,
-                  height: 175.h,
+                  width: 175,
+                  height: 175,
                   child: Image.file(
                     message.tempImage!,
                     fit: BoxFit.cover,
@@ -324,13 +323,13 @@ class MessageItem extends StatelessWidget {
                   bottom: 0,
                   left: 0,
                   child: Container(
-                      width: 175.h,
-                      height: 175.h,
+                      width: 175,
+                      height: 175,
                       color: Colors.black.withOpacity(0.5),
                       child: Center(
                         child: SizedBox(
-                          width: 25.h,
-                          height: 25.h,
+                          width: 25,
+                          height: 25,
                           child: CircularProgressIndicator(
                               strokeWidth: 1.5, color: AppColors.primaryColor),
                         ),
@@ -339,8 +338,8 @@ class MessageItem extends StatelessWidget {
               ],
             )
           : SizedBox(
-              width: 175.h,
-              height: 175.h,
+              width: 175,
+              height: 175,
               child: Image.network(
                 "${message.file}",
                 fit: BoxFit.cover,

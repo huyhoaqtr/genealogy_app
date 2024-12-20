@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../resources/api/message.api.dart';
@@ -18,7 +17,7 @@ enum MessageType {
 
 class MessageDetailController extends GetxController {
   RxString myId = "".obs;
-  RxDouble inputHeight = 32.w.obs;
+  RxDouble inputHeight = 32.0.obs;
   RxBool isLoading = false.obs;
   RxBool isLoadMore = false.obs;
   RxList<GlobalKey> itemKeys = RxList<GlobalKey>([]);

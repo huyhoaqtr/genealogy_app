@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart' hide Node;
 import 'package:getx_app/constants/app_size.dart';
@@ -31,6 +30,7 @@ class FamilyTreeScreen extends GetView<FamilyTreeController> {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => AddUserBottomSheetUI(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -220,7 +220,7 @@ class FamilyTreeScreen extends GetView<FamilyTreeController> {
                 dashboardController.myInfo.value.role == "LEADER")
             ? IconButtonComponent(
                 iconPath: 'assets/icons/profile-add.svg',
-                iconSize: 32.w,
+                iconSize: 32,
                 iconPadding: 6,
                 onPressed: () => DialogHelper.showCustomDialog(
                     "Thêm thành viên",
@@ -236,7 +236,7 @@ class FamilyTreeScreen extends GetView<FamilyTreeController> {
                   if (controller.blocks.value.isNotEmpty)
                     CustomButton(
                       text: 'Vợ/Chồng',
-                      width: 50.w,
+                      width: 50,
                       onPressed: () {
                         Get.back();
                         _showAddUserBottomSheet(AddUserMode.COUPLE);
@@ -245,7 +245,7 @@ class FamilyTreeScreen extends GetView<FamilyTreeController> {
                   if (controller.blocks.value.isNotEmpty)
                     CustomButton(
                       text: 'Con cái',
-                      width: 50.w,
+                      width: 50,
                       onPressed: () {
                         Get.back();
                         _showAddUserBottomSheet(AddUserMode.CHILD);
@@ -256,13 +256,13 @@ class FamilyTreeScreen extends GetView<FamilyTreeController> {
             : Container()),
         IconButtonComponent(
           iconPath: 'assets/icons/gallery-export.svg',
-          iconSize: 32.w,
+          iconSize: 32,
           iconPadding: 6,
           onPressed: () => controller.capturePng(),
         ),
         IconButtonComponent(
           iconPath: 'assets/icons/rotate.svg',
-          iconSize: 32.w,
+          iconSize: 32,
           iconPadding: 6,
           onPressed: () => controller.rotateFrame(),
         ),

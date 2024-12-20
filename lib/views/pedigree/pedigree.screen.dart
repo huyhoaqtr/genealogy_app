@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_colors.dart';
 import 'package:getx_app/constants/app_size.dart';
@@ -32,6 +31,7 @@ class PedigreeScreen extends GetView<PedigreeController> {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => AddUserBottomSheetUI(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -51,7 +51,7 @@ class PedigreeScreen extends GetView<PedigreeController> {
         "Bạn muốn thêm thành viên với vai trò nào?", [
       CustomButton(
         text: 'Vợ/Chồng',
-        width: 50.w,
+        width: 50,
         onPressed: () {
           Get.back();
           _showAddUserBottomSheet(AddUserMode.COUPLE, member);
@@ -59,7 +59,7 @@ class PedigreeScreen extends GetView<PedigreeController> {
       ),
       CustomButton(
         text: 'Con cái',
-        width: 50.w,
+        width: 50,
         onPressed: () {
           Get.back();
           _showAddUserBottomSheet(AddUserMode.CHILD, member);
@@ -77,6 +77,7 @@ class PedigreeScreen extends GetView<PedigreeController> {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => AddUserBottomSheetUI(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -107,7 +108,7 @@ class PedigreeScreen extends GetView<PedigreeController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: 50.w,
+              width: 50,
               margin: const EdgeInsets.only(
                   top: AppSize.kPadding / 2, left: AppSize.kPadding / 2),
               child: SingleChildScrollView(
@@ -181,14 +182,14 @@ class PedigreeScreen extends GetView<PedigreeController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: 40.w,
-              width: 40.w,
+              height: 40,
+              width: 40,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(AppSize.kRadius),
                 child: CustomNetworkImage(imageUrl: "${data.avatar}"),
               ),
             ),
-            SizedBox(width: 12.w),
+            const SizedBox(width: 12),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -247,11 +248,11 @@ class PedigreeScreen extends GetView<PedigreeController> {
                           },
                           iconPadding: 5,
                           iconPath: "assets/icons/user-add.svg",
-                          iconSize: 24.w,
+                          iconSize: 24,
                         )
                     ],
                   ),
-                  SizedBox(height: 1.h),
+                  const SizedBox(height: 1),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -302,7 +303,7 @@ class PedigreeScreen extends GetView<PedigreeController> {
       onTap: () => controller.selectLevel.value = level,
       borderRadius: BorderRadius.circular(AppSize.kRadius),
       child: Obx(() => Container(
-          height: 50.h,
+          height: 50,
           width: double.infinity,
           decoration: BoxDecoration(
             color: level == controller.selectLevel.value

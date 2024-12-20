@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
 import 'package:getx_app/utils/widgets/common/network_image.dart';
@@ -133,17 +132,17 @@ class CreateFeedForm extends GetView<CreateFormController> {
   final int maxImages = 3;
 
   void _showMediaPickerBottomSheet() {
-    if (Get.isRegistered<MediaPickerController>()) {
-      Get.put(() => MediaPickerController(
-            requestType: RequestType.image,
-            maxSelectedCount: maxImages -
-                (controller.tempImages.length +
-                    controller.tempImageUrls.length),
-          ));
+    if (!Get.isRegistered<MediaPickerController>()) {
+      Get.put(MediaPickerController(
+        requestType: RequestType.image,
+        maxSelectedCount: maxImages -
+            (controller.tempImages.length + controller.tempImageUrls.length),
+      ));
     }
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => MediaPicker(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -180,7 +179,7 @@ class CreateFeedForm extends GetView<CreateFormController> {
             topRight: Radius.circular(24),
           )),
       padding: EdgeInsets.only(
-        top: 5.h,
+        top: 5,
         bottom: 16 - MediaQuery.of(context).viewInsets.bottom * 0.05,
       ),
       child: Stack(children: [
@@ -190,8 +189,8 @@ class CreateFeedForm extends GetView<CreateFormController> {
           right: 0,
           child: Center(
             child: Container(
-              width: 50.w,
-              height: 5.w,
+              width: 50,
+              height: 5,
               decoration: BoxDecoration(
                 color: AppColors.primaryColor,
                 borderRadius: BorderRadius.circular(10),
@@ -200,7 +199,7 @@ class CreateFeedForm extends GetView<CreateFormController> {
           ),
         ),
         Positioned(
-          top: 10.h,
+          top: 10,
           left: 0,
           right: 0,
           bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -229,8 +228,7 @@ class CreateFeedForm extends GetView<CreateFormController> {
                     )),
                 _buildPickerGroup(),
                 SizedBox(
-                  height:
-                      MediaQuery.of(context).viewInsets.bottom > 0 ? 60.h : 0,
+                  height: MediaQuery.of(context).viewInsets.bottom > 0 ? 60 : 0,
                 )
               ],
             ),
@@ -333,8 +331,8 @@ class CreateFeedForm extends GetView<CreateFormController> {
 
   Widget _buildTempImage(dynamic image) {
     return Container(
-      width: 100.w,
-      height: 150.w,
+      width: 100,
+      height: 150,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppSize.kRadius),
           color: Colors.grey.withOpacity(0.1),

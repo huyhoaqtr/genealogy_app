@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:getx_app/constants/app_colors.dart';
@@ -154,8 +153,8 @@ class MessageItem extends StatelessWidget {
                           dashboardController.onlineUsers.contains(memberId);
 
                       return Container(
-                        width: 10.w,
-                        height: 10.w,
+                        width: 10,
+                        height: 10,
                         decoration: BoxDecoration(
                           color: isOnline ? Colors.green : Colors.grey,
                           shape: BoxShape.circle,
@@ -189,7 +188,7 @@ class MessageItem extends StatelessWidget {
         Text(
           formatDateTimeFromString(conversation.lastMessage?.updatedAt ?? ""),
           style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                fontSize: 10.sp,
+                fontSize: 10,
                 color: Colors.grey,
               ),
         ),

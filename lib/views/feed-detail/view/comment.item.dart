@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/utils/string/string.dart';
 import 'package:getx_app/utils/widgets/common/avatar_image.dart';
@@ -56,7 +55,7 @@ class CommentItem extends StatelessWidget {
             padding: EdgeInsets.only(
               top: AppSize.kPadding / 2,
               bottom: AppSize.kPadding / 2,
-              left: level > 1 ? 38.w : AppSize.kPadding / 2,
+              left: level > 1 ? 38 : AppSize.kPadding / 2,
               right: AppSize.kPadding / 2,
             ),
             child: Row(

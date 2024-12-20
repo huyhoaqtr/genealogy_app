@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/resources/models/user.model.dart';
 
@@ -63,8 +62,8 @@ class SearchUserItem extends StatelessWidget {
                         dashboardController.onlineUsers.contains(memberId);
 
                     return Container(
-                      width: 10.w,
-                      height: 10.w,
+                      width: 10,
+                      height: 10,
                       decoration: BoxDecoration(
                         color: isOnline ? Colors.green : Colors.grey,
                         shape: BoxShape.circle,

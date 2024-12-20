@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:getx_app/constants/app_size.dart';
@@ -94,8 +93,8 @@ class MediaPicker extends StatelessWidget {
             right: 0,
             child: Center(
               child: Container(
-                width: 50.w,
-                height: 5.w,
+                width: 50,
+                height: 5,
                 decoration: BoxDecoration(
                   color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(10),
@@ -104,7 +103,7 @@ class MediaPicker extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 10.h,
+            top: 10,
             left: 0,
             right: 0,
             bottom: 0,
@@ -134,9 +133,9 @@ class MediaPicker extends StatelessWidget {
             ),
           ),
           Positioned(
-            left: 16.w,
-            right: 16.w,
-            bottom: 16.h,
+            left: 16,
+            right: 16,
+            bottom: 16,
             child: Obx(() => CustomButton(
                   text: "Xong",
                   onPressed: () => Get.back(),
@@ -170,8 +169,8 @@ class MediaPicker extends StatelessWidget {
               }
               return Center(
                   child: SizedBox(
-                width: 20.w,
-                height: 20.w,
+                width: 20,
+                height: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
                   color: AppColors.primaryColor,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:getx_app/constants/app_colors.dart';
 
 import '../../constants/app_size.dart';
@@ -50,7 +49,7 @@ class TextFieldComponent extends StatelessWidget {
       keyboardType: keyboardType,
       textInputAction: textInputAction,
       cursorColor: AppColors.primaryColor,
-      cursorHeight: 12.h,
+      cursorHeight: 12,
       style: Theme.of(context).textTheme.bodyMedium!.copyWith(),
       onChanged: onChanged,
       decoration: InputDecoration(

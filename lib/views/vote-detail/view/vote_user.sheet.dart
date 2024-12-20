@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
 
@@ -53,8 +52,8 @@ class VoteUserDetail extends StatelessWidget {
             right: 0,
             child: Center(
               child: Container(
-                width: 50.w,
-                height: 5.w,
+                width: 50,
+                height: 5,
                 decoration: BoxDecoration(
                   color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(10),
@@ -75,11 +74,11 @@ class VoteUserDetail extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(
-            width: 32.w,
-            height: 32.w,
+            width: 32,
+            height: 32,
             child: CustomNetworkImage(
-              width: 32.w,
-              height: 32.w,
+              width: 32,
+              height: 32,
               imageUrl: "${user.info?.avatar}",
             ),
           ),

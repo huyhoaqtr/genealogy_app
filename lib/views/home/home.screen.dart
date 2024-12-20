@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
@@ -28,38 +27,30 @@ class HomeScreen extends GetView<HomeController> {
               width: (Get.width - AppSize.kPadding * 2),
               height: (Get.width - AppSize.kPadding * 2) * 0.3,
               decoration: const BoxDecoration(
-                color: Colors.white, // Thêm màu nền nếu cần
+                image: DecorationImage(
+                  image: AssetImage('assets/images/img_12.png'),
+                  fit: BoxFit.cover,
+                ),
               ),
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: Image.asset(
-                      'assets/images/img_12.png',
-                      fit: BoxFit.cover,
-                    ),
+              child: Container(
+                alignment: Alignment.topCenter,
+                child: Container(
+                  margin: EdgeInsets.only(
+                    top: ((Get.width - AppSize.kPadding * 2) * 0.3) / 4,
                   ),
-                  Positioned(
-                    top: 22.h,
-                    left: Get.width / 2 - 60.w,
-                    right: Get.width / 2 - 60.w,
-                    child: Container(
-                      height: 25.h,
-                      alignment: Alignment.center,
-                      child: Obx(() => AutoSizeText(
-                            "${controller.dashboardController.tribe.value?.name}",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  color: AppColors.primaryColor,
-                                  fontWeight: FontWeight.w800,
-                                  fontFamily: "davida",
-                                ),
-                            textAlign: TextAlign.center,
-                          )),
-                    ),
-                  ),
-                ],
+                  width: (Get.width - AppSize.kPadding * 2) / 3.5,
+                  height: ((Get.width - AppSize.kPadding * 2) * 0.3) / 3,
+                  alignment: Alignment.center,
+                  child: Obx(() => AutoSizeText(
+                        "${controller.dashboardController.tribe.value?.name}",
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.w800,
+                              fontFamily: "davida",
+                            ),
+                        textAlign: TextAlign.center,
+                      )),
+                ),
               ),
             ),
             _buildHomeItem(
@@ -228,7 +219,7 @@ class HomeScreen extends GetView<HomeController> {
               height: AppSize.kPadding / 3,
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              SvgPicture.asset(iconPath, height: 16.w, width: 16.w),
+              SvgPicture.asset(iconPath, height: 16, width: 16),
               const SizedBox(
                 width: AppSize.kPadding / 2,
               ),

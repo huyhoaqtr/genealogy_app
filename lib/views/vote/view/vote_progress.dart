@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/resources/models/user.model.dart';
 import 'package:getx_app/utils/widgets/common/network_image.dart';
@@ -29,7 +28,7 @@ class VoteProgressItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: Get.width - AppSize.kPadding * 2,
-      height: 28.w,
+      height: 28,
       margin: const EdgeInsets.only(top: AppSize.kPadding / 4),
       child: InkWell(
         onTap: onTap,
@@ -51,7 +50,7 @@ class VoteProgressItem extends StatelessWidget {
               bottom: 0,
               child: Container(
                 width: Get.width - AppSize.kPadding * 2,
-                height: 8.w,
+                height: 8,
                 decoration: BoxDecoration(
                   color: AppColors.primaryColor.withOpacity(0.5),
                   borderRadius: BorderRadius.only(
@@ -67,7 +66,7 @@ class VoteProgressItem extends StatelessWidget {
             ),
             Positioned.fill(
               child: Container(
-                height: 8.w,
+                height: 8,
                 width: Get.width - AppSize.kPadding * 2,
                 padding: const EdgeInsets.symmetric(
                     horizontal: AppSize.kPadding / 2),
@@ -83,8 +82,8 @@ class VoteProgressItem extends StatelessWidget {
                             if (onTap != null && isSelect != null)
                               isSelect == false
                                   ? Container(
-                                      width: 16.w,
-                                      height: 16.w,
+                                      width: 16,
+                                      height: 16,
                                       margin: const EdgeInsets.only(
                                           right: AppSize.kPadding / 2),
                                       decoration: BoxDecoration(
@@ -97,19 +96,19 @@ class VoteProgressItem extends StatelessWidget {
                                           )),
                                     )
                                   : Container(
-                                      width: 16.w,
-                                      height: 16.w,
+                                      width: 16,
+                                      height: 16,
                                       margin: const EdgeInsets.only(
                                           right: AppSize.kPadding / 2),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(50),
                                         color: Colors.blue,
                                       ),
-                                      child: Center(
+                                      child: const Center(
                                         child: Icon(
                                           Icons.check,
                                           color: Colors.white,
-                                          size: 12.w,
+                                          size: 12,
                                         ),
                                       ),
                                     ),
@@ -122,7 +121,7 @@ class VoteProgressItem extends StatelessWidget {
                     GestureDetector(
                       onTap: onShowUser,
                       child: SizedBox(
-                        width: 50.w,
+                        width: 50,
                         child: Stack(
                           alignment: Alignment.center,
                           children: _votePerson.asMap().entries.map((entry) {
@@ -135,11 +134,11 @@ class VoteProgressItem extends StatelessWidget {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
                                     child: SizedBox(
-                                      width: 16.w,
-                                      height: 16.w,
+                                      width: 16,
+                                      height: 16,
                                       child: CustomNetworkImage(
-                                        width: 16.w,
-                                        height: 16.w,
+                                        width: 16,
+                                        height: 16,
                                         imageUrl: "${item.info?.avatar}",
                                       ),
                                     ),
@@ -166,11 +165,11 @@ class VoteProgressItem extends StatelessWidget {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(50),
                                 child: SizedBox(
-                                  width: 16.w,
-                                  height: 16.w,
+                                  width: 16,
+                                  height: 16,
                                   child: CustomNetworkImage(
-                                    width: 16.w,
-                                    height: 16.w,
+                                    width: 16,
+                                    height: 16,
                                     imageUrl: "${item.info?.avatar}",
                                   ),
                                 ),

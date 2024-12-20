@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
@@ -16,7 +15,7 @@ class TransactionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDeposit = transaction.type == "DEPOSIT";
     return Container(
-      width: Get.width - AppSize.kPadding * 2,
+      width: Get.width - AppSize.kPadding * 3,
       decoration: BoxDecoration(
         color: AppColors.textColor.withOpacity(0.05),
         borderRadius: BorderRadius.circular(AppSize.kRadius),
@@ -29,8 +28,8 @@ class TransactionItem extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(
-              width: 20.w,
-              height: 20.w,
+              width: 20,
+              height: 20,
               child: SvgPicture.asset(
                 isDeposit
                     ? "assets/icons/coin-receive.svg"

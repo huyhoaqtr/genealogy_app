@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
 import 'package:getx_app/utils/widgets/loading/loading.controller.dart';
@@ -135,7 +134,7 @@ class CreateFundSheetUI extends GetView<CreateFundController> {
                             )),
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).viewInsets.bottom + 40.h,
+                        height: MediaQuery.of(context).viewInsets.bottom + 40,
                       )
                     ])),
           )),
@@ -145,8 +144,8 @@ class CreateFundSheetUI extends GetView<CreateFundController> {
             right: 0,
             child: Center(
               child: Container(
-                width: 50.w,
-                height: 5.w,
+                width: 50,
+                height: 5,
                 decoration: BoxDecoration(
                   color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(10),
@@ -171,7 +170,7 @@ class CreateFundSheetUI extends GetView<CreateFundController> {
 
   Widget _buildSheetItem(BuildContext context, String label, Widget child) {
     return Container(
-      width: Get.width - 32.w,
+      width: Get.width - 32,
       margin: const EdgeInsets.only(bottom: AppSize.kPadding / 2),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -183,7 +182,7 @@ class CreateFundSheetUI extends GetView<CreateFundController> {
                     fontWeight: FontWeight.w600,
                   ),
             ),
-            SizedBox(height: 8.h),
+            const SizedBox(height: 8),
             child,
           ]),
     );

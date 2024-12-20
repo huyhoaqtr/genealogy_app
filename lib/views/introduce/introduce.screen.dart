@@ -19,6 +19,7 @@ class IntroduceScreen extends GetView<IntroduceController> {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => const UpdateTribeSheetUI(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(

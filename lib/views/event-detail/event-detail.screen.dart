@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_size.dart';
@@ -21,6 +20,7 @@ class EventDetailScreen extends GetView<EventDetailController> {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => const CreateEventSheetUI(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -47,7 +47,7 @@ class EventDetailScreen extends GetView<EventDetailController> {
         ),
         actions: [
           IconButtonComponent(
-            iconSize: 32.w,
+            iconSize: AppSize.kPadding * 2,
             iconPadding: 6,
             iconPath: 'assets/icons/pen.svg',
             onPressed: () => _showUpdateEventBottomSheet(),

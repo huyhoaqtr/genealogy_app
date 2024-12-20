@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
@@ -145,7 +144,7 @@ class CreateVoteSheetUI extends GetView<CreateVoteController> {
                       ),
                       _buildOptionInput(context),
                       SizedBox(
-                        height: MediaQuery.of(context).viewInsets.bottom + 45.h,
+                        height: MediaQuery.of(context).viewInsets.bottom + 45,
                       )
                     ])),
           )),
@@ -155,8 +154,8 @@ class CreateVoteSheetUI extends GetView<CreateVoteController> {
             right: 0,
             child: Center(
               child: Container(
-                width: 50.w,
-                height: 5.w,
+                width: 50,
+                height: 5,
                 decoration: BoxDecoration(
                   color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(10),
@@ -181,7 +180,7 @@ class CreateVoteSheetUI extends GetView<CreateVoteController> {
 
   Widget _buildOptionInput(BuildContext context) {
     return SizedBox(
-      width: Get.width - 32.w,
+      width: Get.width - 32,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(
           children: [
@@ -196,12 +195,12 @@ class CreateVoteSheetUI extends GetView<CreateVoteController> {
             IconButtonComponent(
               iconPath: "assets/icons/element-plus.svg",
               onPressed: () => controller.addOption(),
-              iconSize: 28.w,
+              iconSize: 28,
               iconPadding: 8,
             ),
           ],
         ),
-        SizedBox(height: 8.h),
+        const SizedBox(height: AppSize.kPadding / 2),
         Obx(() => Wrap(
               spacing: AppSize.kPadding / 2,
               direction: Axis.vertical,
@@ -221,15 +220,15 @@ class CreateVoteSheetUI extends GetView<CreateVoteController> {
                             ? controller.optionsError[entry.key]
                             : null,
                         suffixIcon: SizedBox(
-                          height: 18.w,
-                          width: 18.w,
+                          height: 18,
+                          width: 18,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: IconButton(
                               icon: SvgPicture.asset(
                                 "assets/icons/minus-square.svg",
-                                height: 18.w,
-                                width: 18.w,
+                                height: 18,
+                                width: 18,
                                 fit: BoxFit.scaleDown,
                                 colorFilter: ColorFilter.mode(
                                   AppColors.textColor.withOpacity(0.6),
@@ -252,7 +251,7 @@ class CreateVoteSheetUI extends GetView<CreateVoteController> {
 
   Widget _buildSheetItem(BuildContext context, String label, Widget child) {
     return Container(
-      width: Get.width - 32.w,
+      width: Get.width - 32,
       margin: const EdgeInsets.only(bottom: AppSize.kPadding / 2),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -264,7 +263,7 @@ class CreateVoteSheetUI extends GetView<CreateVoteController> {
                     fontWeight: FontWeight.w600,
                   ),
             ),
-            SizedBox(height: 8.h),
+            const SizedBox(height: 8),
             child,
           ]),
     );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/resources/api/tribe.api.dart';
 import 'package:getx_app/resources/models/tribe.model.dart';
@@ -157,7 +156,7 @@ class UpdateTribeSheetUI extends GetView<UpdateTribeSheetController> {
                             )),
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).viewInsets.bottom + 40.h,
+                        height: MediaQuery.of(context).viewInsets.bottom + 40,
                       )
                     ])),
           )),
@@ -167,8 +166,8 @@ class UpdateTribeSheetUI extends GetView<UpdateTribeSheetController> {
             right: 0,
             child: Center(
               child: Container(
-                width: 50.w,
-                height: 5.w,
+                width: 50,
+                height: 5,
                 decoration: BoxDecoration(
                   color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(10),
@@ -193,7 +192,7 @@ class UpdateTribeSheetUI extends GetView<UpdateTribeSheetController> {
 
   Widget _buildSheetItem(BuildContext context, String label, Widget child) {
     return Container(
-      width: Get.width - 32.w,
+      width: Get.width - AppSize.kPadding * 2,
       margin: const EdgeInsets.only(bottom: AppSize.kPadding / 2),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -205,7 +204,7 @@ class UpdateTribeSheetUI extends GetView<UpdateTribeSheetController> {
                     fontWeight: FontWeight.w600,
                   ),
             ),
-            SizedBox(height: 8.h),
+            const SizedBox(height: AppSize.kPadding / 2),
             child,
           ]),
     );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
@@ -37,8 +36,8 @@ class LoginScreen extends GetView<LoginController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: 200.w,
-                  width: 200.w,
+                  height: 200,
+                  width: 200,
                   child: SvgPicture.asset(
                     'assets/images/logo.svg',
                     semanticsLabel: 'App Logo',
@@ -54,7 +53,7 @@ class LoginScreen extends GetView<LoginController> {
                           ? controller.phoneNumberError.value
                           : null,
                     ))),
-                SizedBox(height: 16.h),
+                const SizedBox(height: AppSize.kPadding),
                 Obx(() => (PasswordFieldComponent(
                       textEditingController: controller.passwordController,
                       hintText: 'enterPassword'.tr,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_colors.dart';
@@ -133,7 +132,7 @@ class DashboardScreen extends GetView<DashboardController> {
                               color: isSelected
                                   ? AppColors.primaryColor
                                   : AppColors.textColor,
-                              fontSize: 10.sp,
+                              fontSize: 10,
                             ),
                         softWrap: false,
                       ),

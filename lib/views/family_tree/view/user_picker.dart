@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/resources/models/tree_member.model.dart';
@@ -86,7 +85,7 @@ class UserPickerSheetUI extends GetView<UserPickerController> {
           topRight: Radius.circular(24),
         ),
       ),
-      padding: EdgeInsets.only(top: 12.h, bottom: 20.h),
+      padding: const EdgeInsets.only(top: 12, bottom: 20),
       child: Column(
         children: [
           _buildHeader(),
@@ -101,9 +100,9 @@ class UserPickerSheetUI extends GetView<UserPickerController> {
   // Header with a small indicator
   Widget _buildHeader() {
     return Container(
-      width: 50.w,
-      height: 5.w,
-      margin: EdgeInsets.only(bottom: 12.h),
+      width: 50,
+      height: 5,
+      margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: AppColors.primaryColor,
         borderRadius: BorderRadius.circular(10),
@@ -114,8 +113,8 @@ class UserPickerSheetUI extends GetView<UserPickerController> {
   // Search bar component
   Widget _buildSearchField() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      margin: EdgeInsets.only(bottom: 12.h),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.only(bottom: 12),
       child: TextFieldComponent(
         controller: controller.searchController.value,
         hintText: "Nhập tìm kiếm",
@@ -160,10 +159,10 @@ class UserPickerSheetUI extends GetView<UserPickerController> {
     return InkWell(
       onTap: () => onTap(item),
       child: Container(
-        width: Get.width - 32.w,
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSize.kPadding.w,
-          vertical: (AppSize.kPadding / 3).w,
+        width: Get.width - AppSize.kPadding * 2,
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSize.kPadding,
+          vertical: (AppSize.kPadding / 3),
         ),
         child: Obx(() {
           bool isSelected = false;
@@ -218,7 +217,7 @@ class UserPickerSheetUI extends GetView<UserPickerController> {
   // Done button
   Widget _buildDoneButton() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: CustomButton(
         text: "Xong",
         onPressed: () => Get.back(),

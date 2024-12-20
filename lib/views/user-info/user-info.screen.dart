@@ -3,7 +3,6 @@ import 'package:getx_app/utils/widgets/common/network_image.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -330,7 +329,7 @@ class UserInfoScreen extends GetView<UserInfoController> {
     return GestureDetector(
       onTap: controller.isEdit.value ? onTap : null,
       child: Container(
-        width: Get.width - 32.w,
+        width: Get.width - AppSize.kPadding * 2,
         height: AppSize.kButtonHeight,
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.symmetric(horizontal: AppSize.kPadding),
@@ -394,24 +393,24 @@ class UserInfoScreen extends GetView<UserInfoController> {
                           ? Image.file(
                               File(controller.croppedData.value!.path),
                               fit: BoxFit.cover,
-                              width: 80.w,
-                              height: 80.w,
+                              width: 80,
+                              height: 80,
                             )
                           : controller.user.value.info!.avatar != null
                               ? CustomNetworkImage(
                                   imageUrl:
                                       "${controller.user.value.info!.avatar}",
-                                  width: 80.w,
-                                  height: 80.w,
+                                  width: 80,
+                                  height: 80,
                                 )
                               : Image.asset(
                                   "assets/images/default-avatar.webp",
-                                  width: 80.w,
-                                  height: 80.w,
+                                  width: 80,
+                                  height: 80,
                                   fit: BoxFit.cover,
                                 ),
                     ))),
-            SizedBox(width: 16.w),
+            const SizedBox(width: AppSize.kPadding),
             Expanded(
               child: SizedBox(
                 width: double.infinity,

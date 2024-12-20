@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
 import 'package:getx_app/utils/widgets/progress_indicator.dart';
@@ -20,6 +19,7 @@ class VoteDetailScreen extends GetView<VoteDetailController> {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => VoteUserDetail(users: users),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -134,7 +134,7 @@ class VoteDetailScreen extends GetView<VoteDetailController> {
                             )))
                         .toList());
               }),
-              SizedBox(height: 62.h),
+              const SizedBox(height: 62),
             ],
           ),
         ),

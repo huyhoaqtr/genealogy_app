@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/utils/widgets/common/avatar_image.dart';
 import 'package:getx_app/utils/widgets/common/network_image.dart';
@@ -151,6 +150,7 @@ class FeedItem extends StatelessWidget {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => const CreateFeedForm(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -310,7 +310,7 @@ class FeedItem extends StatelessWidget {
                 const SizedBox(height: AppSize.kPadding / 4),
                 if (controller.feed.value.images!.isNotEmpty)
                   SizedBox(
-                    height: 200.h,
+                    height: 200,
                     child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
@@ -326,8 +326,8 @@ class FeedItem extends StatelessWidget {
                                     BorderRadius.circular(AppSize.kRadius),
                                 child: CustomNetworkImage(
                                   imageUrl: image,
-                                  height: 200.h,
-                                  width: 150.w,
+                                  height: 200,
+                                  width: 150,
                                 ),
                               ),
                             ),

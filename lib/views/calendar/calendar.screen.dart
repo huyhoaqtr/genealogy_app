@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/utils/lunar/holiday.dart';
@@ -277,13 +276,13 @@ class CalendarScreen extends GetView<CalendarController> {
                 const Spacer(),
                 SvgPicture.asset(
                   "assets/icons/location.svg",
-                  width: 12.w,
+                  width: 12,
                 ),
                 const SizedBox(width: AppSize.kPadding / 4),
                 Text(
                   controller.location.value.locality ?? "",
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontSize: 12.sp,
+                        fontSize: 12,
                       ),
                 ),
               ],
@@ -292,8 +291,8 @@ class CalendarScreen extends GetView<CalendarController> {
             Row(
               children: [
                 SizedBox(
-                  width: 50.w,
-                  height: 50.w,
+                  width: 50,
+                  height: 50,
                   child: WeatherIcon(weatherId: weather.weather![0].id ?? 800),
                 ),
                 const SizedBox(width: AppSize.kPadding),
@@ -305,7 +304,7 @@ class CalendarScreen extends GetView<CalendarController> {
                       style: Theme.of(context)
                           .textTheme
                           .bodyLarge!
-                          .copyWith(fontSize: 16.sp),
+                          .copyWith(fontSize: 16),
                     ),
                     Text(
                       capitalizeFirstLetter(weather.weather![0].description!),
@@ -326,7 +325,7 @@ class CalendarScreen extends GetView<CalendarController> {
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
-                          .copyWith(color: Colors.grey, fontSize: 10.sp),
+                          .copyWith(color: Colors.grey, fontSize: 10),
                     ),
                     Text("${weather.main!.humidity}%",
                         style: Theme.of(context).textTheme.bodyMedium!),
@@ -340,7 +339,7 @@ class CalendarScreen extends GetView<CalendarController> {
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
-                          .copyWith(color: Colors.grey, fontSize: 10.sp),
+                          .copyWith(color: Colors.grey, fontSize: 10),
                     ),
                     Text(
                         "${(weather.wind!.speed! * 3.6).toStringAsFixed(2)} km/h",
@@ -355,7 +354,7 @@ class CalendarScreen extends GetView<CalendarController> {
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
-                          .copyWith(color: Colors.grey, fontSize: 10.sp),
+                          .copyWith(color: Colors.grey, fontSize: 10),
                     ),
                     Text("${weather.main!.seaLevel} hPa",
                         style: Theme.of(context).textTheme.bodyMedium!),
@@ -369,7 +368,7 @@ class CalendarScreen extends GetView<CalendarController> {
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
-                          .copyWith(color: Colors.grey, fontSize: 10.sp),
+                          .copyWith(color: Colors.grey, fontSize: 10),
                     ),
                     Text(getWindDirection(weather.wind!.deg),
                         style: Theme.of(context).textTheme.bodyMedium!),
@@ -411,7 +410,7 @@ class CalendarScreen extends GetView<CalendarController> {
                   controller.selectedDate.value.day,
                 ),
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontSize: 14.sp,
+                      fontSize: 14,
                     ),
               ),
             ),
@@ -545,8 +544,8 @@ class CalendarScreen extends GetView<CalendarController> {
                   .map((e) => Column(
                         children: [
                           SizedBox(
-                            width: 30.w,
-                            height: 30.w,
+                            width: 30,
+                            height: 30,
                             child: Image.asset(
                               e["icon"].toString(),
                               fit: BoxFit.contain,
@@ -558,7 +557,7 @@ class CalendarScreen extends GetView<CalendarController> {
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium!
-                                .copyWith(fontSize: 14.sp),
+                                .copyWith(fontSize: 14),
                           ),
                           const SizedBox(height: AppSize.kPadding / 3),
                           Text(
@@ -567,7 +566,7 @@ class CalendarScreen extends GetView<CalendarController> {
                                 .textTheme
                                 .labelSmall!
                                 .copyWith(
-                                    fontSize: 12.sp,
+                                    fontSize: 12,
                                     color: Colors.black.withOpacity(0.6)),
                           ),
                         ],

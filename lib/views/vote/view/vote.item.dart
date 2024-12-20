@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_routes.dart';
 import 'package:getx_app/constants/app_size.dart';
@@ -105,7 +104,7 @@ class VoteItem extends StatelessWidget {
                     arguments: {"voteSession": voteSession},
                   ),
                   isOutlined: true,
-                  height: 30.w,
+                  height: 30,
                   width: Get.width / 2,
                 ),
               )
@@ -119,7 +118,7 @@ class VoteItem extends StatelessWidget {
   Widget _buildMoreVotePerson(BuildContext context) {
     return Container(
       width: Get.width - AppSize.kPadding * 2,
-      height: 28.w,
+      height: 28,
       margin: const EdgeInsets.only(top: AppSize.kPadding / 4),
       decoration: BoxDecoration(
         color: AppColors.textColor.withOpacity(0.1),

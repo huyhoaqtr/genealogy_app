@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../services/socket/SocketClientManager.dart';
 import '../../utils/types/type.dart';
 import '../../constants/app_routes.dart';
 import '../../resources/api/auth.api.dart';
@@ -50,6 +51,7 @@ class RegisterController extends GetxController {
         StorageManager.setToken(response.data?.accessToken ?? '');
         StorageManager.setUser(response.data?.user ?? User());
         DialogHelper.showToast("Đăng ký thành công", ToastType.success);
+        SocketClientManager().emit("online", response.data?.user?.sId);
         Get.offAllNamed(AppRoutes.dashBoard);
       }
     }

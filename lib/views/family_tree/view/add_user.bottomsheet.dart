@@ -6,7 +6,6 @@ import 'package:getx_app/utils/widgets/province/province.controller.dart';
 import 'package:getx_app/utils/widgets/province/province.picker.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
 import 'package:getx_app/utils/widgets/text_button.common.dart';
@@ -30,6 +29,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => const ProvincePickerSheetUI(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -47,6 +47,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => const UserPickerSheetUI(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -69,6 +70,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => MediaPicker(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -164,7 +166,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
             topRight: Radius.circular(24),
           )),
       padding: EdgeInsets.only(
-        top: 5.h,
+        top: 5,
         bottom: MediaQuery.of(context).viewInsets.bottom + 16.0,
       ),
       child: Stack(
@@ -175,8 +177,8 @@ class AddUserBottomSheetUI extends StatelessWidget {
             right: 0,
             child: Center(
               child: Container(
-                width: 50.w,
-                height: 5.w,
+                width: 50,
+                height: 5,
                 decoration: BoxDecoration(
                   color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(10),
@@ -185,7 +187,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 10.h,
+            top: 10,
             left: 0,
             right: 0,
             bottom: 0,
@@ -379,13 +381,13 @@ class AddUserBottomSheetUI extends StatelessWidget {
                               ? "Chọn bố / mẹ"
                               : "Chọn chồng / vợ",
                           SizedBox(
-                            width: Get.width - 32.w,
+                            width: Get.width - 32,
                             child: GestureDetector(
                               onTap: () => controller.editRole.value
                                   ? _showUserPickerSheet(controller.mode)
                                   : null,
                               child: Container(
-                                width: Get.width - 32.w,
+                                width: Get.width - 32,
                                 height: AppSize.kButtonHeight,
                                 alignment: Alignment.centerLeft,
                                 padding: const EdgeInsets.symmetric(
@@ -460,7 +462,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                         context,
                         "Địa chỉ",
                         SizedBox(
-                          width: Get.width - 32.w,
+                          width: Get.width - 32,
                           child: Column(
                             children: [
                               GestureDetector(
@@ -469,7 +471,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                                         ProvinceLevel.PROVINCE)
                                     : null,
                                 child: Container(
-                                  width: Get.width - 32.w,
+                                  width: Get.width - 32,
                                   height: AppSize.kButtonHeight,
                                   alignment: Alignment.centerLeft,
                                   padding: const EdgeInsets.symmetric(
@@ -515,7 +517,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 10.h),
+                              const SizedBox(height: 10),
                               if (isProvinceValid)
                                 GestureDetector(
                                   onTap: () => controller.editRole.value
@@ -523,7 +525,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                                           ProvinceLevel.DISTRICT)
                                       : null,
                                   child: Container(
-                                    width: Get.width - 32.w,
+                                    width: Get.width - 32,
                                     height: AppSize.kButtonHeight,
                                     alignment: Alignment.centerLeft,
                                     padding: const EdgeInsets.symmetric(
@@ -570,7 +572,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                              if (isProvinceValid) SizedBox(height: 10.h),
+                              if (isProvinceValid) const SizedBox(height: 10),
                               if (isDistrictValid)
                                 GestureDetector(
                                   onTap: () => controller.editRole.value
@@ -578,7 +580,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                                           ProvinceLevel.WARD)
                                       : null,
                                   child: Container(
-                                    width: Get.width - 32.w,
+                                    width: Get.width - 32,
                                     height: AppSize.kButtonHeight,
                                     alignment: Alignment.centerLeft,
                                     padding: const EdgeInsets.symmetric(
@@ -782,7 +784,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
     return GestureDetector(
       onTap: controller.editRole.value ? onTap : null,
       child: Container(
-        width: Get.width - 32.w,
+        width: Get.width - 32,
         height: AppSize.kButtonHeight,
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.symmetric(horizontal: AppSize.kPadding),
@@ -848,13 +850,13 @@ class AddUserBottomSheetUI extends StatelessWidget {
                             ? Image.file(
                                 File(controller.croppedData.value!.path),
                                 fit: BoxFit.cover,
-                                width: 80.w,
-                                height: 80.w,
+                                width: 80,
+                                height: 80,
                               )
                             : Image.asset(
                                 "assets/images/default-avatar.webp",
-                                width: 80.w,
-                                height: 80.w,
+                                width: 80,
+                                height: 80,
                                 fit: BoxFit.cover,
                               ),
                       ))
@@ -864,18 +866,18 @@ class AddUserBottomSheetUI extends StatelessWidget {
                           ? Image.network(
                               "${controller.selectedTreeMember!.avatar}",
                               fit: BoxFit.cover,
-                              width: 80.w,
-                              height: 80.w,
+                              width: 80,
+                              height: 80,
                             )
                           : Image.asset(
                               "assets/images/default-avatar.webp",
-                              width: 80.w,
-                              height: 80.w,
+                              width: 80,
+                              height: 80,
                               fit: BoxFit.cover,
                             ),
                     ),
             ),
-            SizedBox(width: 16.w),
+            const SizedBox(width: 16),
             Expanded(
               child: SizedBox(
                 width: double.infinity,
@@ -908,7 +910,7 @@ class AddUserBottomSheetUI extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
             ),
-            SizedBox(height: 8.h),
+            const SizedBox(height: 8),
             child,
           ]),
     );

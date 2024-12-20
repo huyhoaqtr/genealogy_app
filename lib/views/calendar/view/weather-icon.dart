@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:weather_icons/weather_icons.dart';
 
 class WeatherIcon extends StatelessWidget {
@@ -33,7 +32,7 @@ class WeatherIcon extends StatelessWidget {
     return Icon(
       getWeatherIcon(weatherId), // Hiển thị icon theo weatherId
       color: Colors.blue,
-      size: 30.w,
+      size: 30,
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/utils/widgets/common/avatar_image.dart';
 import 'package:getx_app/utils/widgets/progress_indicator.dart';
@@ -26,6 +25,7 @@ class FeedScreen extends GetView<FeedController> {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => const CreateFeedForm(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -134,7 +134,7 @@ class FeedScreen extends GetView<FeedController> {
           GestureDetector(
             onTap: () => _showCreateNewPostBottomSheet(context),
             child: Container(
-              width: Get.width - AppSize.kPadding * 2 - 32.w,
+              width: Get.width - AppSize.kPadding * 4,
               color: Colors.transparent,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

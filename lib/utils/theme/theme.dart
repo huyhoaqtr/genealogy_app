@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:getx_app/constants/app_size.dart';
 
 import '../../constants/app_colors.dart';
@@ -20,7 +19,7 @@ AppBarTheme buildAppBarTheme() {
   return AppBarTheme(
     backgroundColor: AppColors.backgroundColor,
     elevation: 0,
-    toolbarHeight: 40.h,
+    toolbarHeight: 40,
     titleSpacing: 0,
     iconTheme: IconThemeData(color: AppColors.textColor),
     titleTextStyle: TextStyle(

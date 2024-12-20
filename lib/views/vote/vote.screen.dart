@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 
@@ -22,6 +21,7 @@ class VoteScreen extends GetView<VoteController> {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => const CreateVoteSheetUI(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -85,7 +85,7 @@ class VoteScreen extends GetView<VoteController> {
                         voteSessions.length + 1, // +1 for spacing at bottom
                     itemBuilder: (context, index) {
                       if (index == voteSessions.length) {
-                        return SizedBox(height: 40.h); // Spacing at bottom
+                        return const SizedBox(height: 40); // Spacing at bottom
                       }
 
                       final voteSession = voteSessions[index];

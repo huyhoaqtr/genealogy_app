@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/resources/models/tree_member.model.dart';
 import 'package:getx_app/utils/string/string.dart';
@@ -27,6 +26,7 @@ class InteractiveNode extends StatelessWidget {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => AddUserBottomSheetUI(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -125,8 +125,7 @@ class InteractiveNode extends StatelessWidget {
                   "${nodeBlock.fullName}",
                   style: Theme.of(context).textTheme.labelSmall!.copyWith(
                         fontSize:
-                            (controller.calculateSize(nodeBlock.level!) * 0.05)
-                                .sp,
+                            (controller.calculateSize(nodeBlock.level!) * 0.05),
                         letterSpacing:
                             controller.calculateSize(nodeBlock.level!) * 0.005,
                         fontWeight: FontWeight.w600,
@@ -145,8 +144,7 @@ class InteractiveNode extends StatelessWidget {
                     style: Theme.of(context).textTheme.labelSmall!.copyWith(
                           fontSize:
                               (controller.calculateSize(nodeBlock.level!) *
-                                      0.04)
-                                  .sp,
+                                  0.04),
                           letterSpacing:
                               controller.calculateSize(nodeBlock.level!) *
                                   0.005,
@@ -168,8 +166,7 @@ class InteractiveNode extends StatelessWidget {
                       style: Theme.of(context).textTheme.labelSmall!.copyWith(
                             fontSize:
                                 (controller.calculateSize(nodeBlock.level!) *
-                                        0.03)
-                                    .sp,
+                                    0.03),
                             letterSpacing:
                                 controller.calculateSize(nodeBlock.level!) *
                                     0.005,
@@ -185,8 +182,7 @@ class InteractiveNode extends StatelessWidget {
                       style: Theme.of(context).textTheme.labelSmall!.copyWith(
                             fontSize:
                                 (controller.calculateSize(nodeBlock.level!) *
-                                        0.03)
-                                    .sp,
+                                    0.03),
                             letterSpacing:
                                 controller.calculateSize(nodeBlock.level!) *
                                     0.005,
@@ -204,8 +200,7 @@ class InteractiveNode extends StatelessWidget {
                       style: Theme.of(context).textTheme.labelSmall!.copyWith(
                             fontSize:
                                 (controller.calculateSize(nodeBlock.level!) *
-                                        0.03)
-                                    .sp,
+                                    0.03),
                             letterSpacing:
                                 controller.calculateSize(nodeBlock.level!) *
                                     0.005,

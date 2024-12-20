@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_size.dart';
 import 'package:getx_app/utils/widgets/progress_indicator.dart';
@@ -28,6 +27,7 @@ class FundDetailScreen extends GetView<FundDetailController> {
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => const CreateTransactionSheetUI(),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -89,7 +89,7 @@ class FundDetailScreen extends GetView<FundDetailController> {
                         _buildHeaderContentView(context),
                         _buildFundDetailContentView(context),
                         _buildTransactionListView(context),
-                        SizedBox(height: 50.h),
+                        SizedBox(height: 50),
                       ],
                     )
                   : Container(),
