@@ -28,6 +28,7 @@ class DashboardController extends GetxController {
     onInitialState();
     updateFcmKey();
     getTribeData();
+    getMyInfo();
   }
 
   @override
@@ -105,6 +106,20 @@ class DashboardController extends GetxController {
       if (response.statusCode == 200) {
         await StorageManager.setTribe(response.data!);
         tribe.value = response.data!;
+      }
+    } catch (e) {
+      print("Error: $e");
+      DialogHelper.showToast(
+          "Có lỗi xây ra, vui lòng thử lại sau", ToastType.warning);
+    }
+  }
+
+  Future<void> getMyInfo() async {
+    try {
+      final response = await HomeApi().getMyInfo();
+      if (response.statusCode == 200) {
+        await StorageManager.setUser(response.data!);
+        myInfo.value = response.data!;
       }
     } catch (e) {
       print("Error: $e");

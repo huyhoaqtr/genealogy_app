@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
+import 'package:getx_app/resources/models/user.model.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -62,6 +63,32 @@ class HomeApi {
           e.response?.data['message'] ?? 'An error occurred',
         );
         return ApiResponse<TribeModel>(
+          statusCode: e.response?.statusCode,
+          message: e.response?.data['message'] ?? 'An error occurred',
+        );
+      }
+      rethrow;
+    }
+  }
+
+  Future<ApiResponse<User>> getMyInfo() async {
+    try {
+      // Gửi request đến API
+      final response = await DioClient().get('/auth/me');
+
+      return ApiResponse<User>(
+        statusCode: response.statusCode,
+        message: response.data['message'] ?? 'Success',
+        data: User.fromJson(response.data['data']),
+      );
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
+        return ApiResponse<User>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'] ?? 'An error occurred',
         );

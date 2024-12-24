@@ -1,45 +1,61 @@
 import 'package:get/get.dart';
-import 'package:getx_app/views/family_tree/family-tree.controller.dart';
+import 'package:getx_app/utils/widgets/dialog/dialog.helper.dart';
+import 'package:getx_app/utils/widgets/loading/loading.controller.dart';
 
+import '../../resources/api/tribe.api.dart';
 import '../../resources/models/tree_member.model.dart';
 
 class PedigreeController extends GetxController {
   RxInt selectLevel = 1.obs;
   RxList<int> levels = <int>[].obs;
-  late FamilyTreeController familyTreeController;
+  RxList<TreeMember> blocks = <TreeMember>[].obs;
+
+  RxBool isLoading = false.obs;
+  final LoadingController loadingController = LoadingController();
 
   @override
-  Future<void> onInit() async {
+  void onInit() async {
     super.onInit();
-    familyTreeController = Get.put(FamilyTreeController());
-    ever<bool>(familyTreeController.isLoading, (isLoading) {
-      if (!isLoading) {
+    fetchBlocks();
+  }
+
+  Future<void> fetchBlocks() async {
+    isLoading.value = true;
+    try {
+      final response = await TribeAPi().getTribeTree();
+
+      if (response.statusCode == 200) {
+        blocks.value = response.data ?? [];
         loadAllMembers();
       }
-    });
+    } catch (e) {
+      print("Error: $e");
+      DialogHelper.showToast(
+        "Có lỗi xây ra, vui lòng thử lại sau",
+        ToastType.warning,
+      );
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   // Load data
   void loadAllMembers() {
-    levels.value = familyTreeController.blocks
-        .map((member) => member.level!)
-        .toSet()
-        .toList();
+    levels.value = blocks.map((member) => member.level!).toSet().toList();
   }
 
   List<TreeMember> filterMembers(int level) {
-    List<TreeMember> filteredMembers = familyTreeController.blocks
-        .where((member) => member.level == level)
-        .toList();
+    List<TreeMember> filteredMembers =
+        blocks.where((member) => member.level == level).toList();
 
     if (filteredMembers.isEmpty) return [];
 
     Map<String, List<TreeMember>> childrenMap = {
-      for (var member in familyTreeController.blocks)
+      for (var member in blocks)
         if (member.parent != null) member.parent!: []
     };
 
-    for (var member in familyTreeController.blocks) {
+    for (var member in blocks) {
       if (member.parent != null) {
         childrenMap[member.parent!]!.add(member);
       }

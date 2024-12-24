@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image/image.dart' as img;
@@ -363,4 +362,35 @@ Future<String> getFileInfo(String? blockId) async {
   await fileStorage.initializeContract();
   final file = await fileStorage.getFile(int.parse(blockId));
   return file["ipfsAddress"] ?? "";
+}
+
+void callPhone(String phoneNumber) async {
+  final Uri phoneUri = Uri(scheme: 'tel', path: phoneNumber);
+
+  if (await canLaunchUrl(phoneUri)) {
+    await launchUrl(phoneUri);
+  } else {
+    DialogHelper.showToast(
+      'Không thể gọi số điện thoại: $phoneNumber',
+      ToastType.error,
+    );
+    throw 'Không thể gọi số điện thoại: $phoneNumber';
+  }
+}
+
+void sendMessage(String phoneNumber) async {
+  final Uri smsUri = Uri(
+    scheme: 'sms',
+    path: phoneNumber,
+  );
+
+  if (await canLaunchUrl(smsUri)) {
+    await launchUrl(smsUri);
+  } else {
+    DialogHelper.showToast(
+      'Không thể nhắn tin số điện thoại: $phoneNumber',
+      ToastType.error,
+    );
+    throw 'Không thể nhắn tin số điện thoại: $phoneNumber';
+  }
 }

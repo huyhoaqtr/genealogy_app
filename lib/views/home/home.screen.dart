@@ -84,7 +84,7 @@ class HomeScreen extends GetView<HomeController> {
                   'Số điện thoại, địa chỉ',
                   'assets/icons/user-square.svg',
                   false,
-                  "",
+                  AppRoutes.contact,
                 ),
               ],
             ),

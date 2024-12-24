@@ -10,6 +10,7 @@ import '../../services/ads/ad_manager.dart';
 import '../../utils/string/string.dart';
 import '../../utils/widgets/dialog/dialog.helper.dart';
 import '../../utils/widgets/icon_button.common.dart';
+import '../../utils/widgets/progress_indicator.dart';
 import '../../utils/widgets/text_button.common.dart';
 import '../family_tree/view/add_user.bottomsheet.dart';
 import '../family_tree/view/add_user.controller.dart';
@@ -21,12 +22,14 @@ class PedigreeScreen extends GetView<PedigreeController> {
   final DashboardController dashboardController = Get.find();
 
   void _showAddUserBottomSheet(AddUserMode mode, TreeMember selectedMember) {
-    final AddUserController addUserController = Get.put(AddUserController(
-      mode: mode,
-      sheetMode: SheetMode.ADD,
-    ));
+    if (!Get.isRegistered<AddUserController>()) {
+      final AddUserController addUserController = Get.put(AddUserController(
+        mode: mode,
+        sheetMode: SheetMode.ADD,
+      ));
 
-    addUserController.selectedUser.value = selectedMember;
+      addUserController.selectedUser.value = selectedMember;
+    }
 
     showModalBottomSheet(
       context: Get.context!,
@@ -69,11 +72,13 @@ class PedigreeScreen extends GetView<PedigreeController> {
   }
 
   void _showEditUserBottomSheet(AddUserMode mode, TreeMember selectedBlock) {
-    Get.lazyPut(() => AddUserController(
-          mode: mode,
-          sheetMode: SheetMode.EDIT,
-          selectedTreeMember: selectedBlock,
-        ));
+    if (!Get.isRegistered<AddUserController>()) {
+      Get.put(AddUserController(
+        mode: mode,
+        sheetMode: SheetMode.EDIT,
+        selectedTreeMember: selectedBlock,
+      ));
+    }
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
@@ -103,8 +108,34 @@ class PedigreeScreen extends GetView<PedigreeController> {
           onPressed: () => Get.back(),
         ),
       ),
-      body: SafeArea(
-        child: Row(
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const ProgressIndicatorComponent();
+        }
+        if (controller.blocks.value.isEmpty && !controller.isLoading.value) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Chưa có thành viên nào',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(AppSize.kPadding),
+                  child: CustomButton(
+                      text: "Thêm ngay",
+                      width: 50,
+                      onPressed: () => _showAddUserBottomSheet(
+                            AddUserMode.ROOT,
+                            TreeMember(),
+                          )),
+                )
+              ],
+            ),
+          );
+        }
+        return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
@@ -136,8 +167,8 @@ class PedigreeScreen extends GetView<PedigreeController> {
               ),
             )
           ],
-        ),
-      ),
+        );
+      }),
     );
   }
 

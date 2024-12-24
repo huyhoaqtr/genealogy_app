@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:getx_app/resources/api/tribe.api.dart';
 import 'package:getx_app/resources/models/tree_member.model.dart';
 import 'package:getx_app/views/dashboard/dashboard.controller.dart';
@@ -14,7 +13,6 @@ import '../../../constants/app_size.dart';
 import '../../../resources/models/province.dart';
 import '../../../utils/widgets/dialog/dialog.helper.dart';
 import '../../../utils/widgets/loading/loading.controller.dart';
-import '../../../utils/widgets/show_custom_snackbar.dart';
 import '../family-tree.controller.dart';
 
 enum AddUserMode { ROOT, CHILD, COUPLE }
@@ -49,8 +47,6 @@ class AddUserController extends GetxController {
   final DashboardController dashboardController =
       Get.find<DashboardController>();
   final LoadingController loadingController = Get.find<LoadingController>();
-  final FamilyTreeController familyTreeController =
-      Get.find<FamilyTreeController>();
 
   final AddUserMode mode;
   final SheetMode sheetMode;
@@ -86,9 +82,13 @@ class AddUserController extends GetxController {
         deathday.value = DateTime.parse(selectedTreeMember!.dateOfDeath!);
       }
       if (selectedTreeMember!.parent != null) {
-        selectedUser.value = familyTreeController.blocks.firstWhere(
-          (block) => block.sId == selectedTreeMember!.parent,
-        );
+        if (Get.isRegistered<FamilyTreeController>()) {
+          final FamilyTreeController familyTreeController =
+              Get.find<FamilyTreeController>();
+          selectedUser.value = familyTreeController.blocks.firstWhere(
+            (block) => block.sId == selectedTreeMember!.parent,
+          );
+        }
       }
 
       if (selectedTreeMember?.address != null) {
@@ -256,7 +256,11 @@ class AddUserController extends GetxController {
             ToastType.success,
           );
 
-          familyTreeController.fetchBlocks();
+          if (Get.isRegistered<FamilyTreeController>()) {
+            final FamilyTreeController familyTreeController =
+                Get.find<FamilyTreeController>();
+            familyTreeController.fetchBlocks();
+          }
         }
       }
     } catch (e) {
@@ -316,13 +320,15 @@ class AddUserController extends GetxController {
         if (response.statusCode == 200) {
           Get.back();
 
-          showCustomSnackbar(
-            title: "Thành công",
-            message: response.message ?? "Tạo thành viên thành công",
-            type: SnackbarType.success,
+          DialogHelper.showToast(
+            "Câp nhật thành công",
+            ToastType.success,
           );
-
-          familyTreeController.fetchBlocks();
+          if (Get.isRegistered<FamilyTreeController>()) {
+            final FamilyTreeController familyTreeController =
+                Get.find<FamilyTreeController>();
+            familyTreeController.fetchBlocks();
+          }
         }
       }
     } catch (e) {

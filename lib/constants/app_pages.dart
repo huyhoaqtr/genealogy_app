@@ -8,6 +8,8 @@ import '../views/archive/archive.binding.dart';
 import '../views/archive/archive.screen.dart';
 import '../views/compass/compass.binding.dart';
 import '../views/compass/compass.screen.dart';
+import '../views/contact/contact.binding.dart';
+import '../views/contact/contact.screen.dart';
 import '../views/my-post/my-post.binding.dart';
 import '../views/my-post/my-post.screen.dart';
 import '../views/user-info/user-info.binding.dart';
@@ -206,6 +208,11 @@ class AppPages {
       binding: CompassBinding(),
       name: AppRoutes.compass,
       page: () => const CompassScreen(),
+    ),
+    GetPage(
+      binding: ContactBinding(),
+      name: AppRoutes.contact,
+      page: () => const ContactScreen(),
     ),
   ];
 }
