@@ -1,25 +1,82 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_routes.dart';
 import 'package:getx_app/constants/app_size.dart';
+import 'package:getx_app/utils/widgets/dialog/dialog.helper.dart';
 import 'package:getx_app/utils/widgets/text_button.common.dart';
+import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 import 'package:getx_app/views/vote/vote.controller.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../resources/models/vote.model.dart';
 import '../../../utils/string/string.dart';
+import '../../../utils/widgets/icon_button.common.dart';
+import '../../family_tree/view/add_user.controller.dart';
+import 'create_vote.sheet.dart';
+import 'vote_item.sheet.dart';
 import 'vote_progress.dart';
 
 class VoteItem extends StatelessWidget {
-  const VoteItem(
-      {super.key, required this.voteSession, required this.controller});
+  VoteItem({super.key, required this.voteSession, required this.controller});
 
   final VoteSession voteSession;
   final VoteController controller;
 
+  final DashboardController dashboardController = Get.find();
+
+  void _showUpdateVoteBottomSheet() {
+    Get.lazyPut(() => CreateVoteController(
+          sheetMode: SheetMode.EDIT,
+          voteSession: voteSession,
+        ));
+    showModalBottomSheet(
+      context: Get.context!,
+      isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
+      builder: (context) => const CreateVoteSheetUI(),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+      ),
+      backgroundColor: AppColors.backgroundColor,
+    ).then((value) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        Get.delete<CreateVoteController>();
+      });
+    });
+  }
+
+  void showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
+      builder: (context) => VoteItemBottomSheet(
+        voteSession: voteSession,
+        onEdit: () {
+          Get.back();
+          _showUpdateVoteBottomSheet();
+        },
+        onRemove: () {
+          Get.back();
+          DialogHelper.showConfirmDialog(
+              "Xác nhận", "Bạn muốn xoá cuộc biểu quyết này?", onConfirm: () {
+            controller.deleteVoteSession(voteSession.sId!);
+          });
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final int totalVotes = calculateTotalVotes(voteSession.options!);
+    bool isEditing = dashboardController.myInfo.value.role == 'ADMIN' ||
+        dashboardController.myInfo.value.role == 'LEADER';
     return Container(
       width: Get.width - AppSize.kPadding * 2,
       decoration: BoxDecoration(
@@ -40,13 +97,27 @@ class VoteItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "${voteSession.title}",
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.w600,
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "${voteSession.title}",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
+                  ),
+                  if (isEditing) const SizedBox(width: AppSize.kPadding / 2),
+                  if (isEditing)
+                    IconButtonComponent(
+                      iconPath: "assets/icons/more.svg",
+                      iconSize: 28,
+                      iconPadding: 4,
+                      onPressed: () => showBottomSheet(context),
+                    )
+                ],
               ),
               Text(
                 "${voteSession.desc}",
@@ -105,7 +176,7 @@ class VoteItem extends StatelessWidget {
                   ),
                   isOutlined: true,
                   height: 30,
-                  width: Get.width / 2,
+                  width: min(Get.width / 2, 200),
                 ),
               )
             ],

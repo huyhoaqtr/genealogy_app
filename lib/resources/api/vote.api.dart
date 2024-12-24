@@ -101,6 +101,70 @@ class VoteApi {
     }
   }
 
+  Future<ApiResponse<VoteSession>> updateVoteSession({
+    required String id,
+    required String title,
+    required String desc,
+  }) async {
+    try {
+      // Gửi request đến API
+      final response = await DioClient().put(
+        '/vote/update-vote-session/$id',
+        data: {
+          'title': title,
+          'desc': desc,
+        },
+      );
+
+      return ApiResponse<VoteSession>(
+        statusCode: response.statusCode,
+        message: response.data['message'] ?? 'Success',
+        data: VoteSession.fromJson(response.data['data']),
+      );
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
+        return ApiResponse<VoteSession>(
+          statusCode: e.response?.statusCode,
+          message: e.response?.data['message'] ?? 'An error occurred',
+        );
+      }
+      rethrow;
+    }
+  }
+
+  Future<ApiResponse> deleteVoteSession({
+    required String id,
+  }) async {
+    try {
+      // Gửi request đến API
+      final response = await DioClient().delete(
+        '/vote/delete-vote-session-by-id/$id',
+      );
+
+      return ApiResponse<VoteSession>(
+        statusCode: response.statusCode,
+        message: response.data['message'] ?? 'Success',
+      );
+    } catch (e) {
+      if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
+        return ApiResponse<VoteSession>(
+          statusCode: e.response?.statusCode,
+          message: e.response?.data['message'] ?? 'An error occurred',
+        );
+      }
+      rethrow;
+    }
+  }
+
   Future<ApiResponse<VoteSession>> castVote({
     required String voteSessionId,
     String? oldOptionId,
@@ -113,6 +177,40 @@ class VoteApi {
         'oldOptionId': oldOptionId,
         'newOptionId': newOptionId
       });
+
+      return ApiResponse<VoteSession>(
+        statusCode: response.statusCode,
+        message: response.data['message'] ?? 'Success',
+        data: VoteSession.fromJson(response.data['data']),
+      );
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
+        return ApiResponse<VoteSession>(
+          statusCode: e.response?.statusCode,
+          message: e.response?.data['message'] ?? 'An error occurred',
+        );
+      }
+      rethrow;
+    }
+  }
+
+  Future<ApiResponse<VoteSession>> addOptionToVote({
+    required String id,
+    required String optionString,
+  }) async {
+    try {
+      // Gửi request đến API
+      final response = await DioClient().put(
+        '/vote/add-option-to-vote/$id',
+        data: {
+          'optionString': optionString,
+        },
+      );
 
       return ApiResponse<VoteSession>(
         statusCode: response.statusCode,

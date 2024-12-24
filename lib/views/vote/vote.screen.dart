@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/views/dashboard/dashboard.controller.dart';
+import 'package:getx_app/views/family_tree/view/add_user.controller.dart';
 
 import '../../constants/app_colors.dart';
 import '../../constants/app_size.dart';
@@ -17,7 +18,7 @@ class VoteScreen extends GetView<VoteController> {
   final DashboardController dashboardController = Get.find();
 
   void _showCreateNewVoteBottomSheet() {
-    Get.lazyPut(() => CreateVoteController());
+    Get.lazyPut(() => CreateVoteController(sheetMode: SheetMode.ADD));
     showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,

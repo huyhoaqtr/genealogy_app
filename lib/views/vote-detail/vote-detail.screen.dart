@@ -10,6 +10,7 @@ import '../../resources/models/user.model.dart';
 import '../../utils/string/string.dart';
 import '../../utils/widgets/icon_button.common.dart';
 import '../vote/view/vote_progress.dart';
+import 'view/create_vote_option.sheet.dart';
 import 'vote-detail.controller.dart';
 
 class VoteDetailScreen extends GetView<VoteDetailController> {
@@ -31,6 +32,30 @@ class VoteDetailScreen extends GetView<VoteDetailController> {
     ).whenComplete(() {});
   }
 
+  void _showAddOptionBottomSheet() {
+    if (!Get.isRegistered<CreateVoteOptionController>()) {
+      Get.put(CreateVoteOptionController(
+          voteSession: controller.voteSession.value));
+    }
+    showModalBottomSheet(
+      context: Get.context!,
+      isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
+      builder: (context) => const CreateVoteOptionSheetUI(),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+      ),
+      backgroundColor: AppColors.backgroundColor,
+    ).then((value) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        Get.delete<CreateVoteOptionController>();
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +65,15 @@ class VoteDetailScreen extends GetView<VoteDetailController> {
           iconPath: 'assets/icons/arrow-left.svg',
           onPressed: () => Get.back(),
         ),
+        actions: [
+          IconButtonComponent(
+            iconPath: 'assets/icons/element-plus.svg',
+            onPressed: () => _showAddOptionBottomSheet(),
+            iconPadding: 6,
+            iconSize: 32,
+          ),
+          const SizedBox(width: AppSize.kPadding),
+        ],
       ),
       body: SizedBox(
         width: Get.width,
