@@ -45,11 +45,11 @@ class InteractiveNode extends StatelessWidget {
   Widget build(BuildContext context) {
     // return Obx(() {
     return Positioned(
-      left: (block.positionX ?? 0.0) -
+      left: ((block.positionX ?? 0.0) / (360 / controller.screenWidth)) -
           ((controller.calculateSize(block.level!) *
                   (block.couple!.length + 1)) /
               2),
-      top: (block.positionY ?? 0.0) -
+      top: ((block.positionY ?? 0.0) / (360 / controller.screenWidth)) -
           (controller.calculateSize(block.level!) / 2 / 2),
       child: GestureDetector(
         onPanUpdate: (details) {

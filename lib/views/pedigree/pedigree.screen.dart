@@ -139,7 +139,7 @@ class PedigreeScreen extends GetView<PedigreeController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: 50,
+              width: 55,
               margin: const EdgeInsets.only(
                   top: AppSize.kPadding / 2, left: AppSize.kPadding / 2),
               child: SingleChildScrollView(

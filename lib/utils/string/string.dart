@@ -394,3 +394,14 @@ void sendMessage(String phoneNumber) async {
     throw 'Không thể nhắn tin số điện thoại: $phoneNumber';
   }
 }
+
+String getRole(String role) {
+  switch (role) {
+    case 'ADMIN':
+      return 'Tộc lão';
+    case 'LEADER':
+      return 'Tộc trưởng';
+    default:
+      return 'Thành viên';
+  }
+}

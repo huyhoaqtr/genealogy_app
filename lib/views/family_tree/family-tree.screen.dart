@@ -70,8 +70,11 @@ class FamilyTreeScreen extends GetView<FamilyTreeController> {
                                   ? 90 * 3.1415927 / 180
                                   : 0,
                               child: SizedBox(
-                                width: 360 - AppSize.kPadding,
-                                height: (360 - AppSize.kPadding) * (2 / 3),
+                                width:
+                                    controller.screenWidth - AppSize.kPadding,
+                                height: (controller.screenWidth -
+                                        AppSize.kPadding) *
+                                    (2 / 3),
                                 child: _buildMainContentView(context),
                               ),
                             )),
@@ -128,11 +131,11 @@ class FamilyTreeScreen extends GetView<FamilyTreeController> {
           ),
         ),
         Positioned(
-            top: 360 * (0.2 / 4.5),
-            left: 360 * (0.4 / 4.5),
-            right: 360 * (0.4 / 4.5),
+            top: controller.screenWidth * (0.2 / 4.5),
+            left: controller.screenWidth * (0.4 / 4.5),
+            right: controller.screenWidth * (0.4 / 4.5),
             child: Container(
-              height: 360 * (0.5 / 4.5),
+              height: controller.screenWidth * (0.5 / 4.5),
               alignment: Alignment.topCenter,
               decoration: const BoxDecoration(
                 image: DecorationImage(
@@ -141,10 +144,12 @@ class FamilyTreeScreen extends GetView<FamilyTreeController> {
                 ),
               ),
               child: Container(
-                width: 360 * (0.5 / 4.5),
-                height: 360 * (0.5 / 4.5) / 3,
-                // color: Colors.blue,
-                margin: const EdgeInsets.only(top: AppSize.kPadding / 1.75),
+                width: controller.screenWidth * (0.5 / 4.5),
+                height: controller.screenWidth * (0.5 / 4.5) / 3,
+                margin: EdgeInsets.only(
+                  top: AppSize.kPadding /
+                      (1.75 * (360 / controller.screenWidth)),
+                ),
                 alignment: Alignment.center,
                 child: AutoSizeText(
                   "${dashboardController.tribe.value?.name}",
@@ -160,30 +165,31 @@ class FamilyTreeScreen extends GetView<FamilyTreeController> {
               ),
             )),
         Positioned(
-          top: 360 * (0.25 / 4.5),
-          right: 360 * (0.4 / 5),
+          top: controller.screenWidth * (0.25 / 4.5),
+          right: controller.screenWidth * (0.4 / 5),
           child: Image.asset(
             'assets/images/img_10.png',
             fit: BoxFit.cover,
-            width: 360 * (0.8 / 4.5),
+            width: controller.screenWidth * (0.8 / 4.5),
           ),
         ),
         Positioned(
-          top: 360 * (0.25 / 4.5),
-          left: 360 * (0.4 / 5),
+          top: controller.screenWidth * (0.25 / 4.5),
+          left: controller.screenWidth * (0.4 / 5),
           child: Image.asset(
             'assets/images/img_11.png',
             fit: BoxFit.cover,
-            width: 360 * (0.8 / 4.5),
+            width: controller.screenWidth * (0.8 / 4.5),
           ),
         ),
         Positioned(
           left: AppSize.kPadding,
           right: AppSize.kPadding,
-          top: 360 * (0.7 / 4.5),
+          top: controller.screenWidth * (0.7 / 4.5),
           child: Container(
-            width: 360 - AppSize.kPadding * 3,
-            height: (360 - AppSize.kPadding) * (2 / 3) - 360 * (0.8 / 4.5),
+            width: controller.screenWidth - AppSize.kPadding * 3,
+            height: (controller.screenWidth - AppSize.kPadding) * (2 / 3) -
+                controller.screenWidth * (0.8 / 4.5),
             alignment: Alignment.center,
             // color: Colors.red,
             child: Obx(() => Stack(

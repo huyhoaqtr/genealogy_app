@@ -74,12 +74,14 @@ class DioClient {
     String path, {
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
+    CancelToken? cancelToken,
   }) async {
     try {
       return await dio.get(
         path,
         queryParameters: queryParameters,
         options: Options(headers: headers),
+        cancelToken: cancelToken,
       );
     } catch (e) {
       rethrow;

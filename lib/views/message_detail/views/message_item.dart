@@ -88,6 +88,8 @@ class MessageItem extends StatelessWidget {
   void showBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      constraints: BoxConstraints(minWidth: Get.width),
       builder: (context) => MessageBottomSheet(
         message: message,
         isSameUser: isSameUser,

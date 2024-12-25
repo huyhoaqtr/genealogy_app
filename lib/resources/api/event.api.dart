@@ -1,6 +1,8 @@
+import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
-import 'package:getx_app/utils/widgets/dialog/dialog.helper.dart';
 
+import '../../utils/widgets/dialog/dialog.helper.dart';
+import '../../views/event/event.controller.dart';
 import '../dio/dio_client.dart';
 import '../models/api_response.dart';
 import '../models/event.model.dart';
@@ -9,16 +11,67 @@ class EventApi {
   Future<PagingResponse<Event>> getAllEvent({
     required int page,
     required int limit,
+    required FilterStatus filter,
+    CancelToken? cancelToken,
   }) async {
     try {
+      final DateTime now = DateTime.now();
+      final Map<String, String> queryParameters = {
+        'page': page.toString(),
+        'limit': limit.toString(),
+      };
+
+      switch (filter) {
+        case FilterStatus.all:
+          break;
+
+        case FilterStatus.currentDay:
+          queryParameters['startDate'] = DateFormat('yyyy-MM-dd').format(now);
+          queryParameters['endDate'] = DateFormat('yyyy-MM-dd').format(now);
+          break;
+
+        case FilterStatus.thisWeek:
+          final DateTime startOfWeek =
+              now.subtract(Duration(days: now.weekday - 1));
+          final DateTime endOfWeek = startOfWeek.add(const Duration(days: 6));
+          queryParameters['startDate'] =
+              DateFormat('yyyy-MM-dd').format(startOfWeek);
+          queryParameters['endDate'] =
+              DateFormat('yyyy-MM-dd').format(endOfWeek);
+          break;
+
+        case FilterStatus.thisMonth:
+          final DateTime startOfMonth = DateTime(now.year, now.month, 1);
+          final DateTime endOfMonth = DateTime(now.year, now.month + 1, 0);
+          queryParameters['startDate'] =
+              DateFormat('yyyy-MM-dd').format(startOfMonth);
+          queryParameters['endDate'] =
+              DateFormat('yyyy-MM-dd').format(endOfMonth);
+          break;
+
+        case FilterStatus.nextMonth:
+          final DateTime startOfNextMonth =
+              DateTime(now.year, now.month + 1, 1);
+          final DateTime endOfNextMonth = DateTime(now.year, now.month + 2, 0);
+          queryParameters['startDate'] =
+              DateFormat('yyyy-MM-dd').format(startOfNextMonth);
+          queryParameters['endDate'] =
+              DateFormat('yyyy-MM-dd').format(endOfNextMonth);
+          break;
+        case FilterStatus.previousMonth:
+          final DateTime startOfNextMonth =
+              DateTime(now.year, now.month - 1, 1);
+          final DateTime endOfNextMonth = DateTime(now.year, now.month, 0);
+          queryParameters['startDate'] =
+              DateFormat('yyyy-MM-dd').format(startOfNextMonth);
+          queryParameters['endDate'] =
+              DateFormat('yyyy-MM-dd').format(endOfNextMonth);
+          break;
+      }
+
       // Gửi request đến API
-      final response = await DioClient().get(
-        '/event/get-all-event',
-        queryParameters: {
-          'page': page,
-          'limit': limit,
-        },
-      );
+      final response = await DioClient().get('/event/get-all-event',
+          queryParameters: queryParameters, cancelToken: cancelToken);
 
       return PagingResponse<Event>.fromJson(
         response.data,

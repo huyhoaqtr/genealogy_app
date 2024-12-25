@@ -31,4 +31,5 @@ class AppRoutes {
   static const String archiveDetail = '/archive-detail';
   static const String compass = '/compass';
   static const String contact = '/contact';
+  static const String permission = '/permission';
 }

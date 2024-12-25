@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -31,19 +32,28 @@ class FamilyTreeController extends GetxController {
   Rx<ScreenMode> isScreenMode = ScreenMode.VIEW.obs;
   RxBool isRotate = false.obs;
 
-  double frameWidth = 360 - AppSize.kPadding * 3;
-  double frameHeight = (360 - AppSize.kPadding) * (2 / 3) - 360 * (0.8 / 4.5);
+  late double screenWidth;
+  late double frameWidth;
+  late double frameHeight;
 
   @override
-  Future<void> onInit() async {
+  void onInit() async {
     super.onInit();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    _initializeFrameDimensions();
     transformationController = TransformationController();
     transformationController.value = Matrix4.identity()..scale(1.0);
-    await fetchBlocks();
+    fetchBlocks();
+  }
+
+  void _initializeFrameDimensions() {
+    screenWidth = max(360, Get.width);
+    frameWidth = screenWidth - AppSize.kPadding * 3;
+    frameHeight =
+        (screenWidth - AppSize.kPadding) * (2 / 3) - screenWidth * (0.8 / 4.5);
   }
 
   Future<void> fetchBlocks() async {
@@ -97,12 +107,12 @@ class FamilyTreeController extends GetxController {
         final parentBlock = blocks.firstWhere((b) => b.sId == block.parent);
         lines.value.add({
           'start': Offset(
-            parentBlock.positionX ?? 0.0,
-            parentBlock.positionY ?? 0.0,
+            ((parentBlock.positionX ?? 0.0) / (360 / screenWidth)),
+            ((parentBlock.positionY ?? 0.0) / (360 / screenWidth)),
           ),
           'end': Offset(
-            block.positionX ?? 0.0,
-            block.positionY ?? 0.0,
+            ((block.positionX ?? 0.0) / (360 / screenWidth)),
+            ((block.positionY ?? 0.0) / (360 / screenWidth)),
           ),
         });
       }
@@ -110,8 +120,10 @@ class FamilyTreeController extends GetxController {
       if (block.children != null) {
         for (var child in block.children!) {
           lines.value.add({
-            'start': Offset(block.positionX ?? 0.0, block.positionY ?? 0.0),
-            'end': Offset(child.positionX ?? 0.0, child.positionY ?? 0.0),
+            'start': Offset(((block.positionX ?? 0.0) / (360 / screenWidth)),
+                ((block.positionY ?? 0.0) / (360 / screenWidth))),
+            'end': Offset(((child.positionX ?? 0.0) / (360 / screenWidth)),
+                ((child.positionY ?? 0.0) / (360 / screenWidth))),
           });
         }
       }
@@ -123,20 +135,25 @@ class FamilyTreeController extends GetxController {
 
     final block = blocks.firstWhere((b) => b.sId == id);
 
-    if ((block.positionX ?? 0.0) + offset.dx >= 0 &&
-        (block.positionX ?? 0.0) + offset.dx <= frameWidth &&
-        (block.positionY ?? 0.0) + offset.dy >= 0 &&
-        (block.positionY ?? 0.0) + offset.dy <= frameHeight) {
+    if (((block.positionX ?? 0.0) / (360 / screenWidth)) + offset.dx >= 0 &&
+        ((block.positionX ?? 0.0) / (360 / screenWidth)) + offset.dx <=
+            frameWidth &&
+        ((block.positionY ?? 0.0) / (360 / screenWidth)) + offset.dy >= 0 &&
+        ((block.positionY ?? 0.0) / (360 / screenWidth)) + offset.dy <=
+            frameHeight) {
       lines.value.removeWhere((line) {
         final start = line['start'] as Offset;
         final end = line['end'] as Offset;
 
         return (start ==
-                Offset(block.positionX ?? 0.0, block.positionY ?? 0.0) ||
-            end == Offset(block.positionX ?? 0.0, block.positionY ?? 0.0));
+                Offset((block.positionX ?? 0.0) / (360 / screenWidth),
+                    (block.positionY ?? 0.0) / (360 / screenWidth)) ||
+            end ==
+                Offset((block.positionX ?? 0.0) / (360 / screenWidth),
+                    (block.positionY ?? 0.0) / (360 / screenWidth)));
       });
 
-      block.positionX = (block.positionX ?? 0) + offset.dx;
+      block.positionX = ((block.positionX ?? 0)) + (offset.dx);
       // block.positionY = (block.positionY ?? 0) + offset.dy;
 
       _updateLinesAffectedByBlock(id);
@@ -152,12 +169,12 @@ class FamilyTreeController extends GetxController {
           blocks.firstWhere((b) => b.sId == updatedBlock.parent);
       updatedLines.value.add({
         'start': Offset(
-          parentBlock.positionX ?? 0.0,
-          parentBlock.positionY ?? 0.0,
+          ((parentBlock.positionX ?? 0.0) / (360 / screenWidth)),
+          ((parentBlock.positionY ?? 0.0) / (360 / screenWidth)),
         ),
         'end': Offset(
-          updatedBlock.positionX ?? 0.0,
-          updatedBlock.positionY ?? 0.0,
+          ((updatedBlock.positionX ?? 0.0) / (360 / screenWidth)),
+          ((updatedBlock.positionY ?? 0.0) / (360 / screenWidth)),
         ),
       });
     }
@@ -166,12 +183,12 @@ class FamilyTreeController extends GetxController {
       for (var child in updatedBlock.children!) {
         updatedLines.value.add({
           'start': Offset(
-            updatedBlock.positionX ?? 0.0,
-            updatedBlock.positionY ?? 0.0,
+            ((updatedBlock.positionX ?? 0.0) / (360 / screenWidth)),
+            ((updatedBlock.positionY ?? 0.0) / (360 / screenWidth)),
           ),
           'end': Offset(
-            child.positionX ?? 0.0,
-            child.positionY ?? 0.0,
+            ((child.positionX ?? 0.0) / (360 / screenWidth)),
+            ((child.positionY ?? 0.0) / (360 / screenWidth)),
           ),
         });
       }
@@ -225,9 +242,13 @@ class FamilyTreeController extends GetxController {
   }
 
   double calculateSize(int level) {
-    const double baseSize = 35.0;
-    const double minSize = 15.0;
-    double size = baseSize - (level > 5 ? 5 : level) * 3.0;
+    double baseSize = (35.0 / (360 / screenWidth));
+    double minSize = (15.0 / (360 / screenWidth));
+    double size = baseSize -
+        (level > (5 / (360 / screenWidth))
+                ? (5 / (360 / screenWidth))
+                : level) *
+            3.0;
 
     return size < minSize ? minSize : size;
   }

@@ -12,6 +12,8 @@ import '../views/contact/contact.binding.dart';
 import '../views/contact/contact.screen.dart';
 import '../views/my-post/my-post.binding.dart';
 import '../views/my-post/my-post.screen.dart';
+import '../views/permission/permission.binding.dart';
+import '../views/permission/permission.screen.dart';
 import '../views/user-info/user-info.binding.dart';
 import '../views/genealogy-setting/genealogy-setting.binding.dart';
 import '../views/genealogy-setting/genealogy-setting.screen.dart';
@@ -39,8 +41,6 @@ import '../views/notification/notification.binding.dart';
 import '../views/pedigree/pedigree.binding.dart';
 import '../views/pedigree/pedigree.screen.dart';
 import '../views/profile/profile.binding.dart';
-import '../views/tree_member/tree-member.binding.dart';
-import '../views/tree_member/tree-member.screen.dart';
 import '../views/user-info/user-info.screen.dart';
 import '../views/vote/vote.binding.dart';
 import '../views/vote/vote.screen.dart';
@@ -98,11 +98,6 @@ class AppPages {
       binding: FamilyTreeBinding(),
       name: AppRoutes.familyTree,
       page: () => FamilyTreeScreen(),
-    ),
-    GetPage(
-      binding: TreeMemberBinding(),
-      name: AppRoutes.treeMember,
-      page: () => const TreeMemberScreen(),
     ),
     GetPage(
       binding: MessageDetailBinding(),
@@ -213,6 +208,11 @@ class AppPages {
       binding: ContactBinding(),
       name: AppRoutes.contact,
       page: () => const ContactScreen(),
+    ),
+    GetPage(
+      binding: PermissionBinding(),
+      name: AppRoutes.permission,
+      page: () => const PermissionScreen(),
     ),
   ];
 }

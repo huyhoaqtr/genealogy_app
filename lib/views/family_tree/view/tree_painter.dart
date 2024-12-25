@@ -13,7 +13,7 @@ class TreePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color = AppColors.primaryColor
-      ..strokeWidth = 0.25
+      ..strokeWidth = 0.75
       ..style = PaintingStyle.stroke;
 
     for (var line in lines) {

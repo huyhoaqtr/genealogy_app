@@ -14,7 +14,7 @@ class DashboardScreen extends GetView<DashboardController> {
   DashboardScreen({super.key});
 
   final List<Widget> screens = [
-    const HomeScreen(),
+    HomeScreen(),
     const CalendarScreen(),
     const MessageScreen(),
     const NotificationScreen(),

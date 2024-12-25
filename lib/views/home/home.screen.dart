@@ -5,12 +5,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/constants/app_colors.dart';
 import 'package:getx_app/constants/app_routes.dart';
+import 'package:getx_app/views/dashboard/dashboard.controller.dart';
 import '../../constants/app_size.dart';
 // import '../../services/ads/banner_ads.dart';
 import 'home.controller.dart';
 
 class HomeScreen extends GetView<HomeController> {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  final DashboardController dashboardController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +68,7 @@ class HomeScreen extends GetView<HomeController> {
               height: AppSize.kPadding / 2,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildHomeItem(
                   context,
@@ -114,7 +117,7 @@ class HomeScreen extends GetView<HomeController> {
               height: AppSize.kPadding / 2,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildHomeItem(
                   context,
@@ -152,7 +155,7 @@ class HomeScreen extends GetView<HomeController> {
               height: AppSize.kPadding / 2,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildHomeItem(
                   context,
@@ -180,11 +183,37 @@ class HomeScreen extends GetView<HomeController> {
             ),
             _buildHomeItem(
               context,
-              'Trợ lí AI',
-              'Giải đáp mọi thắc mắc của bạn',
-              'assets/icons/magic-pen.svg',
+              'Quyền thành viên',
+              'Quyền của các thành viên',
+              'assets/icons/permission.svg',
               true,
-              AppRoutes.chatbot,
+              AppRoutes.permission,
+            ),
+            const SizedBox(
+              height: AppSize.kPadding / 2,
+            ),
+            Row(
+              children: [
+                _buildHomeItem(
+                  context,
+                  'La bàn',
+                  'La bàn phong thuỷ',
+                  'assets/icons/compass.svg',
+                  false,
+                  AppRoutes.compass,
+                ),
+                const SizedBox(
+                  width: AppSize.kPadding / 2,
+                ),
+                _buildHomeItem(
+                  context,
+                  'Trợ lí AI',
+                  'Giải đáp mọi thắc mắc của bạn',
+                  'assets/icons/magic-pen.svg',
+                  false,
+                  AppRoutes.chatbot,
+                ),
+              ],
             ),
           ],
         ),

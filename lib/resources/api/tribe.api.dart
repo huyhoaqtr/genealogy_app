@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:getx_app/resources/models/genealogy.model.dart';
+import 'package:getx_app/resources/models/user.model.dart';
 import 'package:http_parser/http_parser.dart';
 
 import '../../resources/models/tree_member.model.dart';
@@ -202,6 +203,38 @@ class TribeAPi {
           e.response?.data['message'] ?? 'An error occurred',
         );
         return ApiResponse<List<TreeMember>>(
+          statusCode: e.response?.statusCode,
+          message: e.response?.data['message'],
+        );
+      }
+      rethrow;
+    }
+  }
+
+  Future<ApiResponse<List<User>>> getAllMember() async {
+    try {
+      // Gửi request đến API
+      final response = await DioClient().get(
+        '/tribe/get-all-member',
+      );
+
+      // Parse dữ liệu response
+      final data = response.data['data'] as List<dynamic>;
+      final members = data.map((item) => User.fromJson(item)).toList();
+
+      return ApiResponse<List<User>>(
+        statusCode: response.statusCode,
+        message: response.data['message'],
+        data: members,
+      );
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
+        return ApiResponse<List<User>>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],
         );
@@ -445,6 +478,41 @@ class TribeAPi {
           e.response?.data['message'] ?? 'An error occurred',
         );
         return PagingResponse<Web3Transaction>(
+          statusCode: e.response?.statusCode,
+          message: e.response?.data['message'],
+        );
+      }
+      rethrow;
+    }
+  }
+
+  Future<ApiResponse<User>> updatePermission({
+    required String role,
+    required String userId,
+  }) async {
+    try {
+      // Gửi request đến API
+      final response = await DioClient().put(
+        '/tribe/update-permission',
+        data: {
+          'role': role,
+          'memberId': userId,
+        },
+      );
+
+      // Parse dữ liệu response
+      return ApiResponse<User>.fromJson(
+        response.data,
+        (json) => User.fromJson(json),
+      );
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
+        return ApiResponse<User>(
           statusCode: e.response?.statusCode,
           message: e.response?.data['message'],
         );

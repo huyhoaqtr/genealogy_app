@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_app/constants/app_size.dart';
-import 'package:getx_app/utils/string/string.dart';
-import 'package:getx_app/utils/widgets/common/avatar_image.dart';
-import 'package:getx_app/utils/widgets/dialog/dialog.helper.dart';
-import 'package:getx_app/utils/widgets/icon_button.common.dart';
-import 'package:getx_app/views/dashboard/dashboard.controller.dart';
-
+import '../../constants/app_size.dart';
+import '../../utils/string/string.dart';
+import '../../utils/widgets/common/avatar_image.dart';
+import '../../utils/widgets/dialog/dialog.helper.dart';
+import '../../utils/widgets/icon_button.common.dart';
+import '../../views/dashboard/dashboard.controller.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_routes.dart';
 import '../../resources/models/user.model.dart';
@@ -61,7 +60,7 @@ class ProfileScreen extends GetView<ProfileController> {
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                               Text(
-                                controller.getRole("${user.role}"),
+                                getRole("${user.role}"),
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ])
@@ -79,12 +78,6 @@ class ProfileScreen extends GetView<ProfileController> {
                 "Thay đổi mật khẩu",
                 "assets/icons/key-square.svg",
                 () => Get.toNamed(AppRoutes.changePassword),
-              ),
-              _buildButtonComponent(
-                context,
-                "La bàn phong thuỷ",
-                "assets/icons/compass.svg",
-                () => Get.toNamed(AppRoutes.compass),
               ),
               _buildButtonComponent(
                 context,
