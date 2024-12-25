@@ -18,42 +18,54 @@ class ContactScreen extends GetView<ContactController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColors.backgroundColor,
         title: const Text("Danh bạ"),
         leading: IconButtonComponent(
             iconPath: 'assets/icons/arrow-left.svg',
             onPressed: () => Get.back()),
       ),
-      body: Column(
+      body: Stack(
         children: [
-          _buildSearchInput(context),
-          Obx(() {
-            if (controller.isLoading.value) {
-              return const Expanded(child: ProgressIndicatorComponent());
-            }
-            if (controller.filteredBlocks.value.isEmpty &&
-                !controller.isLoading.value) {
-              return Expanded(
-                child: Center(
-                  child: Text(
-                    'Chưa có thành viên nào',
-                    style: Theme.of(context).textTheme.bodyMedium,
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: _buildSearchInput(context),
+          ),
+          Positioned(
+            top: 50,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Obx(() {
+              if (controller.isLoading.value) {
+                return const Expanded(child: ProgressIndicatorComponent());
+              }
+              if (controller.filteredBlocks.value.isEmpty &&
+                  !controller.isLoading.value) {
+                return Expanded(
+                  child: Center(
+                    child: Text(
+                      'Chưa có thành viên nào',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                   ),
+                );
+              }
+              return Container(
+                margin: const EdgeInsets.symmetric(
+                    horizontal: AppSize.kPadding / 2),
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Obx(() => Column(
+                        children: controller.filteredBlocks
+                            .map((item) => _buildContentItem(context, item))
+                            .toList(),
+                      )),
                 ),
               );
-            }
-            return Container(
-              margin:
-                  const EdgeInsets.symmetric(horizontal: AppSize.kPadding / 2),
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Obx(() => Column(
-                      children: controller.filteredBlocks
-                          .map((item) => _buildContentItem(context, item))
-                          .toList(),
-                    )),
-              ),
-            );
-          }),
+            }),
+          ),
         ],
       ),
     );
