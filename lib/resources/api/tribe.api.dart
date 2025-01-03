@@ -211,6 +211,37 @@ class TribeAPi {
     }
   }
 
+  Future<ApiResponse> deleteTreeMember({
+    required String id,
+  }) async {
+    try {
+      // Gửi request đến API
+      final response = await DioClient().delete(
+        '/tribe/delete-tree-member/$id',
+      );
+
+      // Parse dữ liệu response
+
+      return ApiResponse(
+        statusCode: response.statusCode,
+        message: response.data['message'],
+      );
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
+        return ApiResponse(
+          statusCode: e.response?.statusCode,
+          message: e.response?.data['message'],
+        );
+      }
+      rethrow;
+    }
+  }
+
   Future<ApiResponse<List<User>>> getAllMember() async {
     try {
       // Gửi request đến API

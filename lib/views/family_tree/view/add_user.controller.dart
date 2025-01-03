@@ -342,6 +342,34 @@ class AddUserController extends GetxController {
     }
   }
 
+  Future<void> deleteTreeMember() async {
+    loadingController.show();
+    try {
+      final response =
+          await TribeAPi().deleteTreeMember(id: selectedTreeMember!.sId!);
+      if (response.statusCode == 200) {
+        Get.back();
+        DialogHelper.showToast(
+          "Xóa thành viên thành công",
+          ToastType.success,
+        );
+        if (Get.isRegistered<FamilyTreeController>()) {
+          final FamilyTreeController familyTreeController =
+              Get.find<FamilyTreeController>();
+          familyTreeController.fetchBlocks();
+        }
+      }
+    } catch (e) {
+      print(e);
+      DialogHelper.showToast(
+        "Có lỗi xây ra, vui lòng thử lại sau",
+        ToastType.warning,
+      );
+    } finally {
+      loadingController.hide();
+    }
+  }
+
   void toggleIsDead() {
     isDead.value = !isDead.value;
   }

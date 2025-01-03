@@ -10,12 +10,16 @@ class MessageBottomSheet extends StatelessWidget {
   final bool isSameUser;
   final VoidCallback onSaveImage;
   final VoidCallback onReplyMessage;
+  final VoidCallback? onUnSendMessage;
+  final VoidCallback? onCopyMessage;
 
   const MessageBottomSheet(
       {super.key,
       required this.message,
       required this.onSaveImage,
       required this.onReplyMessage,
+      this.onCopyMessage,
+      this.onUnSendMessage,
       required this.isSameUser});
 
   @override
@@ -74,7 +78,10 @@ class MessageBottomSheet extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
-                onTap: () => Get.back(),
+                onTap: () => {
+                  Get.back(),
+                  if (onCopyMessage != null) {onCopyMessage!()}
+                },
               ),
               if (message.file != null)
                 InkWell(
@@ -108,7 +115,10 @@ class MessageBottomSheet extends StatelessWidget {
                           ),
                     ),
                   ),
-                  onTap: () => Get.back(),
+                  onTap: () => {
+                    Get.back(),
+                    if (onUnSendMessage != null) {onUnSendMessage!()}
+                  },
                 ),
               const SizedBox(height: AppSize.kPadding / 2),
             ],

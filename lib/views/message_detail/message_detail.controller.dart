@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getx_app/utils/widgets/dialog/dialog.helper.dart';
 
 import '../../resources/api/message.api.dart';
 import '../../resources/models/user.model.dart';
@@ -105,23 +106,56 @@ class MessageDetailController extends GetxController {
   }
 
   Future<void> sendMessage(MessageType type) async {
-    final String tempId = generateDateId();
-    Message? message = _createLocalMessage(type, tempId);
-    if (message == null) return;
-    messages.insert(0, message);
+    try {
+      final String tempId = generateDateId();
+      Message? message = _createLocalMessage(type, tempId);
+      if (message == null) return;
+      messages.insert(0, message);
 
-    itemKeys.add(GlobalKey());
-    _resetMessageState();
+      itemKeys.add(GlobalKey());
+      _resetMessageState();
 
-    await MessageApi().sendMessage(
-      messageType: conversation.value.type ?? "SINGLE",
-      conversationId: conversation.value.sId,
-      content: type == MessageType.TEXT ? message.content : null,
-      tempId: tempId,
-      replyMessageId: message.replyMessage?.sId,
-      file: type == MessageType.IMAGE ? message.tempImage : null,
-      receiverId: receiver.value.sId,
-    );
+      await MessageApi().sendMessage(
+        messageType: conversation.value.type ?? "SINGLE",
+        conversationId: conversation.value.sId,
+        content: type == MessageType.TEXT ? message.content : null,
+        tempId: tempId,
+        replyMessageId: message.replyMessage?.sId,
+        file: type == MessageType.IMAGE ? message.tempImage : null,
+        receiverId: receiver.value.sId,
+      );
+    } catch (e) {
+      print("Error: $e");
+      DialogHelper.showToast(
+        "Thông báo"
+        "Có lỗi xảy ra, vui lòng thử lại sau",
+        ToastType.warning,
+      );
+    }
+  }
+
+  Future<void> unSendMessage(String id) async {
+    try {
+      final response = await MessageApi().unSendMessage(id: id);
+      if (response.statusCode == 200) {
+        final index = messages.indexWhere((msg) => msg.sId == id);
+        if (index != -1) {
+          messages.removeAt(index);
+          itemKeys.removeAt(index);
+        }
+        DialogHelper.showToast(
+          "Tin nhắn đã được gỡ thành công",
+          ToastType.success,
+        );
+      }
+    } catch (e) {
+      print("Error: $e");
+      DialogHelper.showToast(
+        "Thông báo"
+        "Có lỗi xảy ra, vui lòng thử lại sau",
+        ToastType.warning,
+      );
+    }
   }
 
 // Hàm tạo tin nhắn cục bộ

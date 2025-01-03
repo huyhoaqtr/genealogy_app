@@ -10,6 +10,7 @@ import '../../../constants/app_colors.dart';
 import '../../../constants/app_size.dart';
 import '../../../resources/api/home.api.dart';
 import '../../../utils/string/string.dart';
+import '../../../utils/widgets/dialog/dialog.helper.dart';
 import '../message_detail.controller.dart';
 import '../model/message.model.dart';
 import 'message_bottom_sheet.dart';
@@ -38,8 +39,17 @@ class MessageItem extends StatelessWidget {
     Get.find<MessageDetailController>().replyMessageTo(message);
   }
 
+  void unSendMessage() {
+    Get.find<MessageDetailController>().unSendMessage(message.sId!);
+  }
+
   void scrollToMessage(Message replyMessage) {
     Get.find<MessageDetailController>().scrollToMessage(replyMessage);
+  }
+
+  void copyMessage() {
+    Clipboard.setData(ClipboardData(text: message.content!));
+    DialogHelper.showToast("Đã sao chép nội dung", ToastType.success);
   }
 
   void showOverlay(BuildContext context) {
@@ -93,6 +103,8 @@ class MessageItem extends StatelessWidget {
       builder: (context) => MessageBottomSheet(
         message: message,
         isSameUser: isSameUser,
+        onCopyMessage: () => copyMessage(),
+        onUnSendMessage: () => unSendMessage(),
         onSaveImage: () async => saveImage(),
         onReplyMessage: () => replyMessage(),
       ),

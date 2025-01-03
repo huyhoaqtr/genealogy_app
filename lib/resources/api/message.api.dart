@@ -150,6 +150,36 @@ class MessageApi {
     }
   }
 
+  Future<ApiResponse> unSendMessage({
+    required String id,
+  }) async {
+    try {
+      // Gửi request đến API
+      final response = await DioClient().delete(
+        '/message/delete-message/$id',
+      );
+
+      // Parse dữ liệu response
+      return ApiResponse.fromJson(
+        response.data,
+        (json) => Message.fromJson(json),
+      );
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      if (e is DioException && e.response != null) {
+        DialogHelper.showToastDialog(
+          "Thông báo",
+          e.response?.data['message'] ?? 'An error occurred',
+        );
+        return ApiResponse(
+          statusCode: e.response?.statusCode,
+          message: e.response?.data['message'],
+        );
+      }
+      rethrow;
+    }
+  }
+
   Future<PagingResponse<User>> searchUser({
     required int page,
     required int limit,

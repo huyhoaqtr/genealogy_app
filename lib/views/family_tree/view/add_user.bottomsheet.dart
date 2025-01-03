@@ -704,13 +704,31 @@ class AddUserBottomSheetUI extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(AppSize.kPadding),
                 color: AppColors.backgroundColor,
-                child: CustomButton(
-                  text: controller.sheetMode == SheetMode.ADD
-                      ? "Thêm thành viên"
-                      : "Cập nhật",
-                  onPressed: () => controller.sheetMode == SheetMode.ADD
-                      ? controller.addTreeMember()
-                      : controller.updateTreeMember(),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CustomButton(
+                        isOutlined: true,
+                        text: controller.sheetMode == SheetMode.ADD
+                            ? "Huỷ"
+                            : "Xoá thành viên",
+                        onPressed: () => controller.sheetMode == SheetMode.ADD
+                            ? Get.back()
+                            : controller.deleteTreeMember(),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: CustomButton(
+                        text: controller.sheetMode == SheetMode.ADD
+                            ? "Thêm thành viên"
+                            : "Cập nhật",
+                        onPressed: () => controller.sheetMode == SheetMode.ADD
+                            ? controller.addTreeMember()
+                            : controller.updateTreeMember(),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

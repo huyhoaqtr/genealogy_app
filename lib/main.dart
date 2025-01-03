@@ -28,8 +28,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
   AdManager.loadInterstitialAd();
-  await Firebase.initializeApp();
   if (!kIsWeb && (Platform.isAndroid)) {
+    await Firebase.initializeApp();
     FCMService.initializeFCM();
   }
 
