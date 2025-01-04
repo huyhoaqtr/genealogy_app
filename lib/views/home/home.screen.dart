@@ -208,7 +208,7 @@ class HomeScreen extends GetView<HomeController> {
                 _buildHomeItem(
                   context,
                   'Trợ lí AI',
-                  'Giải đáp mọi thắc mắc của bạn',
+                  'Giải đáp thắc mắc của bạn',
                   'assets/icons/magic-pen.svg',
                   false,
                   AppRoutes.chatbot,
